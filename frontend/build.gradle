@@ -1,0 +1,26 @@
+plugins {
+    id 'com.moowork.node' version '0.12'
+}
+
+apply plugin: 'base'
+
+node {
+    version = '5.5.0'
+    download = true
+}
+
+task packageInstall(type: NpmTask) {
+    args = [ 'install' ]
+}
+
+task gulpBuild(type: NpmTask) {
+    args = [ 'run', 'build' ]
+}
+
+task gulpBuildSass(type: NpmTask) {
+    args = [ 'run', 'build-sass']
+}
+
+task gulpWatchSass(type: NpmTask) {
+    args = [ 'run', 'watch-sass']
+}

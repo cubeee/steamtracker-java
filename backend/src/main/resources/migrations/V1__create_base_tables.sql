@@ -1,0 +1,9 @@
+CREATE TABLE player (
+  id        SERIAL PRIMARY KEY NOT NULL,
+  steam_id  CHARACTER VARYING NOT NULL
+);
+
+CREATE TABLE steam_game (
+  id        SERIAL PRIMARY KEY NOT NULL,
+  name      CHARACTER VARYING NOT NULL
+)

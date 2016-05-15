@@ -1,0 +1,42 @@
+{
+  "name": "frontend",
+  "private": true,
+  "description": "Steam user tracker",
+  "contributors": [{
+    "name": "Cube",
+    "url": "https://0x7ff.com/"
+  }],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cubeee/steam-tracker"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "build-sass": "gulp sass:build",
+    "watch-sass": "gulp sass:watch",
+    "build-js": "gulp js:browserify",
+    "watch-js": "gulp js:watch",
+    "dist": "gulp dist",
+    "build-sierra": "gulp build_sierra"
+  },
+  "devDependencies": {
+    "gulp": "*",
+    "gulp-sass": "*",
+    "gulp-chug": "*",
+    "gulp-minify-css": "*",
+    "gulp-uglify": "*",
+    "sierra-library": "*",
+    "require-dir": "*",
+    "rmdir": "*",
+    "run-sequence": "*",
+    "browserify": "*",
+    "vinyl-buffer": "*",
+    "event-stream": "*",
+    "glob": "*",
+    "path": "*",
+    "vinyl-source-stream": "*"
+  }
+}

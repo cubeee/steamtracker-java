@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath group: 'com.github.ben-manes', name: 'gradle-versions-plugin', version: '0.12.0'
+    }
+}
+
+ext.deps = [
+    freemarkerInheritance: dependencies.create("kr.pe.kwonnam.freemarker:freemarker-template-inheritance:0.4.RELEASE"),
+    guava                : dependencies.create("com.google.guava:guava:19.0"),
+    postgresql           : dependencies.create("org.postgresql:postgresql:9.4.1208"),
+    javaxInject          : dependencies.create("javax.inject:javax.inject:1")
+]
+
+apply plugin: 'base'
+apply plugin: 'com.github.ben-manes.versions'
+
+repositories {
+    mavenCentral()
+}
