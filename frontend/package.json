@@ -37,6 +37,7 @@
     "event-stream": "*",
     "glob": "*",
     "path": "*",
+    "which": "*",
     "vinyl-source-stream": "*"
   }
 }

@@ -2,8 +2,13 @@
 
 var gulp = require('gulp');
 
-gulp.task('move_sierra', function() {
-    var src = __dirname + "/../../sierra/_variables.scss";
-    var dest = __dirname + "/../../../node_modules/sierra-library/src";
+var src = __dirname + "/../../sierra/**";
+var dest = __dirname + "/../../../node_modules/sierra-library/src";
+
+gulp.task('sierra:move', function() {
     return gulp.src(src).pipe(gulp.dest(dest));
+});
+
+gulp.task('sierra:watch', function() {
+    return gulp.watch(src, ['sierra:move', 'sierra:build', 'dist']);
 });

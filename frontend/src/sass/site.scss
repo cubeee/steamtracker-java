@@ -1,25 +1,14 @@
-@import '../sierra/_variables.scss';
+@charset "UTF-8";
 
-$nav-height: 40px;
+// theme - has to be edited in ../sierra/sierra.scss as well
+@import "../sierra/default.theme";
+
+// config
+@import 'variables';
+
+// components
+@import 'components';
 
 .main {
   margin-top: $nav-height;
-}
-
-.navigation {
-  position: fixed;
-  top: 0;
-  z-index: 10000;
-  width: 100%;
-  background-color: $body-bg;
-  border-bottom: 1px solid $border-color;
-  min-height: ($nav-height + 4);
-  padding-left: 10px;
-}
-
-.navigation .text-logo {
-  display: inline;
-  margin-right: 30px;
-  margin-left: 20px;
-  line-height: ($nav-height + 4);
 }
