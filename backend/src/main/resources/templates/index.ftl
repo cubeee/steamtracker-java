@@ -1,7 +1,6 @@
 <@layout.extends name="base.ftl">
     <#import "spring.ftl" as spring />
     <#import "_macros.ftl" as macros />
-    <#assign pageTitle = "Home" />
 
     <@layout.put block="navigation" type="replace"></@layout.put>
 

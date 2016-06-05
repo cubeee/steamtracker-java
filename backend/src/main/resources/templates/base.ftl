@@ -15,7 +15,7 @@
         <meta property="og:site_name" content="Steam Tracker" />
         <meta property="og:description" content="Steam user tracking site" />
         <meta property="og:type" content="website" />
-        <title><#if pageTitle??>${pageTitle}</#if> - Steam Tracker</title>
+        <title><#if pageTitle??>${pageTitle} - Steam Tracker<#else>Steam Tracker</#if></title>
         <@layout.block name="stylesheets">
         <link rel="stylesheet" type="text/css" href="<@spring.url '/css/sierra.min.css' />" />
         <link rel="stylesheet" type="text/css" href="<@spring.url '/css/site.css' />" />
