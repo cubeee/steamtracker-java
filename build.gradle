@@ -12,7 +12,8 @@ ext.deps = [
     freemarkerInheritance: dependencies.create("kr.pe.kwonnam.freemarker:freemarker-template-inheritance:0.4.RELEASE"),
     guava                : dependencies.create("com.google.guava:guava:19.0"),
     postgresql           : dependencies.create("org.postgresql:postgresql:9.4.1208"),
-    javaxInject          : dependencies.create("javax.inject:javax.inject:1")
+    javaxInject          : dependencies.create("javax.inject:javax.inject:1"),
+    jsoup                : dependencies.create("org.jsoup:jsoup:1.9.2")
 ]
 
 apply plugin: 'base'
