@@ -35,7 +35,6 @@ public final class ProfileController {
 			}
 		}
 		model.addAttribute("player", player);
-		model.addAttribute("identifier", identifier);
 		return "profile";
 	}
 
