@@ -38,10 +38,13 @@
                     </div>
                 </div>
                 <div class="search-container">
-                    <div class="input input-with-icon full-width search">
-                        <input class="search-field" placeholder="Search" type="text">
-                        <button class="input-icon fa fa-search fa-lg"></button>
-                    </div>
+                    <form class="form-collapse" method="post" action="<@spring.url '/search' />">
+                        <div class="input input-with-icon full-width search">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            <input class="search-field" name="identifier" placeholder="Search profile" type="text">
+                            <button class="input-icon fa fa-search fa-lg" type="submit"></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
