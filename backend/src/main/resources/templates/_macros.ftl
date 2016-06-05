@@ -1,5 +1,6 @@
 <#macro hoursPlayed mins>
 <#compress>
-    #{mins/60; M0}
+    <#setting number_format=",##0">
+    ${mins/60}
 </#compress>
 </#macro>
