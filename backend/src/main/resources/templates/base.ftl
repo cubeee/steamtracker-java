@@ -1,6 +1,6 @@
 <#import "spring.ftl" as spring />
 <!DOCTYPE html>
-<html lang="en_US">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-COMPATIBLE" content="IE=Edge" />
@@ -20,20 +20,19 @@
         <link rel="stylesheet" type="text/css" href="<@spring.url '/css/sierra.min.css' />" />
         <link rel="stylesheet" type="text/css" href="<@spring.url '/css/site.css' />" />
         </@layout.block>
-        <@layout.block name="header_scripts">
+        <@layout.block name="header-scripts">
 
         </@layout.block>
         <script src="//use.fontawesome.com/89317662ce.js"></script>
     </head>
     <body>
-        <!-- todo: nav -->
         <@layout.block name="navigation">
         <div class="navigation">
             <div class="aligner-space-between">
                 <div>
                     <a class="text-medium text-white text-logo" href="/">Steam Tracker</a>
                     <div class="tabs tabs-compact nav">
-                        <@layout.block name="navigation_links">
+                        <@layout.block name="navigation-links">
 
                         </@layout.block>
                     </div>
@@ -45,14 +44,11 @@
                     </div>
                 </div>
             </div>
-
-
-
         </div>
         </@layout.block>
-
+        <main class="main">
         <@layout.block name="body"></@layout.block>
-
+        </main>
     <@layout.block name="scripts">
 
     </@layout.block>
