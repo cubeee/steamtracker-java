@@ -1,1 +1,2 @@
-config/production.yml
+application-development.yml
+application-production.yml
