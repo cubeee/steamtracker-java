@@ -39,7 +39,6 @@ public final class IndexController {
 
 		// todo: 404 if identifier is empty
 
-		System.out.println("identifier returned=" + identifier);
 		return "redirect:/player/" + identifier.get() + "/";
 	}
 
