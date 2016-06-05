@@ -7,8 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.resource.AppCacheManifestTransformer;
 import org.springframework.web.servlet.resource.ContentVersionStrategy;
@@ -16,7 +15,7 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 @Configuration
-public class MvcConfig extends WebMvcConfigurerAdapter {
+public class MvcConfig extends WebMvcConfigurationSupport {
 	private static final int ONE_YEAR = 31556926;
 
 	@Inject
@@ -24,11 +23,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
 	@Inject
 	private RequestMappingHandlerAdapter adapter;
-
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("index");
-	}
 
 	@PostConstruct
 	public void removeRedirectModelAtttributes() {
