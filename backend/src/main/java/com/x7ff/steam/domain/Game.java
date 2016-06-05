@@ -11,7 +11,7 @@ public final class Game {
 
 	@Id
 	@Column(name = "appId", unique = true)
-	private long appId;
+	private int appId;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -27,7 +27,7 @@ public final class Game {
 		return appId;
 	}
 
-	public void setAppId(long appId) {
+	public void setAppId(int appId) {
 		this.appId = appId;
 	}
 

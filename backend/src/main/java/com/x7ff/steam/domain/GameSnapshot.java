@@ -1,5 +1,7 @@
 package com.x7ff.steam.domain;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,12 +24,15 @@ public final class GameSnapshot {
 	@JoinColumn(name = "player_id")
 	private Player player;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "game_id")
 	private Game game;
 
 	@Column(name = "minutes_played", nullable = false)
 	private int minutesPlayed;
+
+	@Column(nullable = false)
+	private LocalDateTime date;
 
 	protected GameSnapshot() {
 
@@ -57,11 +62,20 @@ public final class GameSnapshot {
 		this.minutesPlayed = minutesPlayed;
 	}
 
+	public LocalDateTime getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+
 	public static GameSnapshot from(Player player, Game game, SteamGame steamGame) {
 		GameSnapshot snapshot = new GameSnapshot();
 		snapshot.setPlayer(player);
 		snapshot.setGame(game);
 		snapshot.setMinutesPlayed(steamGame.getMinutesPlayed());
+		snapshot.setDate(LocalDateTime.now(ZoneId.of("Europe/Paris")));
 		return snapshot;
 	}
 
