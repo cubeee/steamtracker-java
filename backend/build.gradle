@@ -27,11 +27,13 @@ dependencies {
     compile deps.freemarkerInheritance
     compile deps.postgresql
     compile deps.javaxInject
+    compile deps.jsoup
     compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-freemarker'
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
     compile 'org.flywaydb:flyway-core'
     optional 'org.springframework.boot:spring-boot-configuration-processor'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
@@ -49,9 +51,12 @@ springBoot {
 }
 
 bootRun {
-    sourceSets.main {
-        resources {
-            srcDir "${project(':frontend').buildDir}/dist"
+    // https://youtrack.jetbrains.com/issue/IDEA-122577
+    if (!project.plugins.collect { it.class.name }.any { it.endsWith('JetGradlePlugin') }) {
+        sourceSets.main {
+            resources {
+                srcDir "${project(':frontend').buildDir}/dist"
+            }
         }
     }
 
