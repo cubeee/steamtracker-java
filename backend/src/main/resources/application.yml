@@ -39,3 +39,6 @@ flyway:
   enabled: true
   locations:
     classpath:migrations
+
+steam:
+  api-key: 
