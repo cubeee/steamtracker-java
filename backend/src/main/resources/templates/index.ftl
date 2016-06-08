@@ -40,7 +40,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Dota 2</td>
+                                <td><@macros.gameImage id=570 url="0bbb630d63262dd66d2fdd0f7d37e8661a410075" /> Dota 2</td>
                                 <td>34,054</td>
                                 <td>1,543</td>
                             </tr>
@@ -58,7 +58,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Dota 2</td>
+                                <td><@macros.gameImage id=570 url="0bbb630d63262dd66d2fdd0f7d37e8661a410075" /> Dota 2</td>
                                 <td>20,000</td>
                                 <td>100,000</td>
                             </tr>
@@ -84,7 +84,7 @@
                         <tbody>
                             <#list most_played as game>
                             <tr>
-                                <td>${game.name}</td>
+                                <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
                                 <td title="${game.minutesPlayed} minutes"><@macros.hoursPlayed mins=game.minutesPlayed /></td>
                             </tr>
                             </#list>

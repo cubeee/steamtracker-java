@@ -19,6 +19,9 @@ public final class Game {
 	@Column(name = "logo_url", nullable = false)
 	private String logoUrl;
 
+	@Column(name = "icon_url", nullable = false)
+	private String iconUrl;
+
 	protected Game() {
 
 	}
@@ -43,15 +46,24 @@ public final class Game {
 		return logoUrl;
 	}
 
-	public void setIconURL(String logoUrl) {
+	public void setLogoUrl(String logoUrl) {
 		this.logoUrl = logoUrl;
+	}
+
+	public String getIconUrl() {
+		return iconUrl;
+	}
+
+	public void setIconUrl(String iconUrl) {
+		this.iconUrl = iconUrl;
 	}
 
 	public static Game from(SteamGame steamGame) {
 		Game game = new Game();
 		game.setAppId(steamGame.getAppId());
 		game.setName(steamGame.getName());
-		game.setIconURL(steamGame.getImageLogoUrl());
+		game.setIconUrl(steamGame.getImageIconUrl());
+		game.setLogoUrl(steamGame.getImageLogoUrl());
 		return game;
 	}
 
