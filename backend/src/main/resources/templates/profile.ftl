@@ -6,12 +6,14 @@
     <div class="container section">
         <p>Profile of player '${player.identifier}'</p>
 
-        <#if player??>
-            <p>player found! woo</p>
-            <p>Games: ${player.gameCount}</p>
-        <#else>
-            <p>No profile found for player</p>
-        </#if>
+    <#if player??>
+        <p>player found! woo</p>
+        <p>Games: ${player.gameCount}</p>
+        <p>Creation date: ${player.creationTime}</p>
+        <p>Last updated: ${player.lastUpdated}</p>
+    <#else>
+        <p>No profile found for player</p>
+    </#if>
     </div>
     </@layout.put>
 

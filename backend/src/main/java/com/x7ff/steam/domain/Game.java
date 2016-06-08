@@ -10,8 +10,8 @@ import com.x7ff.steam.domain.steam.SteamGame;
 public final class Game {
 
 	@Id
-	@Column(name = "appId", unique = true)
-	private int appId;
+	@Column(name = "app_id", unique = true)
+	private Integer appId;
 
 	@Column(name = "name", nullable = false)
 	private String name;

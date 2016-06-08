@@ -1,5 +1,6 @@
 package com.x7ff.steam.service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +39,8 @@ public final class SteamPlayerService {
 		return fetchPlayer(true, identifier);
 	}
 
-	public Optional<Player> fetchPlayer(boolean save, String identifier) {
-		List<Player> players = fetchPlayers(save, identifier);
+	public Optional<Player> fetchPlayer(boolean newPlayer, String identifier) {
+		List<Player> players = fetchPlayers(newPlayer, identifier);
 		return players.isEmpty() ? Optional.empty() : Optional.of(players.get(0));
 	}
 
@@ -47,7 +48,7 @@ public final class SteamPlayerService {
 		return fetchPlayers(true, identifiers);
 	}
 
-	public List<Player> fetchPlayers(boolean save, String... identifiers) {
+	public List<Player> fetchPlayers(boolean newPlayer, String... identifiers) {
 		List<Player> players = Lists.newArrayList();
 		List<Game> games = Lists.newArrayList();
 
@@ -59,6 +60,12 @@ public final class SteamPlayerService {
 				Player player = new Player(identifier);
 				player.setIdentifier(identifier);
 				player.setGameCount(response.getGameCount());
+
+				LocalDateTime time = LocalDateTime.now();
+				if (newPlayer) {
+					player.setCreationTime(time);
+				}
+				player.setLastUpdated(time);
 
 				List<GameSnapshot> snapshots = Lists.newArrayList();
 
@@ -84,7 +91,7 @@ public final class SteamPlayerService {
 			e.printStackTrace();
 		}
 		gameRepository.persist(games);
-		if (save && !players.isEmpty()) {
+		if (!players.isEmpty()) {
 			playerRepository.save(players);
 		}
 		return players;

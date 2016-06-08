@@ -1,5 +1,6 @@
 package com.x7ff.steam.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,8 +31,13 @@ public final class Player {
 	@Column(name = "game_count")
 	private int gameCount = 0;
 
-	protected Player() {
+	@Column(nullable = false)
+	private LocalDateTime creationTime;
 
+	@Column(nullable = false)
+	private LocalDateTime lastUpdated;
+
+	protected Player() {
 	}
 
 	public Player(String identifier) {
@@ -64,4 +70,21 @@ public final class Player {
 	public void setGameCount(int gameCount) {
 		this.gameCount = gameCount;
 	}
+
+	public LocalDateTime getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(LocalDateTime creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	public LocalDateTime getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setLastUpdated(LocalDateTime lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
 }

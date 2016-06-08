@@ -28,7 +28,7 @@ public final class ProfileController {
 	private String profile(@PathVariable String identifier, Model model) {
 		Player player = playerRepository.findPlayerByIdentifier(identifier);
 		if (player == null) {
-			Optional<Player> steamPlayer = steamPlayerService.fetchPlayer(true, identifier);
+			Optional<Player> steamPlayer = steamPlayerService.fetchPlayer(identifier);
 			if (steamPlayer.isPresent()) {
 				player = steamPlayer.get();
 			}
