@@ -30,7 +30,7 @@
                 <!-- todays most played games and players -->
                 <div class="col-md-7 col-xs-12">
                     <h3 class="text-medium">Most played today</h3>
-                    <table class="table played-table">
+                    <table class="table game-table main-game-table">
                         <thead>
                             <tr class="text-small align-left">
                                 <th>Game</th>
@@ -48,7 +48,7 @@
                     </table>
 
                     <h3 class="text-medium">Most played this week</h3>
-                    <table class="table played-table">
+                    <table class="table game-table main-game-table">
                         <thead>
                             <tr class="text-small align-left">
                                 <th>Game</th>
@@ -74,7 +74,7 @@
                     <p class="text-medium text-with-subtitle text-center">Players tracked</p>
                     <h3 class="text-big text-code text-center"><strong>${tracked_players}</strong></h3>
 
-                    <table class="table">
+                    <table class="table game-table">
                         <thead>
                             <tr class="text-small align-left">
                                 <th>Most played games</th>
