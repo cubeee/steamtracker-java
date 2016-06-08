@@ -2,6 +2,7 @@
 *~
 !.git*
 build/
+lib/
 *.iml
 *.ipr
 *.iws
