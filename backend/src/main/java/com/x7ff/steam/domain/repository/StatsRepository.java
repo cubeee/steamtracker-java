@@ -10,10 +10,11 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
 import com.google.common.collect.Lists;
+import com.x7ff.steam.domain.Game;
+import com.x7ff.steam.domain.GameRepository;
 import com.x7ff.steam.domain.GameSnapshot;
 import com.x7ff.steam.domain.MostPlayedGame;
 import com.x7ff.steam.domain.Player;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -22,11 +23,13 @@ import org.springframework.stereotype.Repository;
 public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 
 	private final EntityManager entityManager;
+	private final GameRepository gameRepository;
 
 	@Inject
-	public StatsRepository(EntityManager entityManager) {
+	public StatsRepository(EntityManager entityManager, GameRepository gameRepository) {
 		super(Player.class, entityManager);
 		this.entityManager = entityManager;
+		this.gameRepository = gameRepository;
 	}
 
 	@Cacheable(value = "players")
@@ -41,20 +44,26 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 		return minutes == null ? 0 : minutes.longValue();
 	}
 
-	@CacheEvict(value = "players")
+	@Cacheable(value = "players")
+	@SuppressWarnings("unchecked")
 	public List<MostPlayedGame> getMostPlayedGames() {
 		List<MostPlayedGame> games = Lists.newArrayList();
 
+		// todo: feels cheap, improve?
 		Query query = entityManager.createQuery(
-				"SELECT DISTINCT g.name, g.logoUrl, SUM(s.minutesPlayed) AS cumu " +
-				"FROM com.x7ff.steam.domain.GameSnapshot AS s LEFT JOIN com.x7ff.steam.domain.Game AS g ON s.game.appId = g.appId " +
+				"SELECT DISTINCT g.appId, SUM(s.minutesPlayed) AS cumu " +
+				"FROM GameSnapshot AS s LEFT JOIN Game AS g ON s.game.appId = g.appId " +
 				"WHERE s.minutesPlayed > 0 " +
-				"GROUP BY g.name, g.logoUrl " +
+				"GROUP BY g.appId " +
 				"ORDER BY cumu DESC");
 		List<Object[]> result = query.setMaxResults(10).getResultList();
 		for (Object[] val : result) {
-			MostPlayedGame game = new MostPlayedGame((String) val[0], (String) val[1], (Long) val[2]);
-			games.add(game);
+			Integer appId = (Integer) val[0];
+			Long played = (Long) val[1];
+			Game game = gameRepository.findOne(appId);
+
+			MostPlayedGame playedGame = new MostPlayedGame(game, played);
+			games.add(playedGame);
 		}
 		return games;
 	}

@@ -15,7 +15,7 @@
                         <form class="form-collapse" method="post" action="<@spring.url '/search' />">
                             <div class="input item item-main">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                <input id="search" name="identifier" placeholder="Steam profile url or custom name" type="text">
+                                <input id="search" name="identifier" placeholder="Steam profile url, id or custom name" type="text">
                             </div>
                             <button type="submit" class="item button button-primary">
                                 <i class="fa fa-search fa-lg"></i>
