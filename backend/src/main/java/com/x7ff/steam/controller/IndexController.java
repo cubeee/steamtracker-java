@@ -1,5 +1,6 @@
 package com.x7ff.steam.controller;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import com.x7ff.steam.domain.PlayerSearch;
@@ -29,7 +30,9 @@ public final class IndexController {
 	public String index(Model model) {
 		model.addAttribute("collective_played", statsRepository.getCollectiveMinutesPlayed()); // todo: calculated and cached
 		model.addAttribute("tracked_players", playerRepository.count()); // todo: cached
-		model.addAttribute("most_played", statsRepository.getMostPlayedGames());
+		model.addAttribute("most_played", statsRepository.getMostPlayedGames(StatsRepository.FAR_DATE, LocalDateTime.now()));
+		model.addAttribute("todays_played", statsRepository.getTodaysMostPlayed());
+		model.addAttribute("weeks_played", statsRepository.getLastWeekMostPlayed());
 		return "index";
 	}
 

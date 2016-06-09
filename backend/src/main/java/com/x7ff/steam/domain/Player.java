@@ -24,7 +24,7 @@ public final class Player {
 	private String identifier;
 
 	@Column(name = "snapshots")
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@OrderBy(value = "minutes_played DESC")
 	private List<GameSnapshot> snapshots;
 

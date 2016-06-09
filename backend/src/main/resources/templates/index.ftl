@@ -29,39 +29,39 @@
             <div class="row">
                 <!-- todays most played games and players -->
                 <div class="col-md-7 col-xs-12">
-                    <h3 class="text-medium">Most played today</h3>
+                    <h3 class="text-medium">Most played in the last 24 hours</h3>
                     <table class="table game-table main-game-table">
                         <thead>
                             <tr class="text-small align-left">
                                 <th>Game</th>
                                 <th>Hours</th>
-                                <th>Users</th>
                             </tr>
                         </thead>
                         <tbody>
+                        <#list todays_played as game>
                             <tr>
-                                <td><@macros.gameImage id=570 url="0bbb630d63262dd66d2fdd0f7d37e8661a410075" /> Dota 2</td>
-                                <td>34,054</td>
-                                <td>1,543</td>
+                                <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
+                                <td title="${game.minutesPlayed} minutes"><@macros.hoursPlayed mins=game.minutesPlayed /></td>
                             </tr>
+                        </#list>
                         </tbody>
                     </table>
 
-                    <h3 class="text-medium">Most played this week</h3>
+                    <h3 class="text-medium">Most played in the last 7 days</h3>
                     <table class="table game-table main-game-table">
                         <thead>
                             <tr class="text-small align-left">
                                 <th>Game</th>
                                 <th>Hours</th>
-                                <th>Users</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <#list weeks_played as game>
                             <tr>
-                                <td><@macros.gameImage id=570 url="0bbb630d63262dd66d2fdd0f7d37e8661a410075" /> Dota 2</td>
-                                <td>20,000</td>
-                                <td>100,000</td>
+                                <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
+                                <td title="${game.minutesPlayed} minutes"><@macros.hoursPlayed mins=game.minutesPlayed /></td>
                             </tr>
+                            </#list>
                         </tbody>
                     </table>
                 </div>

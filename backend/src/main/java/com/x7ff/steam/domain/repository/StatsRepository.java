@@ -1,5 +1,7 @@
 package com.x7ff.steam.domain.repository;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class StatsRepository extends SimpleJpaRepository<Player, Long> {
+	public static final LocalDateTime FAR_DATE = LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0);
 
 	private final EntityManager entityManager;
 	private final GameRepository gameRepository;
@@ -46,16 +49,20 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 
 	@Cacheable(value = "players")
 	@SuppressWarnings("unchecked")
-	public List<MostPlayedGame> getMostPlayedGames() {
+	public List<MostPlayedGame> getMostPlayedGames(LocalDateTime from, LocalDateTime to) {
 		List<MostPlayedGame> games = Lists.newArrayList();
 
 		// todo: feels cheap, improve?
+
 		Query query = entityManager.createQuery(
 				"SELECT DISTINCT g.appId, SUM(s.minutesPlayed) AS cumu " +
 				"FROM GameSnapshot AS s LEFT JOIN Game AS g ON s.game.appId = g.appId " +
-				"WHERE s.minutesPlayed > 0 " +
+				"WHERE s.minutesPlayed > 0 AND s.date < :dateTo AND s.date > :dateFrom " +
 				"GROUP BY g.appId " +
 				"ORDER BY cumu DESC");
+		query.setParameter("dateFrom", from);
+		query.setParameter("dateTo", to);
+
 		List<Object[]> result = query.setMaxResults(10).getResultList();
 		for (Object[] val : result) {
 			Integer appId = (Integer) val[0];
@@ -66,6 +73,18 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 			games.add(playedGame);
 		}
 		return games;
+	}
+
+	public List<MostPlayedGame> getLastWeekMostPlayed() {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime lastWeek = now.minusDays(7);
+		return getMostPlayedGames(lastWeek, now);
+	}
+
+	public List<MostPlayedGame> getTodaysMostPlayed() {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime yesterday = now.minusHours(24);
+		return getMostPlayedGames(yesterday, now);
 	}
 
 }
