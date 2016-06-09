@@ -12,20 +12,3 @@
 .main {
   margin-top: $nav-height;
 }
-
-.main-game-table {
-  table-layout: fixed;
-}
-
-.game-table td {
-  vertical-align: baseline;
-}
-
-.game-table td > img {
-  vertical-align: middle;
-}
-
-.game-table .game-image {
-  margin: 10px;
-  border: 1px solid $shadow-color;
-}

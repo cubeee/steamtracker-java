@@ -1,0 +1,35 @@
+.main-game-table {
+  table-layout: fixed;
+}
+
+.game-table td {
+  vertical-align: baseline;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-table td > img {
+  vertical-align: middle;
+}
+
+.game-table .game-image {
+  margin: 10px;
+  border: 1px solid $shadow-color;
+}
+
+@media (min-width: 992px) {
+  .table {
+    td {
+      padding: 0;
+    }
+
+    th {
+      padding: 10px 10px 10px 0px;
+    }
+
+    th:first-child {
+      padding-left: 10px;
+    }
+  }
+}
