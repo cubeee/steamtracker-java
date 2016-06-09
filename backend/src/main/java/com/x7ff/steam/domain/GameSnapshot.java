@@ -70,12 +70,12 @@ public final class GameSnapshot {
 		this.date = date;
 	}
 
-	public static GameSnapshot from(Player player, Game game, SteamGame steamGame) {
+	public static GameSnapshot from(Player player, Game game, SteamGame steamGame, LocalDateTime time) {
 		GameSnapshot snapshot = new GameSnapshot();
 		snapshot.setPlayer(player);
 		snapshot.setGame(game);
 		snapshot.setMinutesPlayed(steamGame.getMinutesPlayed());
-		snapshot.setDate(LocalDateTime.now(ZoneId.of("Europe/Paris")));
+		snapshot.setDate(time);
 		return snapshot;
 	}
 
