@@ -21,11 +21,11 @@
 @media (min-width: 992px) {
   .table {
     td {
-      padding: 0;
+      padding: 0 10px;
     }
 
     th {
-      padding: 10px 10px 10px 0px;
+      padding: 10px 10px 10px 10px;
     }
 
     th:first-child {
