@@ -3,7 +3,6 @@ package com.x7ff.steam.service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
@@ -35,60 +34,56 @@ public final class SteamPlayerService {
 		this.steamOwnedGamesService = steamOwnedGamesService;
 	}
 
-	public Optional<Player> fetchPlayer(String identifier) {
-		return fetchPlayer(true, identifier);
-	}
+	public Player fetchPlayer(Player player, boolean save, String identifier) {
+		SteamProfileOwnedGames steamProfile = steamOwnedGamesService.fetch(identifier);
+		SteamProfileOwnedGamesResponse response = steamProfile.getResponse();
 
-	public Optional<Player> fetchPlayer(boolean newPlayer, String identifier) {
-		List<Player> players = fetchPlayers(newPlayer, identifier);
-		return players.isEmpty() ? Optional.empty() : Optional.of(players.get(0));
+		LocalDateTime time = LocalDateTime.now();
+		if (player == null) {
+			player = new Player(identifier);
+			player.setCreationTime(time);
+		}
+		player.setIdentifier(identifier);
+		player.setGameCount(response.getGameCount());
+		player.setLastUpdated(time);
+
+		List<GameSnapshot> snapshots = Lists.newArrayList();
+
+		player.getGames().clear();
+		for (SteamGame steamGame : response.getGames()) {
+			Game game = Game.from(steamGame);
+			player.getGames().add(game);
+
+			GameSnapshot snapshot = GameSnapshot.from(player, game, steamGame, time);
+			snapshots.add(snapshot);
+		}
+
+		Collections.sort(snapshots, (snapshot, other) -> {
+			if (snapshot == null || other == null) {
+				return 0;
+			}
+			return Ints.compare(other.getMinutesPlayed(), snapshot.getMinutesPlayed());
+		});
+
+		player.getSnapshots().addAll(snapshots);
+		if (save) {
+			gameRepository.persist(player.getGames());
+			playerRepository.save(player);
+		}
+		return player;
 	}
 
 	public List<Player> fetchPlayers(String... identifiers) {
-		return fetchPlayers(true, identifiers);
-	}
-
-	public List<Player> fetchPlayers(boolean newPlayer, String... identifiers) {
 		List<Player> players = Lists.newArrayList();
 		List<Game> games = Lists.newArrayList();
 
-		try {
-			for (String identifier : identifiers) {
-				SteamProfileOwnedGames steamProfile = steamOwnedGamesService.fetch(identifier);
-				SteamProfileOwnedGamesResponse response = steamProfile.getResponse();
-
-				Player player = new Player(identifier);
-				player.setIdentifier(identifier);
-				player.setGameCount(response.getGameCount());
-
-				LocalDateTime time = LocalDateTime.now();
-				if (newPlayer) {
-					player.setCreationTime(time);
-				}
-				player.setLastUpdated(time);
-
-				List<GameSnapshot> snapshots = Lists.newArrayList();
-
-				for (SteamGame steamGame : response.getGames()) {
-					Game game = Game.from(steamGame);
-					games.add(game);
-
-					GameSnapshot snapshot = GameSnapshot.from(player, game, steamGame);
-					snapshots.add(snapshot);
-				}
-
-				Collections.sort(snapshots, (snapshot, other) -> {
-					if (snapshot == null || other == null) {
-						return 0;
-					}
-					return Ints.compare(other.getMinutesPlayed(), snapshot.getMinutesPlayed());
-				});
-
-				player.getSnapshots().addAll(snapshots);
-				players.add(player);
+		for (String identifier : identifiers) {
+			try {
+				Player player = fetchPlayer(null, false, identifier);
+				games.addAll(player.getGames());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		gameRepository.persist(games);
 		if (!players.isEmpty()) {

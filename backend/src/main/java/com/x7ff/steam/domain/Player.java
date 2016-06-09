@@ -37,6 +37,8 @@ public final class Player {
 	@Column(nullable = false)
 	private LocalDateTime lastUpdated;
 
+	private final transient List<Game> games = Lists.newArrayList();
+
 	protected Player() {
 	}
 
@@ -85,6 +87,10 @@ public final class Player {
 
 	public void setLastUpdated(LocalDateTime lastUpdated) {
 		this.lastUpdated = lastUpdated;
+	}
+
+	public List<Game> getGames() {
+		return games;
 	}
 
 }

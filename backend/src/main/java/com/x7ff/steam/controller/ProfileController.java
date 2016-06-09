@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.PlayerRepository;
 import com.x7ff.steam.service.SteamPlayerService;
+import com.x7ff.steam.util.exception.NotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,16 +26,35 @@ public final class ProfileController {
 	}
 
 	@RequestMapping("/player/{identifier}/")
-	private String profile(@PathVariable String identifier, Model model) {
+	private String profile(@PathVariable String identifier, Model model) throws NotFoundException {
 		Player player = playerRepository.findPlayerByIdentifier(identifier);
+		boolean updateNeeded = true;
 		if (player == null) {
-			Optional<Player> steamPlayer = steamPlayerService.fetchPlayer(identifier);
-			if (steamPlayer.isPresent()) {
-				player = steamPlayer.get();
+			player = getPlayer(null, identifier);
+			updateNeeded = false;
+		}
+
+		if (player == null) {
+			throw new NotFoundException();
+		}
+
+		if (player.getLastUpdated() != null) {
+			LocalDateTime updateTime = player.getLastUpdated().plusHours(1);
+			updateNeeded = LocalDateTime.now().isAfter(updateTime);
+		}
+
+		if (updateNeeded) {
+			player = getPlayer(player, identifier);
+			if (player == null) {
+				throw new NotFoundException();
 			}
 		}
 		model.addAttribute("player", player);
 		return "profile";
+	}
+
+	private Player getPlayer(Player player, String identifier) {
+		return steamPlayerService.fetchPlayer(player, true, identifier);
 	}
 
 }
