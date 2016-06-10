@@ -1,13 +1,11 @@
 <@layout.extends name="base.ftl">
     <#import "spring.ftl" as spring />
-    <#assign pageTitle = "${player.identifier}" />
+    <#assign pageTitle = "${(player.identifier)!"No player found"}" />
 
     <@layout.put block="body">
     <div class="container section">
-        <p>Profile of player '${player.identifier}'</p>
-
     <#if player??>
-        <p>player found! woo</p>
+        <p>Profile of player '${player.identifier}'</p>
         <p>Games: ${player.gameCount}</p>
         <p>Creation date: ${player.creationTime}</p>
         <p>Last updated: ${player.lastUpdated}</p>
@@ -16,5 +14,4 @@
     </#if>
     </div>
     </@layout.put>
-
 </@layout.extends>
