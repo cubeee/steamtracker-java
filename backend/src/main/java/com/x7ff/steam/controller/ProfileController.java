@@ -1,11 +1,14 @@
 package com.x7ff.steam.controller;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.inject.Inject;
 
+import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Player;
-import com.x7ff.steam.domain.repository.PlayerRepository;
+import com.x7ff.steam.domain.repository.PlayerRepositoryImpl;
 import com.x7ff.steam.service.SteamPlayerService;
+import com.x7ff.steam.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,19 +18,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public final class ProfileController {
 
-	private final PlayerRepository playerRepository;
+	private final SteamTrackerConfig steamTrackerConfig;
+
+	private final PlayerRepositoryImpl playerRepository;
 
 	private final SteamPlayerService steamPlayerService;
 
 	@Inject
-	public ProfileController(PlayerRepository playerRepository, SteamPlayerService steamPlayerService) {
+	public ProfileController(SteamTrackerConfig steamTrackerConfig, PlayerRepositoryImpl playerRepository, SteamPlayerService steamPlayerService) {
+		this.steamTrackerConfig = steamTrackerConfig;
 		this.playerRepository = playerRepository;
 		this.steamPlayerService = steamPlayerService;
 	}
 
-	@RequestMapping("/player/{identifier}/")
-	private String profile(@PathVariable String identifier, Model model) throws NotFoundException {
-		Player player = playerRepository.findPlayerByIdentifier(identifier);
+	@RequestMapping("/player/{rawIdentifier}/")
+	private String profile(@PathVariable String rawIdentifier, Model model) throws NotFoundException {
+		Optional<String> optionalIdentifier = SteamUtils.resolveId(rawIdentifier);
+		optionalIdentifier.orElseThrow(NotFoundException::new);
+		String identifier = optionalIdentifier.get();
+
+		Player player = playerRepository.findByIdentifier(identifier);
 		boolean updateNeeded = true;
 		if (player == null) {
 			player = getPlayer(null, identifier);
@@ -38,8 +48,8 @@ public final class ProfileController {
 			throw new NotFoundException();
 		}
 
-		if (player.getLastUpdated() != null) {
-			LocalDateTime updateTime = player.getLastUpdated().plusHours(1);
+		if (updateNeeded && player.getLastUpdated() != null) {
+			LocalDateTime updateTime = player.getLastUpdated().plusMinutes(steamTrackerConfig.getManualUpdateInterval());
 			updateNeeded = LocalDateTime.now().isAfter(updateTime);
 		}
 
