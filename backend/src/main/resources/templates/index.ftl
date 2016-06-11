@@ -69,9 +69,7 @@
                     <p class="text-medium text-with-subtitle text-center">Players tracked</p>
                     <h3 class="text-big text-code text-center text-with-subtitle"><strong>${tracked_players}</strong></h3>
                     <p class="text-medium text-with-subtitle text-center">Collective hours tracked</p>
-                    <h3 class="text-big text-code text-center text-with-subtitle"><strong title="${collective_tracked} minutes"><@macros.timePlayed mins=collective_tracked detailed=false /></strong></h3>
-                    <p class="text-medium text-with-subtitle text-center">Collective hours played</p>
-                    <h3 class="text-big text-code text-center"><strong title="${collective_played} minutes"><@macros.timePlayed mins=collective_played detailed=false /></strong></h3>
+                    <h3 class="text-big text-code text-center"><strong title="${collective_tracked} minutes"><@macros.timePlayed mins=collective_tracked detailed=false /></strong></h3>
 
                     <table class="table game-table">
                         <thead>

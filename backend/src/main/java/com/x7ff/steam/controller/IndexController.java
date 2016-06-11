@@ -34,7 +34,6 @@ public final class IndexController {
 	public String index(Model model) {
 		int games = steamTrackerConfig.getFrontPage().getGamesInTables();
 		model.addAttribute("collective_tracked", statsRepository.getCollectiveMinutesTracked());
-		model.addAttribute("collective_played", statsRepository.getCollectiveMinutesPlayed());
 		model.addAttribute("tracked_players", playerRepository.count());
 		model.addAttribute("most_played", statsRepository.getAllTimeMostPlayed(games));
 		model.addAttribute("todays_played", statsRepository.getTodaysMostPlayed(games));

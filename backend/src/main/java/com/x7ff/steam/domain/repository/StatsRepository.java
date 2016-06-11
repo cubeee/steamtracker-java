@@ -41,23 +41,6 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 	}
 
 	/**
-	 * Return the total minutes ever played of each player's games.
-	 *
-	 * @return Collective minutes every player has played their games for.
-	 */
-	@Cacheable(value = "players")
-	public long getCollectiveMinutesPlayed() {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Number> criteria = criteriaBuilder.createQuery(Number.class);
-		Root<GameSnapshot> root = criteria.from(GameSnapshot.class);
-		Expression<Number> sum = criteriaBuilder.sum(root.get("minutesPlayed"));
-		criteria.select(sum.alias("s"));
-
-		Number minutes = entityManager.createQuery(criteria).getSingleResult();
-		return minutes == null ? 0 : minutes.longValue();
-	}
-
-	/**
 	 * Returns the total minutes played by each player since they started to be tracked.
 	 *
 	 * @return Collective tracked minutes played of players' games.
