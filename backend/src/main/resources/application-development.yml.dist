@@ -1,2 +1,8 @@
-steam:
-  api-key: 
+steamtracker:
+  automatic-update-interval: 60
+  manual-update-interval: 15
+  steam:
+    api-key: <key>
+  front-page:
+    games-in-tables: 10
+    show-unplayed-games: false

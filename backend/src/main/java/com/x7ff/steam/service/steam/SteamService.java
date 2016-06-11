@@ -1,6 +1,6 @@
 package com.x7ff.steam.service.steam;
 
-import com.x7ff.steam.config.SteamConfig;
+import com.x7ff.steam.config.SteamTrackerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -8,13 +8,13 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public abstract class SteamService<R> {
 
-	protected final SteamConfig steamConfig;
+	protected final SteamTrackerConfig steamTrackerConfig;
 
 	protected final RestTemplate restTemplate;
 
 	@Autowired
-	public SteamService(SteamConfig steamConfig) {
-		this.steamConfig = steamConfig;
+	public SteamService(SteamTrackerConfig steamTrackerConfig) {
+		this.steamTrackerConfig = steamTrackerConfig;
 		this.restTemplate = new RestTemplate();
 	}
 
@@ -33,7 +33,7 @@ public abstract class SteamService<R> {
 	}
 
 	protected String getURL(String parameters) {
-		String url = "https://api.steampowered.com/" + getInterfaceName() + "/" + getCallName() + "/" + getVersion() + "/?key=" + steamConfig.getApiKey() + parameters;
+		String url = "https://api.steampowered.com/" + getInterfaceName() + "/" + getCallName() + "/" + getVersion() + "/?key=" + steamTrackerConfig.getSteam().getApiKey() + parameters;
 		System.out.println(url);
 		return url;
 	}

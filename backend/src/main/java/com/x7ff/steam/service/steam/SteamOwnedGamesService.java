@@ -1,7 +1,7 @@
 package com.x7ff.steam.service.steam;
 
 import com.google.common.base.Joiner;
-import com.x7ff.steam.config.SteamConfig;
+import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public final class SteamOwnedGamesService extends SteamService<SteamProfileOwnedGames> {
 
 	@Autowired
-	public SteamOwnedGamesService(SteamConfig steamConfig) {
-		super(steamConfig);
+	public SteamOwnedGamesService(SteamTrackerConfig steamTrackerConfig) {
+		super(steamTrackerConfig);
 	}
 
 	@Override

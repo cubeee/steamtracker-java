@@ -1,14 +1,14 @@
 package com.x7ff.steam.service.steam;
 
-import com.x7ff.steam.config.SteamConfig;
+import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.steam.SteamVanityResolve;
 import org.springframework.stereotype.Service;
 
 @Service
 public final class SteamVanityResolveService extends SteamService<SteamVanityResolve> {
 
-	public SteamVanityResolveService(SteamConfig steamConfig) {
-		super(steamConfig);
+	public SteamVanityResolveService(SteamTrackerConfig steamTrackerConfig) {
+		super(steamTrackerConfig);
 	}
 
 	@Override
