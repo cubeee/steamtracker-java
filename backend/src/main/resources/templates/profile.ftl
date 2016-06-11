@@ -1,6 +1,6 @@
 <@layout.extends name="base.ftl">
     <#import "spring.ftl" as spring />
-    <#assign pageTitle = "${(player.identifier)!"No player found"}" />
+    <#assign pageTitle>${(player.identifier)!"No player found"}</#assign>
 
     <@layout.put block="body">
     <div class="container section">

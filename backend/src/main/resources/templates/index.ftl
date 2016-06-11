@@ -27,21 +27,20 @@
         </div>
         <div class="container">
             <div class="row">
-                <!-- todays most played games and players -->
                 <div class="col-md-7 col-xs-12">
                     <h3 class="text-medium">Most played in the last 24 hours</h3>
                     <table class="table game-table main-game-table">
                         <thead>
                             <tr class="text-small align-left">
                                 <th>Game</th>
-                                <th>Hours</th>
+                                <th>Time played</th>
                             </tr>
                         </thead>
                         <tbody>
                         <#list todays_played as game>
                             <tr>
                                 <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
-                                <td title="${game.minutesPlayed} minutes"><@macros.hoursPlayed mins=game.minutesPlayed /></td>
+                                <td title="${game.minutesPlayed} minutes"><@macros.timePlayed mins=game.minutesPlayed detailed=true /></td>
                             </tr>
                         </#list>
                         </tbody>
@@ -52,40 +51,40 @@
                         <thead>
                             <tr class="text-small align-left">
                                 <th>Game</th>
-                                <th>Hours</th>
+                                <th>Time played</th>
                             </tr>
                         </thead>
                         <tbody>
                             <#list weeks_played as game>
                             <tr>
                                 <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
-                                <td title="${game.minutesPlayed} minutes"><@macros.hoursPlayed mins=game.minutesPlayed /></td>
+                                <td title="${game.minutesPlayed} minutes"><@macros.timePlayed mins=game.minutesPlayed detailed=true /></td>
                             </tr>
                             </#list>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- sidebar -->
                 <div class="col-md-4 col-xs-12 col-md-offset-1">
-                    <!-- stats: tracked users, collective hours played in # games -->
-                    <p class="text-medium text-with-subtitle text-center">Collective hours played</p>
-                    <h3 class="text-big text-code text-center"><strong title="${collective_played} minutes"><@macros.hoursPlayed mins=collective_played /></strong></h3>
                     <p class="text-medium text-with-subtitle text-center">Players tracked</p>
-                    <h3 class="text-big text-code text-center"><strong>${tracked_players}</strong></h3>
+                    <h3 class="text-big text-code text-center text-with-subtitle"><strong>${tracked_players}</strong></h3>
+                    <p class="text-medium text-with-subtitle text-center">Collective hours tracked</p>
+                    <h3 class="text-big text-code text-center text-with-subtitle"><strong title="${collective_tracked} minutes"><@macros.timePlayed mins=collective_tracked detailed=false /></strong></h3>
+                    <p class="text-medium text-with-subtitle text-center">Collective hours played</p>
+                    <h3 class="text-big text-code text-center"><strong title="${collective_played} minutes"><@macros.timePlayed mins=collective_played detailed=false /></strong></h3>
 
                     <table class="table game-table">
                         <thead>
                             <tr class="text-small align-left">
                                 <th>Most played games</th>
-                                <th>Hours played</th>
+                                <th>Time played</th>
                             </tr>
                         </thead>
                         <tbody>
                             <#list most_played as game>
                             <tr>
                                 <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
-                                <td title="${game.minutesPlayed} minutes"><@macros.hoursPlayed mins=game.minutesPlayed /></td>
+                                <td title="${game.minutesPlayed} minutes"><@macros.timePlayed mins=game.minutesPlayed /></td>
                             </tr>
                             </#list>
                         </tbody>
