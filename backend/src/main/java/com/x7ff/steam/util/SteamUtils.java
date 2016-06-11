@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 public final class SteamUtils {
 	private static final Pattern STEAM_CUSTOM_NAME_PATH = Pattern.compile("http[s]*://steamcommunity.com/id/(\\w+)[/]*");
 	private static final Pattern STEAM_PROFILE_ID_PATH = Pattern.compile("http[s]*://steamcommunity.com/profiles/(\\w+)[/]*");
+	private static final String EXAMPLE_STEAM_ID = "76561198055235921";
 
 	private static InstancedSteamUtils instancedSteamUtils;
 
@@ -72,7 +73,7 @@ public final class SteamUtils {
 		}
 
 		boolean isNumeric = CharMatcher.JAVA_DIGIT.matchesAllOf(input);
-		if (input.length() == 18 && input.startsWith("7656119") && isNumeric) {
+		if (input.length() == EXAMPLE_STEAM_ID.length() && input.startsWith("7656119") && isNumeric) {
 			// Input is a numeric steam id
 			return Optional.of(input);
 		}
