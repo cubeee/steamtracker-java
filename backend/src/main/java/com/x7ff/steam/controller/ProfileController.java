@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.PlayerRepositoryImpl;
-import com.x7ff.steam.service.SteamPlayerService;
+import com.x7ff.steam.service.steam.SteamPlayerService;
 import com.x7ff.steam.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
 import org.springframework.stereotype.Controller;

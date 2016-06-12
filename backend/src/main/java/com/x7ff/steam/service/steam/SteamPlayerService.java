@@ -1,22 +1,24 @@
-package com.x7ff.steam.service;
+package com.x7ff.steam.service.steam;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import com.x7ff.steam.domain.Game;
-import com.x7ff.steam.domain.repository.GameRepository;
 import com.x7ff.steam.domain.GameSnapshot;
 import com.x7ff.steam.domain.Player;
+import com.x7ff.steam.domain.repository.GameRepository;
 import com.x7ff.steam.domain.repository.PlayerRepositoryImpl;
 import com.x7ff.steam.domain.steam.SteamGame;
+import com.x7ff.steam.domain.steam.SteamProfile;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGames;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGamesResponse;
+import com.x7ff.steam.domain.steam.SteamProfilesResponse;
 import com.x7ff.steam.service.steam.SteamOwnedGamesService;
+import com.x7ff.steam.service.steam.SteamProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,21 +28,24 @@ public class SteamPlayerService {
 	// todo: implement daily query limits
 	private static final int DAILY_API_QUERY_LIMIT = 100_000;
 
+	private final EntityManager entityManager;
 	private final PlayerRepositoryImpl playerRepository;
 	private final GameRepository gameRepository;
-	private final SteamOwnedGamesService steamOwnedGamesService;
 
-	private final EntityManager entityManager;
+	private final SteamOwnedGamesService steamOwnedGamesService;
+	private final SteamProfileService steamProfileService;
 
 	@Autowired
-	public SteamPlayerService(PlayerRepositoryImpl playerRepository,
-	                          GameRepository gameRepository,
-	                          SteamOwnedGamesService steamOwnedGamesService,
-	                          EntityManager entityManager) {
+	public SteamPlayerService(EntityManager entityManager,
+	                          PlayerRepositoryImpl playerRepository,
+                              GameRepository gameRepository,
+                              SteamOwnedGamesService steamOwnedGamesService,
+	                          SteamProfileService steamProfileService) {
+		this.entityManager = entityManager;
 		this.playerRepository = playerRepository;
 		this.gameRepository = gameRepository;
 		this.steamOwnedGamesService = steamOwnedGamesService;
-		this.entityManager = entityManager;
+		this.steamProfileService = steamProfileService;
 	}
 
 	@Transactional
@@ -51,6 +56,8 @@ public class SteamPlayerService {
 			return null;
 		}
 
+		System.out.println("updating!");
+
 		LocalDateTime time = LocalDateTime.now();
 		if (player == null) {
 			player = new Player(identifier);
@@ -60,7 +67,10 @@ public class SteamPlayerService {
 		player.setGameCount(response.getGameCount());
 		player.setLastUpdated(time);
 
-		if (player.getGameCount() > 0) {
+		List<SteamGame> steamGames = response.getGames();
+		if (steamGames.isEmpty()) {
+			return null;
+		} else {
 			List<GameSnapshot> snapshots = Lists.newArrayList();
 
 			player.getGames().clear();
@@ -81,6 +91,8 @@ public class SteamPlayerService {
 
 			player.getSnapshots().addAll(snapshots);
 		}
+
+		player = resolveProfile(player);
 
 		if (save) {
 			gameRepository.persist(player.getGames());
@@ -114,13 +126,23 @@ public class SteamPlayerService {
 	}
 
 	@Transactional
-	public void resolveDisplayName(Player player) {
-		resolveDisplayNames(Lists.newArrayList(player));
+	public Player resolveProfile(Player player) {
+		SteamProfilesResponse response = steamProfileService.fetch(player.getIdentifier()).getResponse();
+		List<SteamProfile> profiles = response.getProfiles();
+		if (profiles.isEmpty()) {
+			return player;
+		}
+		SteamProfile profile = profiles.get(0);
+		player.setName(profile.getName());
+		player.setAvatar(profile.getAvatar());
+		player.setAvatarMedium(profile.getAvatarMedium());
+		player.setAvatarFull(profile.getAvatarFull());
+		return player;
 	}
 
 	@Transactional
-	public void resolveDisplayNames(List<Player> player) {
-
+	public void resolveProfiles(List<Player> players) throws Exception {
+		throw new UnsupportedOperationException("Batch resolving is not yet implemented");
 	}
 
 }

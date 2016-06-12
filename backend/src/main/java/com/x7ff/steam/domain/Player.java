@@ -23,10 +23,17 @@ public final class Player {
 	@Column(nullable = false, name = "identifier", unique = true)
 	private String identifier;
 
-	@Column(name = "snapshots")
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@OrderBy(value = "minutes_played DESC")
-	private List<GameSnapshot> snapshots;
+	@Column(name = "name")
+	private String name;
+
+	@Column(name = "avatar")
+	private String avatar;
+
+	@Column(name = "avatar_medium")
+	private String avatarMedium;
+
+	@Column(name = "avatar_full")
+	private String avatarFull;
 
 	@Column(name = "game_count")
 	private int gameCount = 0;
@@ -36,6 +43,11 @@ public final class Player {
 
 	@Column(nullable = false)
 	private LocalDateTime lastUpdated;
+
+	@Column(name = "snapshots")
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OrderBy(value = "minutes_played DESC")
+	private List<GameSnapshot> snapshots;
 
 	private final transient List<Game> games = Lists.newArrayList();
 
@@ -54,15 +66,36 @@ public final class Player {
 		this.identifier = identifier;
 	}
 
-	public List<GameSnapshot> getSnapshots() {
-		if (snapshots == null) {
-			snapshots = Lists.newArrayList();
-		}
-		return snapshots;
+	public String getName() {
+		return name;
 	}
 
-	public void setSnapshots(List<GameSnapshot> snapshots) {
-		this.snapshots = snapshots;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getAvatarMedium() {
+		return avatarMedium;
+	}
+
+	public void setAvatarMedium(String avatarMedium) {
+		this.avatarMedium = avatarMedium;
+	}
+
+	public String getAvatarFull() {
+		return avatarFull;
+	}
+
+	public void setAvatarFull(String avatarFull) {
+		this.avatarFull = avatarFull;
 	}
 
 	public int getGameCount() {
@@ -89,8 +122,28 @@ public final class Player {
 		this.lastUpdated = lastUpdated;
 	}
 
+	public List<GameSnapshot> getSnapshots() {
+		if (snapshots == null) {
+			snapshots = Lists.newArrayList();
+		}
+		return snapshots;
+	}
+
+	public void setSnapshots(List<GameSnapshot> snapshots) {
+		this.snapshots = snapshots;
+	}
+
 	public List<Game> getGames() {
 		return games;
+	}
+
+	public String getDisplayName() {
+		if (name != null) {
+			return name;
+		} else if (identifier != null) {
+			return identifier;
+		}
+		return "N/A";
 	}
 
 }
