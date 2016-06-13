@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 
 import com.google.common.collect.Lists;
+import com.x7ff.steam.util.CountryCode;
 
 @Entity
 public final class Player {
@@ -35,13 +36,16 @@ public final class Player {
 	@Column(name = "avatar_full")
 	private String avatarFull;
 
+	@Column(name = "country_code")
+	private String countryCode;
+
 	@Column(name = "game_count")
 	private int gameCount = 0;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "creation_time")
 	private LocalDateTime creationTime;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "last_updated")
 	private LocalDateTime lastUpdated;
 
 	@Column(name = "snapshots")
@@ -98,6 +102,14 @@ public final class Player {
 		this.avatarFull = avatarFull;
 	}
 
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
 	public int getGameCount() {
 		return gameCount;
 	}
@@ -144,6 +156,13 @@ public final class Player {
 			return identifier;
 		}
 		return "N/A";
+	}
+
+	public String getCountry() {
+		if (countryCode == null) {
+			return null;
+		}
+		return CountryCode.getCountry(countryCode);
 	}
 
 }

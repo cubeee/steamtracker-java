@@ -137,6 +137,7 @@ public class SteamPlayerService {
 		player.setAvatar(profile.getAvatar());
 		player.setAvatarMedium(profile.getAvatarMedium());
 		player.setAvatarFull(profile.getAvatarFull());
+		player.setCountryCode(profile.getCountryCode());
 		return player;
 	}
 
