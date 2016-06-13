@@ -1,5 +1,5 @@
 <@layout.extends name="base.ftl">
-    <#assign pageTitle = "Page not found" />
+    <#assign pageTitle = "Oops..." />
     <@layout.put block="body">
     <div class="container">
         <div class="section">
