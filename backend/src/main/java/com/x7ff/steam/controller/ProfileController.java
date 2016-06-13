@@ -1,6 +1,6 @@
 package com.x7ff.steam.controller;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import javax.inject.Inject;
 
@@ -49,8 +49,8 @@ public final class ProfileController {
 		}
 
 		if (updateNeeded && player.getLastUpdated() != null) {
-			LocalDateTime updateTime = player.getLastUpdated().plusMinutes(steamTrackerConfig.getManualUpdateInterval());
-			updateNeeded = LocalDateTime.now().isAfter(updateTime);
+			ZonedDateTime updateTime = player.getLastUpdated().plusMinutes(steamTrackerConfig.getManualUpdateInterval());
+			updateNeeded = ZonedDateTime.now().isAfter(updateTime);
 		}
 
 		if (updateNeeded) {

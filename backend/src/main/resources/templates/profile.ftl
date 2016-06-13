@@ -28,7 +28,8 @@
                             </#if>
                         </li>
                         <li>Tracked since <span class="text-gray">${(player.getFormattedCreationTime('MMMM dd yyyy'))!"N/A"}</span></li>
-                        <li>Last updated <span class="text-gray">${(player.getFormattedLastUpdate('MMMM dd yyyy HH:mm:ss'))!"N/A"}</span></li>
+                        <!-- x minutes/hours/days ago? -->
+                        <li>Last updated <span class="text-gray">${(player.getFormattedLastUpdate('MMMM dd yyyy HH:mm:ss O'))!"N/A"}</span></li>
                     </ul>
                 </div>
                 <div class="player-links col-md-2 col-xs-12 align-right">

@@ -1,6 +1,7 @@
 package com.x7ff.steam.domain;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -44,10 +45,10 @@ public final class Player {
 	private int gameCount = 0;
 
 	@Column(nullable = false, name = "creation_time")
-	private LocalDateTime creationTime;
+	private ZonedDateTime creationTime;
 
 	@Column(nullable = false, name = "last_updated")
-	private LocalDateTime lastUpdated;
+	private ZonedDateTime lastUpdated;
 
 	@Column(name = "snapshots")
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -119,7 +120,7 @@ public final class Player {
 		this.gameCount = gameCount;
 	}
 
-	public LocalDateTime getCreationTime() {
+	public ZonedDateTime getCreationTime() {
 		return creationTime;
 	}
 
@@ -128,11 +129,11 @@ public final class Player {
 		return creationTime.format(formatter);
 	}
 
-	public void setCreationTime(LocalDateTime creationTime) {
+	public void setCreationTime(ZonedDateTime creationTime) {
 		this.creationTime = creationTime;
 	}
 
-	public LocalDateTime getLastUpdated() {
+	public ZonedDateTime getLastUpdated() {
 		return lastUpdated;
 	}
 
@@ -141,7 +142,7 @@ public final class Player {
 		return lastUpdated.format(formatter);
 	}
 
-	public void setLastUpdated(LocalDateTime lastUpdated) {
+	public void setLastUpdated(ZonedDateTime lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 

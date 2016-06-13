@@ -3,29 +3,26 @@ package com.x7ff.steam.domain.repository;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
 
 import com.google.common.collect.Lists;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Game;
-import com.x7ff.steam.domain.GameSnapshot;
 import com.x7ff.steam.domain.MostPlayedGame;
 import com.x7ff.steam.domain.Player;
-import com.x7ff.steam.domain.converter.LocalDateTimeAttributeConverter;
+import com.x7ff.steam.domain.converter.ZonedDateTimeAttributeConverter;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class StatsRepository extends SimpleJpaRepository<Player, Long> {
-	public static final LocalDateTime FAR_DATE = LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0);
+	public static final ZonedDateTime FAR_DATE = ZonedDateTime.of(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0), ZoneId.systemDefault());
 	public static final int NO_LIMIT = -1;
 
 	private final SteamTrackerConfig steamTrackerConfig;
@@ -48,7 +45,7 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 	@Cacheable(value = "players")
 	public long getCollectiveMinutesTracked() {
 		long minutesPlayed = 0;
-		for (MostPlayedGame mostPlayedGame : getMostPlayedGames(FAR_DATE, LocalDateTime.now(), NO_LIMIT)) {
+		for (MostPlayedGame mostPlayedGame : getMostPlayedGames(FAR_DATE, ZonedDateTime.now(), NO_LIMIT)) {
 			minutesPlayed += mostPlayedGame.getMinutesPlayed();
 		}
 		return minutesPlayed;
@@ -64,7 +61,7 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 	 */
 	@Cacheable(value = "players")
 	@SuppressWarnings("unchecked")
-	public List<MostPlayedGame> getMostPlayedGames(LocalDateTime from, LocalDateTime to, int limit) {
+	public List<MostPlayedGame> getMostPlayedGames(ZonedDateTime from, ZonedDateTime to, int limit) {
 		List<MostPlayedGame> games = Lists.newArrayList();
 
 		// If you need to do that then change the lag function to coalesce(lag(minutes_played), minutes_played)
@@ -83,8 +80,8 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 				"WHERE snapshot_diff.increase >= 0 AND (snapshot_diff.date >= :dateFrom AND snapshot_diff.date <= :dateTo) " +
 				"GROUP BY player_id, game_id " +
 				"ORDER BY sum DESC");
-		query.setParameter("dateFrom", LocalDateTimeAttributeConverter.convertToTimestamp(from));
-		query.setParameter("dateTo", LocalDateTimeAttributeConverter.convertToTimestamp(to));
+		query.setParameter("dateFrom", ZonedDateTimeAttributeConverter.convertToTimestamp(from));
+		query.setParameter("dateTo", ZonedDateTimeAttributeConverter.convertToTimestamp(to));
 		if (limit != NO_LIMIT) {
 			query = query.setMaxResults(limit);
 		}
@@ -114,7 +111,7 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 	 */
 	@Cacheable(value = "players")
 	public List<MostPlayedGame> getAllTimeMostPlayed(int limit) {
-		return getMostPlayedGames(FAR_DATE, LocalDateTime.now(), limit);
+		return getMostPlayedGames(FAR_DATE, ZonedDateTime.now(), limit);
 	}
 
 	/**
@@ -125,8 +122,8 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 	 */
 	@Cacheable(value = "players")
 	public List<MostPlayedGame> getLastWeekMostPlayed(int limit) {
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime lastWeek = now.minusDays(7);
+		ZonedDateTime now = ZonedDateTime.now();
+		ZonedDateTime lastWeek = now.minusDays(7);
 		return getMostPlayedGames(lastWeek, now, limit);
 	}
 
@@ -138,8 +135,8 @@ public class StatsRepository extends SimpleJpaRepository<Player, Long> {
 	 */
 	@Cacheable(value = "players")
 	public List<MostPlayedGame> getTodaysMostPlayed(int limit) {
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime yesterday = now.minusHours(24);
+		ZonedDateTime now = ZonedDateTime.now();
+		ZonedDateTime yesterday = now.minusHours(24);
 		return getMostPlayedGames(yesterday, now, limit);
 	}
 

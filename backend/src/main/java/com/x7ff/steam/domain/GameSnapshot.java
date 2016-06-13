@@ -2,6 +2,7 @@ package com.x7ff.steam.domain;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ public final class GameSnapshot {
 	private int minutesPlayed;
 
 	@Column(nullable = false)
-	private LocalDateTime date;
+	private ZonedDateTime date;
 
 	protected GameSnapshot() {
 
@@ -62,15 +63,15 @@ public final class GameSnapshot {
 		this.minutesPlayed = minutesPlayed;
 	}
 
-	public LocalDateTime getDate() {
+	public ZonedDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
+	public void setDate(ZonedDateTime date) {
 		this.date = date;
 	}
 
-	public static GameSnapshot from(Player player, Game game, SteamGame steamGame, LocalDateTime time) {
+	public static GameSnapshot from(Player player, Game game, SteamGame steamGame, ZonedDateTime time) {
 		GameSnapshot snapshot = new GameSnapshot();
 		snapshot.setPlayer(player);
 		snapshot.setGame(game);

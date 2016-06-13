@@ -1,6 +1,6 @@
 package com.x7ff.steam.service.steam;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -17,8 +17,6 @@ import com.x7ff.steam.domain.steam.SteamProfile;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGames;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGamesResponse;
 import com.x7ff.steam.domain.steam.SteamProfilesResponse;
-import com.x7ff.steam.service.steam.SteamOwnedGamesService;
-import com.x7ff.steam.service.steam.SteamProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,9 +54,7 @@ public class SteamPlayerService {
 			return null;
 		}
 
-		System.out.println("updating!");
-
-		LocalDateTime time = LocalDateTime.now();
+		ZonedDateTime time = ZonedDateTime.now();
 		if (player == null) {
 			player = new Player(identifier);
 			player.setCreationTime(time);
