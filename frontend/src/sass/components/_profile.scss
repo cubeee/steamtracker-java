@@ -1,0 +1,32 @@
+.avatar {
+  border: 1px solid $shadow-color;
+  width: 186px;
+  height: 186px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.country-block {
+  margin-top: 0 !important;
+}
+
+.country-flag {
+
+}
+
+.player-links li {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@media (max-width: 992px) {
+  .player-stats, .player-links {
+    text-align: center;
+  }
+
+  .player-links ul li {
+    display: inline;
+  }
+
+}

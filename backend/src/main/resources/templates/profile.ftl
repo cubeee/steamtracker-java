@@ -1,18 +1,43 @@
 <@layout.extends name="base.ftl">
     <#import "spring.ftl" as spring />
-    <#assign pageTitle>${(player.getDisplayName())!"No player found"}</#assign>
+    <#import "_macros.ftl" as macros />
+    <#assign pageTitle="${player.getDisplayName()}" />
 
     <@layout.put block="body">
-    <div class="container section">
-    <#if player??>
-        <p>Profile of player '${player.getDisplayName()}'</p>
-        <p>Games: ${player.gameCount}</p>
-        <p>Creation date: ${player.creationTime}</p>
-        <p>Last updated: ${player.lastUpdated}</p>
-        <img src="${player.avatarFull}" alt="Avatar" />
-    <#else>
-        <p>No profile found for player</p>
-    </#if>
+    <div class="section background-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <img class="avatar" src="${player.avatarFull}" alt="Avatar" />
+                </div>
+                <div class="player-stats col-md-8 col-xs-12">
+                    <ul>
+                        <li><h3 class="text-big text-with-subtitle">${player.getDisplayName()}</h3></li>
+                        <#if player.identifier == '76561198045967568' >
+                            <!-- todo: implement titles? -->
+                        <li><span class="text-small text-rating4">Founder / Developer</span></li>
+                        </#if>
+                        <li>
+                            <#if player.countryCode??>
+                                <h4 class="country-block text-small">
+                                    <img class="country-flag" src="https://steamcommunity-a.akamaihd.net/public/images/countryflags/${player.countryCode?lower_case}.gif" />
+                                    <#if player.getCountry()??>
+                                    ${player.getCountry()}
+                                    </#if>
+                                </h4>
+                            </#if>
+                        </li>
+                        <li>Tracked since <span class="text-gray">${(player.getFormattedCreationTime('MMMM dd yyyy'))!"N/A"}</span></li>
+                        <li>Last updated <span class="text-gray">${(player.getFormattedLastUpdate('MMMM dd yyyy HH:mm:ss'))!"N/A"}</span></li>
+                    </ul>
+                </div>
+                <div class="player-links col-md-2 col-xs-12 align-right">
+                    <ul>
+                        <li><a class="button button-small" href="https://steamcommunity.com/profiles/${player.identifier}/">View on Steam</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
     </@layout.put>
 </@layout.extends>

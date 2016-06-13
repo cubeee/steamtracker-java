@@ -1,6 +1,7 @@
 package com.x7ff.steam.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -122,12 +123,22 @@ public final class Player {
 		return creationTime;
 	}
 
+	public String getFormattedCreationTime(String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return creationTime.format(formatter);
+	}
+
 	public void setCreationTime(LocalDateTime creationTime) {
 		this.creationTime = creationTime;
 	}
 
 	public LocalDateTime getLastUpdated() {
 		return lastUpdated;
+	}
+
+	public String getFormattedLastUpdate(String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return lastUpdated.format(formatter);
 	}
 
 	public void setLastUpdated(LocalDateTime lastUpdated) {
