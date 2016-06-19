@@ -16,7 +16,7 @@
 
 <#macro gameImage id url>
     <#compress>
-    <div class="image">
+    <div class="rounded-corners image">
         <div class="rounded-corners game-image" style="background: url(http://media.steampowered.com/steamcommunity/public/images/apps/#{id}/${url}.jpg) no-repeat;"></div>
     </div>
     </#compress>
