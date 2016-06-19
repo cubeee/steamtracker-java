@@ -4,9 +4,9 @@
     <#assign hours=mins/60>
     <#if detailed>
         <#if mins lt 60>
-        ${mins} minute<#if mins gt 0>s</#if>
+        ${mins} minute<#if mins == 0 || mins gt 0>s</#if>
         <#else>
-        ${hours} hour<#if hours gt 0>s</#if>
+        ${hours} hour<#if hours == 0 || hours gt 0>s</#if>
         </#if>
     <#else>
         ${hours}
