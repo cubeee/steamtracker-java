@@ -1,7 +1,5 @@
 package com.x7ff.steam.domain;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

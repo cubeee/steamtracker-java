@@ -70,6 +70,9 @@ public class SteamPlayerService {
 
 			player.getGames().clear();
 			for (SteamGame steamGame : response.getGames()) {
+				if (steamGame.getMinutesPlayed() == 0) {
+					continue;
+				}
 				Game game = Game.from(steamGame);
 				player.getGames().add(game);
 

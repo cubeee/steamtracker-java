@@ -61,7 +61,7 @@ public class StatsRepository {
 		// If you need to do that then change the lag function to coalesce(lag(minutes_played), minutes_played)
 		// Also it doesn't account for a non-existent snapshot then a new snapshot
 		Query query = entityManager.createNativeQuery(
-				"SELECT SUM(increase), game_id " +
+				"SELECT SUM(increase) s, game_id " +
 				"FROM (" +
 				"  SELECT" +
 				"    player_id," +
@@ -72,8 +72,8 @@ public class StatsRepository {
 				") " +
 				"AS snapshot_diff " +
 				"WHERE snapshot_diff.increase >= 0 AND (snapshot_diff.date >= :dateFrom AND snapshot_diff.date <= :dateTo) " +
-				"GROUP BY player_id, game_id " +
-				"ORDER BY sum DESC");
+				"GROUP BY game_id " +
+				"ORDER BY s DESC");
 		query.setParameter("dateFrom", ZonedDateTimeAttributeConverter.convertToTimestamp(from));
 		query.setParameter("dateTo", ZonedDateTimeAttributeConverter.convertToTimestamp(to));
 		if (limit != NO_LIMIT) {
