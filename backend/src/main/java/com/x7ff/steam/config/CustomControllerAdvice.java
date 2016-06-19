@@ -12,9 +12,22 @@ public final class CustomControllerAdvice {
 	@Inject
 	private Environment environment;
 
+	@Inject
+	private SteamTrackerConfig steamTrackerConfig;
+
 	@ModelAttribute(value = "developmentMode")
 	public boolean isDevelopmentMode() {
 		return environment.acceptsProfiles("development");
+	}
+
+	@ModelAttribute(value = "fillTables")
+	public boolean fillTables() {
+		return steamTrackerConfig.getFrontPage().fillTables();
+	}
+
+	@ModelAttribute(value = "gamesInTables")
+	public int gamesInTables() {
+		return steamTrackerConfig.getFrontPage().getGamesInTables();
 	}
 
 }
