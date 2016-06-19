@@ -16,6 +16,21 @@
 
 <#macro gameImage id url>
     <#compress>
-    <img class="rounded-corners game-image" src="http://media.steampowered.com/steamcommunity/public/images/apps/#{id}/${url}.jpg" />
+    <div class="image">
+        <div class="rounded-corners game-image" style="background: url(http://media.steampowered.com/steamcommunity/public/images/apps/#{id}/${url}.jpg) no-repeat;"></div>
+    </div>
     </#compress>
+</#macro>
+
+<#macro fixedSizeTable columns rows curRows>
+    <#nested>
+    <#if curRows lt rows>
+        <#list 1..(rows-curRows) as i>
+        <tr>
+            <#list 1..columns as j>
+            <td class="empty">&nbsp;</td>
+            </#list>
+        </tr>
+        </#list>
+    </#if>
 </#macro>

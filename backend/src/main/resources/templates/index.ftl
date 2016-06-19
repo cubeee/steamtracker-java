@@ -37,12 +37,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <#list todays_played as game>
+                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=todays_played?size>
+                            <#list todays_played as game>
                             <tr>
-                                <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
-                                <td title="${game.minutesPlayed} minutes"><@macros.timePlayed mins=game.minutesPlayed detailed=true /></td>
+                                <td><div><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</div></td>
+                                <td title="${game.minutesPlayed} minutes"><div><@macros.timePlayed mins=game.minutesPlayed detailed=true /></div></td>
                             </tr>
-                        </#list>
+                            </#list>
+                        </@macros.fixedSizeTable>
                         </tbody>
                     </table>
 
@@ -55,12 +57,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=weeks_played?size>
                             <#list weeks_played as game>
                             <tr>
-                                <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
-                                <td title="${game.minutesPlayed} minutes"><@macros.timePlayed mins=game.minutesPlayed detailed=true /></td>
+                                <td><div><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</div></td>
+                                <td title="${game.minutesPlayed} minutes"><div><@macros.timePlayed mins=game.minutesPlayed detailed=true /></div></td>
                             </tr>
                             </#list>
+                        </@macros.fixedSizeTable>
                         </tbody>
                     </table>
                 </div>
@@ -79,12 +83,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=most_played?size>
                             <#list most_played as game>
                             <tr>
-                                <td><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</td>
-                                <td title="${game.minutesPlayed} minutes"><@macros.timePlayed mins=game.minutesPlayed /></td>
+                                <td>
+                                    <div><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</div>
+                                </td>
+                                <td title="${game.minutesPlayed} minutes"><div><@macros.timePlayed mins=game.minutesPlayed /></div></td>
                             </tr>
                             </#list>
+                        </@macros.fixedSizeTable>
                         </tbody>
                     </table>
                 </div>
