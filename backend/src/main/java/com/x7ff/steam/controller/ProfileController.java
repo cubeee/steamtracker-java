@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.PlayerRepository;
+import com.x7ff.steam.domain.repository.StatsRepository;
 import com.x7ff.steam.service.steam.SteamPlayerService;
 import com.x7ff.steam.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
@@ -21,13 +22,17 @@ public final class ProfileController {
 	private final SteamTrackerConfig steamTrackerConfig;
 	private final PlayerRepository playerRepository;
 	private final SteamPlayerService steamPlayerService;
+	private final StatsRepository statsRepository;
 
 	@Inject
-	public ProfileController(SteamTrackerConfig steamTrackerConfig, PlayerRepository playerRepository,
-	                         SteamPlayerService steamPlayerService) {
+	public ProfileController(SteamTrackerConfig steamTrackerConfig,
+	                         PlayerRepository playerRepository,
+	                         SteamPlayerService steamPlayerService,
+	                         StatsRepository statsRepository) {
 		this.steamTrackerConfig = steamTrackerConfig;
 		this.playerRepository = playerRepository;
 		this.steamPlayerService = steamPlayerService;
+		this.statsRepository = statsRepository;
 	}
 
 	@RequestMapping("/player/{rawIdentifier}/")
@@ -58,6 +63,12 @@ public final class ProfileController {
 				throw new NotFoundException();
 			}
 		}
+
+		Optional<Player> optionalPlayer = Optional.of(player);
+		int games = steamTrackerConfig.getFrontPage().getGamesInTables();
+		model.addAttribute("most_played", statsRepository.getAllTimeMostPlayed(optionalPlayer, games));
+		model.addAttribute("todays_played", statsRepository.getTodaysMostPlayed(optionalPlayer, games));
+		model.addAttribute("weeks_played", statsRepository.getLastWeekMostPlayed(optionalPlayer, games));
 		model.addAttribute("player", player);
 		return "profile";
 	}

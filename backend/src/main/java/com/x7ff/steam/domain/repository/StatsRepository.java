@@ -6,6 +6,7 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -13,6 +14,7 @@ import javax.persistence.Query;
 import com.google.common.collect.Lists;
 import com.x7ff.steam.domain.Game;
 import com.x7ff.steam.domain.MostPlayedGame;
+import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.converter.ZonedDateTimeAttributeConverter;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -38,8 +40,18 @@ public class StatsRepository {
 	 */
 	@Cacheable(value = "players")
 	public long getCollectiveMinutesTracked() {
+		return getCollectiveMinutesTracked(Optional.empty());
+	}
+
+	/**
+	 * Returns the total minutes played by each player since they started to be tracked.
+	 *
+	 * @return Collective tracked minutes played of players' games.
+	 */
+	@Cacheable(value = "players")
+	public long getCollectiveMinutesTracked(Optional<Player> player) {
 		long minutesPlayed = 0;
-		for (MostPlayedGame mostPlayedGame : getMostPlayedGames(FAR_DATE, ZonedDateTime.now(), NO_LIMIT)) {
+		for (MostPlayedGame mostPlayedGame : getMostPlayedGames(player, FAR_DATE, ZonedDateTime.now(), NO_LIMIT)) {
 			minutesPlayed += mostPlayedGame.getMinutesPlayed();
 		}
 		return minutesPlayed;
@@ -55,8 +67,14 @@ public class StatsRepository {
 	 */
 	@Cacheable(value = "players")
 	@SuppressWarnings("unchecked")
-	public List<MostPlayedGame> getMostPlayedGames(ZonedDateTime from, ZonedDateTime to, int limit) {
+	public List<MostPlayedGame> getMostPlayedGames(Optional<Player> player, ZonedDateTime from, ZonedDateTime to, int limit) {
 		List<MostPlayedGame> games = Lists.newArrayList();
+		Player p = player.orElse(null);
+		if (player.isPresent() && !p.hasId()) {
+			return games;
+		}
+
+		// todo: split up into nicer pieces
 
 		// If you need to do that then change the lag function to coalesce(lag(minutes_played), minutes_played)
 		// Also it doesn't account for a non-existent snapshot then a new snapshot
@@ -68,14 +86,18 @@ public class StatsRepository {
 				"    game_id," +
 				"    minutes_played - lag(minutes_played) OVER (PARTITION BY game_id, player_id ORDER BY date asc) AS increase," +
 				"    date" +
-				"   FROM game_snapshot" +
+				"   FROM game_snapshot " +
+				(player.isPresent() ? "WHERE player_id = :player_id" : "") +
 				") " +
 				"AS snapshot_diff " +
 				"WHERE snapshot_diff.increase >= 0 AND (snapshot_diff.date >= :dateFrom AND snapshot_diff.date <= :dateTo) " +
-				"GROUP BY game_id " +
+				"GROUP BY " + (player.isPresent() ? "game_id, player_id" : "game_id") + " " +
 				"ORDER BY s DESC");
 		query.setParameter("dateFrom", ZonedDateTimeAttributeConverter.convertToTimestamp(from));
 		query.setParameter("dateTo", ZonedDateTimeAttributeConverter.convertToTimestamp(to));
+		if (player.isPresent()) {
+			query.setParameter("player_id", p.getId());
+		}
 		if (limit != NO_LIMIT) {
 			query = query.setMaxResults(limit);
 		}
@@ -100,7 +122,19 @@ public class StatsRepository {
 	 */
 	@Cacheable(value = "players")
 	public List<MostPlayedGame> getAllTimeMostPlayed(int limit) {
-		return getMostPlayedGames(FAR_DATE, ZonedDateTime.now(), limit);
+		return getAllTimeMostPlayed(Optional.empty(), limit);
+	}
+
+	/**
+	 * Gets the most played games since the beginning of tracking for an optional player.
+	 *
+	 * @param player Optional player to get the games for
+	 * @param limit Maximum number of games to return
+	 * @return Most played games since the beginning of tracking
+	 */
+	@Cacheable(value = "players")
+	public List<MostPlayedGame> getAllTimeMostPlayed(Optional<Player> player, int limit) {
+		return getMostPlayedGames(player, FAR_DATE, ZonedDateTime.now(), limit);
 	}
 
 	/**
@@ -111,10 +145,23 @@ public class StatsRepository {
 	 */
 	@Cacheable(value = "players")
 	public List<MostPlayedGame> getLastWeekMostPlayed(int limit) {
+		return getLastWeekMostPlayed(Optional.empty(), limit);
+	}
+
+	/**
+	 * Gets the most played games in the last 7 days for an optional player.
+	 *
+	 * @param player Optional player to get the games for
+	 * @param limit Maximum number of games to return
+	 * @return Most played games in the last 7 days
+	 */
+	@Cacheable(value = "players")
+	public List<MostPlayedGame> getLastWeekMostPlayed(Optional<Player> player, int limit) {
 		ZonedDateTime now = ZonedDateTime.now();
 		ZonedDateTime lastWeek = now.minusDays(7);
-		return getMostPlayedGames(lastWeek, now, limit);
+		return getMostPlayedGames(player, lastWeek, now, limit);
 	}
+
 
 	/**
 	 * Gets the most played games in the last 24 hours.
@@ -124,9 +171,21 @@ public class StatsRepository {
 	 */
 	@Cacheable(value = "players")
 	public List<MostPlayedGame> getTodaysMostPlayed(int limit) {
+		return getTodaysMostPlayed(Optional.empty(), limit);
+	}
+
+	/**
+	 * Gets the most played games in the last 24 hours for an optional player.
+	 *
+	 * @param player Optional player to get the games for
+	 * @param limit Maximum number of games to return
+	 * @return Most played games in the last 24 hours
+	 */
+	@Cacheable(value = "players")
+	public List<MostPlayedGame> getTodaysMostPlayed(Optional<Player> player, int limit) {
 		ZonedDateTime now = ZonedDateTime.now();
 		ZonedDateTime yesterday = now.minusHours(24);
-		return getMostPlayedGames(yesterday, now, limit);
+		return getMostPlayedGames(player, yesterday, now, limit);
 	}
 
 }

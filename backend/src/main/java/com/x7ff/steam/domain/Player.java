@@ -63,6 +63,14 @@ public final class Player {
 		this.identifier = identifier;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -158,6 +166,10 @@ public final class Player {
 
 	public List<Game> getGames() {
 		return games;
+	}
+
+	public boolean hasId() {
+		return id != null;
 	}
 
 	public String getDisplayName() {

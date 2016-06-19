@@ -40,5 +40,80 @@
             </div>
         </div>
     </div>
+    <div class="container section">
+        <div class="row">
+            <div class="col-md-7 col-xs-12">
+                <h3 class="text-medium">Most played in the last 24 hours</h3>
+                <table class="table game-table">
+                    <thead>
+                    <tr class="text-small align-left">
+                        <th>Game</th>
+                        <th>Time played</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=todays_played?size>
+                            <#list todays_played as game>
+                            <tr>
+                                <td>
+                                    <div><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</div>
+                                </td>
+                                <td title="${game.minutesPlayed} minutes"><div><@macros.timePlayed mins=game.minutesPlayed /></div></td>
+                            </tr>
+                            </#list>
+                        </@macros.fixedSizeTable>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-4 col-xs-12 col-md-offset-1">
+                <h3 class="text-medium">Most played games</h3>
+                <table class="table game-table">
+                    <thead>
+                    <tr class="text-small align-left">
+                        <th>Game</th>
+                        <th>Time played</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=most_played?size>
+                            <#list most_played as game>
+                            <tr>
+                                <td>
+                                    <div><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</div>
+                                </td>
+                                <td title="${game.minutesPlayed} minutes"><div><@macros.timePlayed mins=game.minutesPlayed /></div></td>
+                            </tr>
+                            </#list>
+                        </@macros.fixedSizeTable>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-7 col-xs-12">
+                <h3 class="text-medium">Most played in the last 7 days</h3>
+                <table class="table game-table">
+                    <thead>
+                    <tr class="text-small align-left">
+                        <th>Most played games</th>
+                        <th>Time played</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=weeks_played?size>
+                            <#list weeks_played as game>
+                            <tr>
+                                <td>
+                                    <div><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</div>
+                                </td>
+                                <td title="${game.minutesPlayed} minutes"><div><@macros.timePlayed mins=game.minutesPlayed /></div></td>
+                            </tr>
+                            </#list>
+                        </@macros.fixedSizeTable>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     </@layout.put>
 </@layout.extends>

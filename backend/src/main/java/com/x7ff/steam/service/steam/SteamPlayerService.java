@@ -94,7 +94,7 @@ public class SteamPlayerService {
 
 		if (save) {
 			gameRepository.persist(player.getGames());
-			entityManager.merge(player);
+			player = entityManager.merge(player);
 			entityManager.flush();
 		}
 		return player;
