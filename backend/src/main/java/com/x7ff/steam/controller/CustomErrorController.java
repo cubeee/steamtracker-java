@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public final class CustomErrorController implements ErrorController {
 	private static final String PATH = "/error";
 
-	@RequestMapping(path = PATH, method = RequestMethod.GET)
+	@RequestMapping(path = PATH, method = { RequestMethod.GET, RequestMethod.POST })
 	public String show(HttpServletResponse response, Model model) {
 		int status = response.getStatus();
 		model.addAttribute("status", status);
