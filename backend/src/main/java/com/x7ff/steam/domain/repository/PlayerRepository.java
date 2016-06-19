@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface PlayerRepository extends JpaRepository<Player, Long> {
 
 	@Cacheable(value = "players")
-	Player findPlayerByIdentifier(String identifier);
+	Player findByIdentifier(String identifier);
 
 	@CacheEvict(value = "players", allEntries = true)
 	<S extends Player> List<S> save(Iterable<S> entities);

@@ -3,6 +3,7 @@ package com.x7ff.steam.service.steam;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import com.google.common.collect.Lists;
@@ -11,13 +12,12 @@ import com.x7ff.steam.domain.Game;
 import com.x7ff.steam.domain.GameSnapshot;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.GameRepository;
-import com.x7ff.steam.domain.repository.PlayerRepositoryImpl;
+import com.x7ff.steam.domain.repository.PlayerRepository;
 import com.x7ff.steam.domain.steam.SteamGame;
 import com.x7ff.steam.domain.steam.SteamProfile;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGames;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGamesResponse;
 import com.x7ff.steam.domain.steam.SteamProfilesResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,17 +27,16 @@ public class SteamPlayerService {
 	private static final int DAILY_API_QUERY_LIMIT = 100_000;
 
 	private final EntityManager entityManager;
-	private final PlayerRepositoryImpl playerRepository;
+	private final PlayerRepository playerRepository;
 	private final GameRepository gameRepository;
-
 	private final SteamOwnedGamesService steamOwnedGamesService;
 	private final SteamProfileService steamProfileService;
 
-	@Autowired
+	@Inject
 	public SteamPlayerService(EntityManager entityManager,
-	                          PlayerRepositoryImpl playerRepository,
-                              GameRepository gameRepository,
-                              SteamOwnedGamesService steamOwnedGamesService,
+	                          PlayerRepository playerRepository,
+	                          GameRepository gameRepository,
+	                          SteamOwnedGamesService steamOwnedGamesService,
 	                          SteamProfileService steamProfileService) {
 		this.entityManager = entityManager;
 		this.playerRepository = playerRepository;

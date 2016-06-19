@@ -1,14 +1,14 @@
 package com.x7ff.steam.controller;
 
 import java.util.Optional;
+import javax.inject.Inject;
 
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.PlayerSearch;
-import com.x7ff.steam.domain.repository.PlayerRepositoryImpl;
+import com.x7ff.steam.domain.repository.PlayerRepository;
 import com.x7ff.steam.domain.repository.StatsRepository;
 import com.x7ff.steam.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public final class IndexController {
+
 	private final SteamTrackerConfig steamTrackerConfig;
-	private final PlayerRepositoryImpl playerRepository;
+	private final PlayerRepository playerRepository;
 	private final StatsRepository statsRepository;
 
-	@Autowired
-	public IndexController(SteamTrackerConfig steamTrackerConfig,
-	                       StatsRepository statsRepository,
-	                       PlayerRepositoryImpl playerRepository) {
+	@Inject
+	public IndexController(SteamTrackerConfig steamTrackerConfig, PlayerRepository playerRepository,
+	                       StatsRepository statsRepository) {
 		this.steamTrackerConfig = steamTrackerConfig;
-		this.statsRepository = statsRepository;
 		this.playerRepository = playerRepository;
+		this.statsRepository = statsRepository;
 	}
 
 	@RequestMapping("/")

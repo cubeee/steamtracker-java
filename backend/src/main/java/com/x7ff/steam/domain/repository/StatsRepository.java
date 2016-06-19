@@ -11,28 +11,22 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.google.common.collect.Lists;
-import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Game;
 import com.x7ff.steam.domain.MostPlayedGame;
-import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.converter.ZonedDateTimeAttributeConverter;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class StatsRepository extends SimpleJpaRepository<Player, Long> {
+public class StatsRepository {
 	public static final ZonedDateTime FAR_DATE = ZonedDateTime.of(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0), ZoneId.systemDefault());
 	public static final int NO_LIMIT = -1;
 
-	private final SteamTrackerConfig steamTrackerConfig;
 	private final EntityManager entityManager;
 	private final GameRepository gameRepository;
 
 	@Inject
-	public StatsRepository(SteamTrackerConfig steamTrackerConfig, EntityManager entityManager, GameRepository gameRepository) {
-		super(Player.class, entityManager);
-		this.steamTrackerConfig = steamTrackerConfig;
+	public StatsRepository(EntityManager entityManager, GameRepository gameRepository) {
 		this.entityManager = entityManager;
 		this.gameRepository = gameRepository;
 	}

@@ -1,15 +1,16 @@
 package com.x7ff.steam.service.steam;
 
+import javax.inject.Inject;
+
 import com.google.common.base.Joiner;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.steam.SteamProfiles;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public final class SteamProfileService extends SteamService<SteamProfiles> {
 
-	@Autowired
+	@Inject
 	public SteamProfileService(SteamTrackerConfig steamTrackerConfig) {
 		super(steamTrackerConfig);
 	}

@@ -1,6 +1,7 @@
 package com.x7ff.steam.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().cacheControl().disable();
 	}
 
-	@Autowired
+	@Inject
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("USER");
 	}

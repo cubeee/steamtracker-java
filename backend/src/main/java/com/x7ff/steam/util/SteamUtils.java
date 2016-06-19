@@ -4,11 +4,11 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import com.google.common.base.CharMatcher;
 import com.x7ff.steam.domain.steam.SteamVanityResolve;
 import com.x7ff.steam.service.steam.SteamVanityResolveService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +19,7 @@ public final class SteamUtils {
 
 	private static InstancedSteamUtils instancedSteamUtils;
 
-	@Autowired
+	@Inject
 	private InstancedSteamUtils steamUtils;
 
 	@Component
@@ -27,7 +27,7 @@ public final class SteamUtils {
 
 		private final SteamVanityResolveService steamVanityResolveService;
 
-		@Autowired
+		@Inject
 		public InstancedSteamUtils(SteamVanityResolveService steamVanityResolveService) {
 			this.steamVanityResolveService = steamVanityResolveService;
 		}

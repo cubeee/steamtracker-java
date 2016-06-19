@@ -1,7 +1,8 @@
 package com.x7ff.steam.service.steam;
 
+import javax.inject.Inject;
+
 import com.x7ff.steam.config.SteamTrackerConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,7 +13,7 @@ public abstract class SteamService<R> {
 
 	protected final RestTemplate restTemplate;
 
-	@Autowired
+	@Inject
 	public SteamService(SteamTrackerConfig steamTrackerConfig) {
 		this.steamTrackerConfig = steamTrackerConfig;
 		this.restTemplate = new RestTemplate();

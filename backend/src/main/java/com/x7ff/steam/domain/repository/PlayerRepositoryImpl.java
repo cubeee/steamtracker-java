@@ -2,15 +2,13 @@ package com.x7ff.steam.domain.repository;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
-import javax.persistence.Query;
 
 import com.x7ff.steam.domain.Player;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PlayerRepositoryImpl extends SimpleJpaRepository<Player, Long> {
+public class PlayerRepositoryImpl extends SimpleJpaRepository<Player, Long> implements PlayerRepository {
 
 	private final EntityManager entityManager;
 
@@ -20,6 +18,7 @@ public class PlayerRepositoryImpl extends SimpleJpaRepository<Player, Long> {
 		this.entityManager = entityManager;
 	}
 
+	@Override
 	public Player findByIdentifier(String identifier) {
 		try {
 			return (Player) entityManager
@@ -30,6 +29,5 @@ public class PlayerRepositoryImpl extends SimpleJpaRepository<Player, Long> {
 			return null;
 		}
 	}
-
 
 }
