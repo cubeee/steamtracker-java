@@ -101,9 +101,9 @@ public final class SteamTrackerConfig {
 		private int gamesInTables = 10;
 
 		/**
-		 * Show games in tables that have been played for zero minutes
+		 * Create empty table cells where the amount of games is less than <i>gamesInTables</i>
 		 */
-		private boolean showUnplayedGames;
+		private boolean fillTables;
 
 		public int getGamesInTables() {
 			return gamesInTables;
@@ -113,12 +113,12 @@ public final class SteamTrackerConfig {
 			this.gamesInTables = gamesInTables;
 		}
 
-		public boolean showUnplayedGames() {
-			return showUnplayedGames;
+		public boolean fillTables() {
+			return fillTables;
 		}
 
-		public void setShowUnplayedGames(boolean showUnplayedGames) {
-			this.showUnplayedGames = showUnplayedGames;
+		public void setFillTables(boolean fillTables) {
+			this.fillTables = fillTables;
 		}
 
 	}

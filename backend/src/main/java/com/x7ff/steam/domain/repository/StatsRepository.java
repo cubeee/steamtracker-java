@@ -80,14 +80,9 @@ public class StatsRepository {
 			query = query.setMaxResults(limit);
 		}
 
-		boolean showUnplayed = steamTrackerConfig.getFrontPage().showUnplayedGames();
-
 		List<Object[]> result = query.getResultList();
 		for (Object[] val : result) {
 			BigInteger played = (BigInteger) val[0];
-			if (played.longValue() == 0 && !showUnplayed) {
-				continue;
-			}
 			Integer appId = (Integer) val[1];
 			Game game = gameRepository.findOne(appId); // todo: fetch from cached games
 
