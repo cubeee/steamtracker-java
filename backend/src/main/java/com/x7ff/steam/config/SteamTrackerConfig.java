@@ -98,7 +98,7 @@ public final class SteamTrackerConfig {
 		 * Number of games to show in tables
 		 */
 		@Size(min=1)
-		private int gamesInTables;
+		private int gamesInTables = 10;
 
 		/**
 		 * Show games in tables that have been played for zero minutes
