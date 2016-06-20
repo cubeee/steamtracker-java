@@ -162,7 +162,6 @@ public class StatsRepository {
 		return getMostPlayedGames(player, lastWeek, now, limit);
 	}
 
-
 	/**
 	 * Gets the most played games in the last 24 hours.
 	 *
