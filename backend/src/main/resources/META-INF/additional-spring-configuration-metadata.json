@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "steamtracker.steam.api-key",
+      "type": "java.lang.String",
+      "description": "Key for fetching information from Steam API."
+    },
+    {
+      "name": "steamtracker.updater.automatic-update-interval",
+      "type": "java.lang.Integer",
+      "description": "Minutes between automatic player updates."
+    },
+    {
+      "name": "steamtracker.updater.manual-update-interval",
+      "type": "java.lang.Integer",
+      "description": "Minutes between manual player updates."
+    },
+    {
+      "name": "steamtracker.updater.snapshots-page-size",
+      "type": "java.lang.Integer",
+      "description": "The number of players to fetch from database at once when updating snapshots."
+    },
+    {
+      "name": "steamtracker.updater.snapshots-chunk-size",
+      "type": "java.lang.Integer",
+      "description": "The number of players to process before saving when updating snapshots."
+    },
+    {
+      "name": "steamtracker.front-page.games-in-tables",
+      "type": "java.lang.Integer",
+      "description": "Number of games to show in tables."
+    },
+    {
+      "name": "steamtracker.front-page.fill-tables",
+      "type": "java.lang.Boolean",
+      "description": "Create empty table cells where the amount of games is less than gamesInTables."
+    }
+  ]
+}
