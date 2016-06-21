@@ -13,7 +13,8 @@ ext.deps = [
     guava                : dependencies.create("com.google.guava:guava:19.0"),
     postgresql           : dependencies.create("org.postgresql:postgresql:9.4.1208"),
     javaxInject          : dependencies.create("javax.inject:javax.inject:1"),
-    jsoup                : dependencies.create("org.jsoup:jsoup:1.9.2")
+    jsoup                : dependencies.create("org.jsoup:jsoup:1.9.2"),
+    lombok               : dependencies.create("org.projectlombok:lombok:1.16.8")
 ]
 
 apply plugin: 'base'

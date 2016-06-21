@@ -53,7 +53,7 @@ public final class ProfileController {
 		}
 
 		if (updateNeeded && player.getLastUpdated() != null) {
-			ZonedDateTime updateTime = player.getLastUpdated().plusMinutes(steamTrackerConfig.getManualUpdateInterval());
+			ZonedDateTime updateTime = player.getLastUpdated().plusMinutes(steamTrackerConfig.getUpdaterConfig().getManualUpdateInterval());
 			updateNeeded = ZonedDateTime.now().isAfter(updateTime);
 		}
 

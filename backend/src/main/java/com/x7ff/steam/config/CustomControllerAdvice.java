@@ -22,7 +22,7 @@ public final class CustomControllerAdvice {
 
 	@ModelAttribute(value = "fillTables")
 	public boolean fillTables() {
-		return steamTrackerConfig.getFrontPage().fillTables();
+		return steamTrackerConfig.getFrontPage().isFillTables();
 	}
 
 	@ModelAttribute(value = "gamesInTables")
