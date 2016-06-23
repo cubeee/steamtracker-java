@@ -1,5 +1,6 @@
 package com.x7ff.steam.config;
 
+import java.util.concurrent.TimeUnit;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,14 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "steamtracker")
 @EnableConfigurationProperties(SteamTrackerConfig.class)
 @Getter
 @Setter
-public final class SteamTrackerConfig {
+public class SteamTrackerConfig {
 
 	/**
 	 * Steam related configuration
@@ -33,7 +34,7 @@ public final class SteamTrackerConfig {
 	 * Updater related configuration
 	 */
 	@NotNull
-	private UpdaterConfig updaterConfig = new UpdaterConfig();
+	private UpdaterConfig updater = new UpdaterConfig();
 
 	/**
 	 * Steam related configuration
@@ -79,16 +80,24 @@ public final class SteamTrackerConfig {
 	public class UpdaterConfig {
 
 		/**
-		 * Minutes between automatic player updates.
+		 * Delay between automatic player updates in minutes. Delay is started after the previous update has finished.
+		 * Default interval is set at 12 hours.
 		 */
 		@Min(1)
-		private int automaticUpdateInterval;
+		private long automaticUpdateInterval = TimeUnit.HOURS.toMinutes(6);
 
 		/**
-		 * Minutes between manual player updates.
+		 * Minimum minutes between manual player updates. Default interval is set at 60 minutes.
 		 */
 		@Min(1)
-		private int manualUpdateInterval;
+		private long manualUpdateInterval = TimeUnit.HOURS.toMinutes(1);
+
+		/**
+		 * "Minimum age of player snapshots in minutes before they need to be updated.
+		 * Default interval is set at 6 hours."
+		 */
+		@Min(1)
+		private long snapshotUpdateInterval = TimeUnit.HOURS.toMinutes(6);
 
 		/**
 		 * The amount of players to fetch from database at once for snapshot updating.

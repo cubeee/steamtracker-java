@@ -63,6 +63,31 @@ public final class Player {
 		this.identifier = identifier;
 	}
 
+	public boolean hasId() {
+		return id != null;
+	}
+
+	public String getDisplayName() {
+		if (name != null) {
+			return name;
+		} else if (identifier != null) {
+			return identifier;
+		}
+		return "N/A";
+	}
+
+	public String getCountry() {
+		if (countryCode == null) {
+			return null;
+		}
+		return CountryCode.getCountry(countryCode);
+	}
+
+	public boolean updateNeeded(long updateInterval) {
+		ZonedDateTime updateTime = lastUpdated.plusMinutes(updateInterval);
+		return ZonedDateTime.now().isAfter(updateTime);
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -166,26 +191,6 @@ public final class Player {
 
 	public List<Game> getGames() {
 		return games;
-	}
-
-	public boolean hasId() {
-		return id != null;
-	}
-
-	public String getDisplayName() {
-		if (name != null) {
-			return name;
-		} else if (identifier != null) {
-			return identifier;
-		}
-		return "N/A";
-	}
-
-	public String getCountry() {
-		if (countryCode == null) {
-			return null;
-		}
-		return CountryCode.getCountry(countryCode);
 	}
 
 }

@@ -8,12 +8,17 @@
     {
       "name": "steamtracker.updater.automatic-update-interval",
       "type": "java.lang.Integer",
-      "description": "Minutes between automatic player updates."
+      "description": "Delay between automatic player updates in minutes. Delay is started after the previous update has finished. Default interval is set at 12 hours."
     },
     {
       "name": "steamtracker.updater.manual-update-interval",
       "type": "java.lang.Integer",
-      "description": "Minutes between manual player updates."
+      "description": "Minimum minutes between manual player updates. Default interval is set at 60 minutes."
+    },
+    {
+      "name": "steamtracker.updater.snapshot-update-interval",
+      "type": "java.lang.String",
+      "description": "Minimum age of player snapshots in minutes before they need to be updated. Default interval is set at 6 hours."
     },
     {
       "name": "steamtracker.updater.snapshots-page-size",
