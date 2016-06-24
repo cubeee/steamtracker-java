@@ -53,10 +53,13 @@ public class SteamPlayerService {
 			return null;
 		}
 
+		boolean newPlayer = false;
+
 		ZonedDateTime time = ZonedDateTime.now();
 		if (player == null) {
 			player = new Player(identifier);
 			player.setCreationTime(time);
+			newPlayer = true;
 		}
 		player.setIdentifier(identifier);
 		player.setGameCount(response.getGameCount());
@@ -90,7 +93,9 @@ public class SteamPlayerService {
 			player.getSnapshots().addAll(snapshots);
 		}
 
-		player = resolveProfile(player);
+		if (newPlayer) {
+			player = resolveProfile(player);
+		}
 
 		if (save) {
 			gameRepository.persist(player.getGames());
