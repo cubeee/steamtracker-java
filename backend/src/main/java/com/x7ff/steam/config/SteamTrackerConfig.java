@@ -80,6 +80,13 @@ public class SteamTrackerConfig {
 	public class UpdaterConfig {
 
 		/**
+		 * Whether to enable manual player profile updating upon visitation. Having this enabled in production
+		 * is not recommended as it can quickly exhaust api key limits especially with large player base and a
+		 * frequent <i>manualUpdateInterval</i>. Turned off by default.
+		 */
+		private boolean enableManualUpdating;
+
+		/**
 		 * Delay between automatic player updates in minutes. Delay is started after the previous update has finished.
 		 * Default interval is set at 12 hours.
 		 */

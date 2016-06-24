@@ -23,6 +23,8 @@ public final class ProfileController {
 	private final SteamPlayerService steamPlayerService;
 	private final StatsRepository statsRepository;
 
+	private final boolean manualUpdatingEnabled;
+
 	@Inject
 	public ProfileController(SteamTrackerConfig steamTrackerConfig,
 	                         PlayerRepository playerRepository,
@@ -32,6 +34,7 @@ public final class ProfileController {
 		this.playerRepository = playerRepository;
 		this.steamPlayerService = steamPlayerService;
 		this.statsRepository = statsRepository;
+		this.manualUpdatingEnabled = steamTrackerConfig.getUpdater().isEnableManualUpdating();
 	}
 
 	@RequestMapping("/player/{rawIdentifier}/")
@@ -51,14 +54,15 @@ public final class ProfileController {
 			throw new NotFoundException();
 		}
 
-		if (updateNeeded) {
-			updateNeeded = player.updateNeeded(steamTrackerConfig.getUpdater().getManualUpdateInterval());
-		}
-
-		if (updateNeeded) {
-			player = getPlayer(player, identifier);
-			if (player == null) {
-				throw new NotFoundException();
+		if (manualUpdatingEnabled) {
+			if (updateNeeded) {
+				updateNeeded = player.updateNeeded(steamTrackerConfig.getUpdater().getManualUpdateInterval());
+			}
+			if (updateNeeded) {
+				player = getPlayer(player, identifier);
+				if (player == null) {
+					throw new NotFoundException();
+				}
 			}
 		}
 
