@@ -1,8 +1,7 @@
-package com.x7ff.steam.domain.processor;
+package com.x7ff.steam.batch.snapshots;
 
 import javax.inject.Inject;
 
-import com.x7ff.steam.batch.snapshots.PlayerUpdate;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.service.steam.SteamPlayerService;

@@ -3,6 +3,7 @@ package com.x7ff.steam.service.steam;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -25,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SteamPlayerService {
 	// todo: implement daily query limits
 	private static final int DAILY_API_QUERY_LIMIT = 100_000;
+
+	public static final int MAX_PROFILE_BATCH_SIZE = 100;
 
 	private final EntityManager entityManager;
 	private final PlayerRepository playerRepository;
@@ -128,7 +131,6 @@ public class SteamPlayerService {
 		return players;
 	}
 
-	@Transactional
 	public Player resolveProfile(Player player) {
 		SteamProfilesResponse response = steamProfileService.fetch(player.getIdentifier()).getResponse();
 		List<SteamProfile> profiles = response.getProfiles();
@@ -136,17 +138,33 @@ public class SteamPlayerService {
 			return player;
 		}
 		SteamProfile profile = profiles.get(0);
+		updatePlayerInformation(player, profile);
+		return player;
+	}
+
+	public void resolveProfiles(List<Player> players) throws Exception {
+		if (players.size() > MAX_PROFILE_BATCH_SIZE) {
+			throw new IllegalArgumentException("Maximum of " + MAX_PROFILE_BATCH_SIZE + " players' profiles can be resolved at once");
+		}
+		List<String> identifiers = players.stream().map(Player::getIdentifier).collect(Collectors.toList());
+		SteamProfilesResponse response = steamProfileService.fetch(identifiers).getResponse();
+		List<SteamProfile> profiles = response.getProfiles();
+		if (profiles.isEmpty()) {
+			return;
+		}
+		players.forEach(player -> {
+			profiles.stream().filter(profile -> profile.getIdentifier().equals(player.getIdentifier())).forEach(profile -> {
+				updatePlayerInformation(player, profile);
+			});
+		});
+	}
+
+	private void updatePlayerInformation(Player player, SteamProfile profile) {
 		player.setName(profile.getName());
 		player.setAvatar(profile.getAvatar());
 		player.setAvatarMedium(profile.getAvatarMedium());
 		player.setAvatarFull(profile.getAvatarFull());
 		player.setCountryCode(profile.getCountryCode());
-		return player;
-	}
-
-	@Transactional
-	public void resolveProfiles(List<Player> players) throws Exception {
-		throw new UnsupportedOperationException("Batch resolving is not yet implemented");
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.x7ff.steam.service.steam;
 
+import java.util.List;
 import javax.inject.Inject;
 
+import com.google.common.base.Preconditions;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,6 +29,11 @@ public abstract class SteamService<R> {
 
 	protected String getVersion() {
 		return "v0001";
+	}
+
+	public R fetch(List<String> args) {
+		Preconditions.checkNotNull(args);
+		return fetch(args.toArray(new String[args.size()]));
 	}
 
 	protected R fetchRestTemplate(Class<R> clazz, String parameters) {

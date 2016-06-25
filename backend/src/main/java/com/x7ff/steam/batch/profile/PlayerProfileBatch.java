@@ -1,12 +1,13 @@
-package com.x7ff.steam.batch.snapshots;
+package com.x7ff.steam.batch.profile;
 
+import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 
 import com.x7ff.steam.batch.PlayerBatchUtils;
-import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.service.steam.SteamPlayerService;
+import com.x7ff.steam.util.JpaPagingItemListReader;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -14,17 +15,10 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlayerSnapshotBatch {
-
-	@Inject
-	private SteamTrackerConfig steamTrackerConfig;
-
-	@Inject
-	private SteamPlayerService steamPlayerService;
+public class PlayerProfileBatch {
 
 	@Inject
 	private JobBuilderFactory jobBuilderFactory;
@@ -33,42 +27,41 @@ public class PlayerSnapshotBatch {
 	private StepBuilderFactory stepBuilderFactory;
 
 	@Inject
-	private EntityManagerFactory entityManagerFactory;
-
-	@Inject
 	private JobRepository jobRepository;
 
 	@Inject
-	private PlayerWriter playerWriter;
+	private EntityManagerFactory entityManagerFactory;
 
-	public Job playerProcessJob() {
-		return jobBuilderFactory.get("player_update_job")
+	@Inject
+	private PlayerListWriter playerListWriter;
+
+	@Inject
+	private PlayerProfileBatchProcessor batchProcessor;
+
+	public Job profileProcessJob() {
+		return jobBuilderFactory.get("profile_update_job")
 				.repository(jobRepository)
 				.incrementer(new RunIdIncrementer())
-				.flow(playerProcessStep())
+				.flow(updateStep())
 				.end()
 				.build();
 	}
 
-	private Step playerProcessStep() {
+	private Step updateStep() {
 		return stepBuilderFactory.get("process_player")
-				.<Player, PlayerUpdate>chunk(steamTrackerConfig.getUpdater().getSnapshotsChunkSize())
+				.<List<Player>, List<Player>>chunk(SteamPlayerService.MAX_PROFILE_BATCH_SIZE)
 				.reader(playerReader())
-				.processor(playerProcessor())
+				.processor(batchProcessor)
 				.writer(playerWriter())
 				.build();
 	}
 
-	private JpaPagingItemReader<Player> playerReader() {
-		return PlayerBatchUtils.getPlayerReader(steamTrackerConfig.getUpdater().getSnapshotsPageSize(), entityManagerFactory);
+	private JpaPagingItemListReader<Player> playerReader() {
+		return PlayerBatchUtils.getPlayerListReader(SteamPlayerService.MAX_PROFILE_BATCH_SIZE, entityManagerFactory);
 	}
 
-	private ItemWriter<PlayerUpdate> playerWriter() {
-		return playerWriter;
-	}
-
-	private PlayerSnapshotUpdateProcessor playerProcessor() {
-		return new PlayerSnapshotUpdateProcessor(steamTrackerConfig, steamPlayerService);
+	private ItemWriter<List<Player>> playerWriter() {
+		return playerListWriter;
 	}
 
 	public JobRepository getJobRepository() {

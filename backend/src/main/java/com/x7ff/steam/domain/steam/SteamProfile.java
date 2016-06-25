@@ -11,6 +11,9 @@ public class SteamProfile {
 	@JsonProperty("personaname")
 	private String name;
 
+	@JsonProperty("steamid")
+	private String identifier;
+
 	@JsonProperty("avatar")
 	private String avatar;
 
@@ -37,6 +40,16 @@ public class SteamProfile {
 	@JsonProperty("personaname")
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@JsonProperty("steamid")
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	@JsonProperty("steamid")
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 	@JsonProperty("avatar")
