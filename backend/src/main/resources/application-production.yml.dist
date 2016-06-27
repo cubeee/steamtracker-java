@@ -1,0 +1,36 @@
+spring:
+  freemarker:
+    cache: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/steamtracker
+    username: steamtracker
+    password: steamtracker
+server:
+  port: 8890
+  error:
+    whitelabel:
+      enabled: false
+logging:
+  path: /opt/steam-tracker/logs/
+  file: stdout.log
+
+steamtracker:
+  steam:
+    api-key: <key>
+  updater:
+    enable-manual-updating: false
+    automatic-update-interval: 720
+    snapshot-update-interval: 360
+    snapshots-page-size: 100
+    snapshots-chunk-size: 100
+  front-page:
+    games-in-tables: 10
+    fill-tables: true

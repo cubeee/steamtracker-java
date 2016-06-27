@@ -1,0 +1,16 @@
+---
+- name: Deploy playbook
+  hosts: hosts
+
+  tasks:
+  - name: Copy files to remote server
+    copy: src=../files/ dest=/
+
+  - name: Reload systemd daemon
+    command: systemctl daemon-reload
+
+  - name: Enable systemd service
+    command: systemctl enable steam-tracker
+
+  - name: Restart systemd service
+    command: systemctl restart steam-tracker

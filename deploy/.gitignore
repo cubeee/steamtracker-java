@@ -1,0 +1,4 @@
+hosts
+ansible/playbook.retry
+files/etc/systemd/system/steam-tracker.service
+files/opt/steam-tracker/steam-tracker.jar

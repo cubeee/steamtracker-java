@@ -15,5 +15,5 @@ gulp.task('sierra:build', function(callback) {
 });
 
 gulp.task('build', function(callback) {
-    runSeq('sierra:move', 'sierra:build', 'sass:build', 'js:browserify',  'dist', callback);
+    runSeq('sierra:build', 'sierra:move', 'sass:build', 'js:browserify',  'dist', callback);
 });

@@ -1,11 +1,12 @@
 plugins {
     id 'com.moowork.node' version '0.12'
+    id "com.moowork.gulp" version '0.12'
 }
 
 apply plugin: 'base'
 
 node {
-    version = '5.5.0'
+    version = '4.4.6'
     download = true
 }
 
@@ -13,8 +14,8 @@ task packageInstall(type: NpmTask) {
     args = [ 'install' ]
 }
 
-task gulpBuild(type: NpmTask) {
-    args = [ 'run', 'build' ]
+task gulpBuild(type: GulpTask) {
+    args = [ 'build' ]
 }
 
 task gulpBuildSass(type: NpmTask) {
@@ -23,4 +24,21 @@ task gulpBuildSass(type: NpmTask) {
 
 task gulpWatchSass(type: NpmTask) {
     args = [ 'run', 'watch-sass']
+}
+
+task jar(type: Jar) {
+    group = LifecycleBasePlugin.BUILD_GROUP
+    description = 'Package frontend resources into a jar'
+
+    from tasks.gulpBuild
+
+    eachFile { file ->
+        file.path = file.path.startsWith("META-INF") ?: "${project.name}/" + file.path
+    }
+
+    includeEmptyDirs = false
+}
+
+artifacts {
+    archives jar
 }
