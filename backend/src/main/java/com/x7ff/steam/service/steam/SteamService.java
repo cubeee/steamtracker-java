@@ -41,9 +41,7 @@ public abstract class SteamService<R> {
 	}
 
 	protected String getURL(String parameters) {
-		String url = "https://api.steampowered.com/" + getInterfaceName() + "/" + getCallName() + "/" + getVersion() + "/?key=" + steamTrackerConfig.getSteam().getApiKey() + parameters;
-		System.out.println(url);
-		return url;
+		return "https://api.steampowered.com/" + getInterfaceName() + "/" + getCallName() + "/" + getVersion() + "/?key=" + steamTrackerConfig.getSteam().getApiKey() + parameters;
 	}
 
 }
