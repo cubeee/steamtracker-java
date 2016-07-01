@@ -6,7 +6,7 @@ DEPLOY_DIR="${PWD}/deploy"
 HOSTS_FILE="${DEPLOY_DIR}/hosts"
 DEPLOY_USER="deployer"
 DEPLOY_FAT_JAR="y"
-RUN_FILE="${DEPLOY_DIR}/files/opt/steam-tracker/run"
+RUN_FILE="${DEPLOY_DIR}/files/steam-tracker/run"
 
 if [ ! -e "$HOSTS_FILE" ]; then
     echo "No hosts file found, you may need to rename ${HOSTS_FILE}.dist"
@@ -19,7 +19,7 @@ if [ ${DEPLOY_FAT_JAR} ] && [ ${DEPLOY_FAT_JAR} == "n" ]; then
     echo "Building and collecting dependencies..."
     gradle jar copyDependencies
 
-    deps=($(find ${DEPLOY_DIR}/files/opt/steam-tracker/libs -type f -name '*.jar' -printf 'libs\\/%f\040'))
+    deps=($(find ${DEPLOY_DIR}/files/steam-tracker/libs -type f -name '*.jar' -printf 'libs\\/%f\040'))
 
     template_file="${DEPLOY_DIR}/ansible/templates/run.sep.tmpl"
     libs=$(IFS=:; echo "${deps[*]}")
