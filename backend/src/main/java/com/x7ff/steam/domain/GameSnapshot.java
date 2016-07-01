@@ -11,9 +11,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.x7ff.steam.domain.steam.SteamGame;
+import org.jooq.Name;
+import org.jooq.impl.DSL;
 
 @Entity
 public final class GameSnapshot {
+	public static final Name GAME_SNAPSHOT = DSL.name("game_snapshot");
+	public static final Name GAME_ID = DSL.name("game_id");
+	public static final Name PLAYER_ID = DSL.name("player_id");
+	public static final Name MINUTES_PLAYED = DSL.name("minutes_played");
+	public static final Name DATE = DSL.name("date");
 
 	@Id
 	@GeneratedValue

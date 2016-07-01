@@ -1,5 +1,6 @@
 package com.x7ff.steam.domain.repository;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -13,11 +14,23 @@ import javax.persistence.Query;
 
 import com.google.common.collect.Lists;
 import com.x7ff.steam.domain.Game;
+import com.x7ff.steam.domain.GameSnapshot;
 import com.x7ff.steam.domain.MostPlayedGame;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.converter.ZonedDateTimeAttributeConverter;
+import org.jooq.AggregateFunction;
+import org.jooq.DSLContext;
+import org.jooq.Field;
+import org.jooq.GroupField;
+import org.jooq.Param;
+import org.jooq.Record4;
+import org.jooq.SelectJoinStep;
+import org.jooq.Table;
+import org.jooq.impl.SQLDataType;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
+
+import static org.jooq.impl.DSL.*;
 
 @Repository
 public class StatsRepository {
@@ -27,10 +40,13 @@ public class StatsRepository {
 	private final EntityManager entityManager;
 	private final GameRepository gameRepository;
 
+	private final DSLContext create;
+
 	@Inject
-	public StatsRepository(EntityManager entityManager, GameRepository gameRepository) {
+	public StatsRepository(EntityManager entityManager, GameRepository gameRepository, DSLContext dslContext) {
 		this.entityManager = entityManager;
 		this.gameRepository = gameRepository;
+		this.create = dslContext;
 	}
 
 	/**
@@ -59,6 +75,22 @@ public class StatsRepository {
 
 	/**
 	 * Gets the most played games between two given {@link LocalDateTime}s in an descending order with the specified limit.
+	 * <p>
+	 * jOOQ query results to a similar looking query:
+	 * <code><pre>
+	 * SELECT SUM(increase) s, game_id
+	 * FROM (
+	 *    SELECT
+	 *    player_id,
+	 *    game_id,
+	 *    minutes_played - lag(minutes_played) OVER (PARTITION BY game_id, player_id ORDER BY date asc) AS increase,
+	 *    date
+	 * FROM game_snapshot
+	 * AS snapshot_diff
+	 * WHERE snapshot_diff.increase >= 0 AND (snapshot_diff.date >= :dateFrom AND snapshot_diff.date <= :dateTo)
+	 * GROUP BY game_id
+	 * ORDER BY s DESC
+	 * </pre></code>
 	 *
 	 * @param from Starting {@link LocalDateTime}
 	 * @param to Ending {@link LocalDateTime}
@@ -74,29 +106,47 @@ public class StatsRepository {
 			return games;
 		}
 
-		// todo: split up into nicer pieces
+		Param<Object> dateFrom = param("dateFrom");
+		Param<Object> dateTo = param("dateTo");
+		Param<Object> playerIdParam = param("player_id");
 
-		// If you need to do that then change the lag function to coalesce(lag(minutes_played), minutes_played)
-		// Also it doesn't account for a non-existent snapshot then a new snapshot
-		Query query = entityManager.createNativeQuery(
-				"SELECT SUM(increase) s, game_id " +
-				"FROM (" +
-				"  SELECT" +
-				"    player_id," +
-				"    game_id," +
-				"    minutes_played - lag(minutes_played) OVER (PARTITION BY game_id, player_id ORDER BY date asc) AS increase," +
-				"    date" +
-				"   FROM game_snapshot " +
-				(player.isPresent() ? "WHERE player_id = :player_id" : "") +
-				") " +
-				"AS snapshot_diff " +
-				"WHERE snapshot_diff.increase >= 0 AND (snapshot_diff.date >= :dateFrom AND snapshot_diff.date <= :dateTo) " +
-				"GROUP BY " + (player.isPresent() ? "game_id, player_id" : "game_id") + " " +
-				"ORDER BY s DESC");
-		query.setParameter("dateFrom", ZonedDateTimeAttributeConverter.convertToTimestamp(from));
-		query.setParameter("dateTo", ZonedDateTimeAttributeConverter.convertToTimestamp(to));
+		Field<Object> gameId = field(GameSnapshot.GAME_ID);
+		Field<Object> playerId = field(GameSnapshot.PLAYER_ID);
+		Field<Object> date = field(GameSnapshot.DATE);
+		Field<Integer> minutesPlayed = field(GameSnapshot.MINUTES_PLAYED, SQLDataType.INTEGER);
+		Field<Integer> increase = coalesce(lag(minutesPlayed).over(partitionBy(gameId, playerId).orderBy(date.asc())), minutesPlayed);
+		Field<Integer> inc = minutesPlayed.minus(increase).as("increase");
+
+		SelectJoinStep<Record4<Object, Object, Integer, Object>> snapshotSelect = create.select(
+				playerId,
+				gameId,
+				inc,
+				date)
+				.from(GameSnapshot.GAME_SNAPSHOT);
+
+		Table<Record4<Object, Object, Integer, Object>> snapshotDiff;
 		if (player.isPresent()) {
-			query.setParameter("player_id", p.getId());
+			 snapshotDiff = snapshotSelect.where(playerId.eq(playerIdParam)).asTable("snapshot_diff");
+		} else {
+			snapshotDiff = snapshotSelect.asTable("snapshot_diff");
+		}
+
+		AggregateFunction<BigDecimal> sum = sum(inc);
+		Field<BigDecimal> sumField = sum.as("s");
+
+		GroupField[] groupFields = player.isPresent() ? new GroupField[] { gameId, playerId } : new GroupField[] { gameId };
+		String sql = create.renderNamedParams(
+				select(sumField, gameId)
+				.from(snapshotDiff)
+				.where(inc.greaterThan(zero()).and(date.greaterOrEqual(dateFrom).and(date.lessOrEqual(dateTo))))
+				.groupBy(groupFields)
+				.orderBy(sumField.desc()));
+
+		Query query = entityManager.createNativeQuery(sql);
+		query.setParameter(dateFrom.getParamName(), ZonedDateTimeAttributeConverter.convertToTimestamp(from));
+		query.setParameter(dateTo.getParamName(), ZonedDateTimeAttributeConverter.convertToTimestamp(to));
+		if (player.isPresent()) {
+			query.setParameter(playerIdParam.getParamName(), p.getId());
 		}
 		if (limit != NO_LIMIT) {
 			query = query.setMaxResults(limit);
