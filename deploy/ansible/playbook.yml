@@ -2,9 +2,33 @@
 - name: Deploy playbook
   hosts: hosts
 
+  vars:
+    dest: /opt/steam-tracker
+    user: steamtracker
+    group: steamtracker
+    deployer: deployer
+
   tasks:
+  - name: Copy systemd to remote server
+    copy: src=../files/systemd/steam-tracker.service dest=/etc/systemd/system/steam-tracker.service
+
+  - name: Ensure program directory exists
+    file: path={{ dest }} state=directory mode=755 owner={{ user }} group={{ group }}
+
+  - name: Give write permissions to program directory
+    file: owner={{ deployer }} mode="u+rw" path={{ dest }} recurse=yes
+
   - name: Copy files to remote server
-    copy: src=../files/ dest=/
+    synchronize:
+      src: ../files/steam-tracker/
+      dest: "{{ dest }}"
+      checksum: yes
+      rsync_opts:
+        - "--exclude=*.dist"
+    sudo: no
+
+  - name: Remove write permissions from program directory
+    file: owner={{ deployer }} mode="u-rw" path={{ dest }} recurse=yes
 
   - name: Reload systemd daemon
     command: systemctl daemon-reload

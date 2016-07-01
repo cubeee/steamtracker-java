@@ -7,7 +7,7 @@ Type=simple
 User=steamtracker
 Group=steamtracker
 WorkingDirectory=/opt/steam-tracker
-ExecStart=/usr/bin/java -jar /opt/steam-tracker/steam-tracker.jar --spring.profiles.active=production
+ExecStart=/opt/steam-tracker/run
 Restart=on-failure
 PrivateTmp=true
 PrivateDevices=true
