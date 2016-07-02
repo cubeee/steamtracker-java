@@ -32,3 +32,14 @@
   line-height: ($nav-height - 7);
   margin-right: 20px;
 }
+
+@media (max-width: $screen-lg-min) {
+  .navigation {
+    min-height: ($nav-height * 2 + 8);
+    max-height: ($nav-height * 2 + 8);
+  }
+
+  .navigation .search-container {
+    padding: 0 15px 0;
+  }
+}
