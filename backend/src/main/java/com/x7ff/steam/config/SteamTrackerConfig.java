@@ -1,6 +1,8 @@
 package com.x7ff.steam.config;
 
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,6 +19,14 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class SteamTrackerConfig {
+
+	@NotNull
+	private String timezone = "GMT";
+
+	@PostConstruct
+	public void init() {
+		TimeZone.setDefault(TimeZone.getTimeZone(timezone));
+	}
 
 	/**
 	 * Steam related configuration

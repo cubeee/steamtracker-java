@@ -4,6 +4,7 @@ spring:
       ddl-auto: update
 
 steamtracker:
+  timezone: GMT
   steam:
     api-key: <key>
   updater:

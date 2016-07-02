@@ -23,6 +23,7 @@ logging:
   file: stdout.log
 
 steamtracker:
+  timezone: GMT
   steam:
     api-key: <key>
   updater:

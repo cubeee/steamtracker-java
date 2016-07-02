@@ -1,6 +1,5 @@
 package com.x7ff.steam.config;
 
-import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -24,11 +23,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
 	@Inject
 	private RequestMappingHandlerAdapter adapter;
-
-	@PostConstruct
-	public void init() {
-		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
-	}
 
 	@PostConstruct
 	public void removeRedirectModelAtttributes() {
