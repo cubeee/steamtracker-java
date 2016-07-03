@@ -6,9 +6,11 @@ import javax.inject.Inject;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.PlayerSearch;
 import com.x7ff.steam.domain.repository.PlayerRepository;
-import com.x7ff.steam.domain.repository.StatsRepository;
+import com.x7ff.steam.domain.repository.statistics.MostPlayedGamesStatistics;
+import com.x7ff.steam.domain.repository.statistics.StatisticsContext;
 import com.x7ff.steam.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,11 +22,11 @@ public final class IndexController {
 
 	private final SteamTrackerConfig steamTrackerConfig;
 	private final PlayerRepository playerRepository;
-	private final StatsRepository statsRepository;
+	private final MostPlayedGamesStatistics statsRepository;
 
 	@Inject
 	public IndexController(SteamTrackerConfig steamTrackerConfig, PlayerRepository playerRepository,
-	                       StatsRepository statsRepository) {
+	                       @Qualifier("mostPlayed") MostPlayedGamesStatistics statsRepository) {
 		this.steamTrackerConfig = steamTrackerConfig;
 		this.playerRepository = playerRepository;
 		this.statsRepository = statsRepository;
@@ -33,11 +35,13 @@ public final class IndexController {
 	@RequestMapping("/")
 	public String index(Model model) {
 		int games = steamTrackerConfig.getFrontPage().getGamesInTables();
-		model.addAttribute("collective_tracked", statsRepository.getCollectiveMinutesTracked());
+		Optional<StatisticsContext> context = Optional.empty();
+
+		model.addAttribute("collective_tracked", statsRepository.getCollectiveMinutesTracked(context));
 		model.addAttribute("tracked_players", playerRepository.count());
-		model.addAttribute("most_played", statsRepository.getAllTimeMostPlayed(games));
-		model.addAttribute("todays_played", statsRepository.getTodaysMostPlayed(games));
-		model.addAttribute("weeks_played", statsRepository.getLastWeekMostPlayed(games));
+		model.addAttribute("most_played", statsRepository.getAllTimeMostPlayed(games, context));
+		model.addAttribute("todays_played", statsRepository.getTodaysMostPlayed(games, context));
+		model.addAttribute("weeks_played", statsRepository.getLastWeekMostPlayed(games, context));
 		return "index";
 	}
 

@@ -6,10 +6,11 @@ import javax.inject.Inject;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.PlayerRepository;
-import com.x7ff.steam.domain.repository.StatsRepository;
+import com.x7ff.steam.domain.repository.statistics.PlayerGameStatistics;
 import com.x7ff.steam.service.steam.SteamPlayerService;
 import com.x7ff.steam.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ public final class ProfileController {
 	private final SteamTrackerConfig steamTrackerConfig;
 	private final PlayerRepository playerRepository;
 	private final SteamPlayerService steamPlayerService;
-	private final StatsRepository statsRepository;
+	private final PlayerGameStatistics statsRepository;
 
 	private final boolean manualUpdatingEnabled;
 
@@ -29,7 +30,7 @@ public final class ProfileController {
 	public ProfileController(SteamTrackerConfig steamTrackerConfig,
 	                         PlayerRepository playerRepository,
 	                         SteamPlayerService steamPlayerService,
-	                         StatsRepository statsRepository) {
+	                         @Qualifier("playerGameStatistics") PlayerGameStatistics statsRepository) {
 		this.steamTrackerConfig = steamTrackerConfig;
 		this.playerRepository = playerRepository;
 		this.steamPlayerService = steamPlayerService;
@@ -66,11 +67,10 @@ public final class ProfileController {
 			}
 		}
 
-		Optional<Player> optionalPlayer = Optional.of(player);
 		int games = steamTrackerConfig.getFrontPage().getGamesInTables();
-		model.addAttribute("most_played", statsRepository.getAllTimeMostPlayed(optionalPlayer, games));
-		model.addAttribute("todays_played", statsRepository.getTodaysMostPlayed(optionalPlayer, games));
-		model.addAttribute("weeks_played", statsRepository.getLastWeekMostPlayed(optionalPlayer, games));
+		model.addAttribute("most_played", statsRepository.getAllTimeMostPlayed(player, games));
+		model.addAttribute("todays_played", statsRepository.getTodaysMostPlayed(player, games));
+		model.addAttribute("weeks_played", statsRepository.getLastWeekMostPlayed(player, games));
 		model.addAttribute("player", player);
 		return "profile";
 	}
