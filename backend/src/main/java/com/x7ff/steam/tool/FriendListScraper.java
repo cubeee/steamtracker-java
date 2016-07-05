@@ -39,7 +39,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableBatchProcessing
 @EntityScan(basePackages = "com.x7ff.steam")
 @ComponentScan(basePackages = "com.x7ff.steam")
-public class FriendListScraper {
+public class FriendListScraper extends Tool {
 	private static final int PROFILE_SAVE_BATCH_SIZE = 100;
 
 	private static final Logger logger = Logger.getLogger(FriendListScraper.class.getName());
