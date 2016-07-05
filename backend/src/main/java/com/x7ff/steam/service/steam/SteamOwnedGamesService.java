@@ -2,7 +2,6 @@ package com.x7ff.steam.service.steam;
 
 import javax.inject.Inject;
 
-import com.google.common.base.Joiner;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGames;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public final class SteamOwnedGamesService extends SteamService<SteamProfileOwned
 	}
 
 	protected String getParameters(String... identifiers) {
-		return "&steamid=" + Joiner.on(",").join(identifiers) + "&format=json&include_appinfo=1&include_played_free_games=1";
+		return "&steamid=" + identifiers[0] + "&format=json&include_appinfo=1&include_played_free_games=1";
 	}
 
 }

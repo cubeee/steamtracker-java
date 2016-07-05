@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -32,6 +33,13 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 	@Bean
 	public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
 		return new ResourceUrlEncodingFilter();
+	}
+
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+		PropertySourcesPlaceholderConfigurer c = new PropertySourcesPlaceholderConfigurer();
+		c.setIgnoreUnresolvablePlaceholders(true);
+		return c;
 	}
 
 	@Override

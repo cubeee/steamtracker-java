@@ -7,6 +7,7 @@ import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.PlayerRepository;
 import com.x7ff.steam.domain.repository.statistics.PlayerGameStatistics;
+import com.x7ff.steam.service.steam.FetchOption;
 import com.x7ff.steam.service.steam.SteamPlayerService;
 import com.x7ff.steam.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
@@ -76,7 +77,7 @@ public final class ProfileController {
 	}
 
 	private Player getPlayer(Player player, String identifier) {
-		return steamPlayerService.fetchPlayer(player, true, identifier);
+		return steamPlayerService.fetchPlayer(player, identifier, FetchOption.SAVE_PLAYER, FetchOption.RESOLVE_PROFILE);
 	}
 
 }
