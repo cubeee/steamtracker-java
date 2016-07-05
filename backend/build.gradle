@@ -58,6 +58,7 @@ jar {
 
 springBoot {
     backupSource = false
+    mainClass = "com.x7ff.steam.SteamTracker"
 }
 
 bootRun {
