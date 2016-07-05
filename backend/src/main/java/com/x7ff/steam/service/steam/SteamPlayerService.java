@@ -1,6 +1,7 @@
 package com.x7ff.steam.service.steam;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +21,6 @@ import com.x7ff.steam.domain.steam.SteamProfileOwnedGames;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGamesResponse;
 import com.x7ff.steam.domain.steam.SteamProfilesResponse;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SteamPlayerService {
@@ -48,9 +48,11 @@ public class SteamPlayerService {
 		this.steamProfileService = steamProfileService;
 	}
 
-	@Transactional
-	public Player fetchPlayer(Player player, boolean save, String identifier) {
+	public Player fetchPlayer(Player player, String identifier, FetchOption... options) {
 		SteamProfileOwnedGames steamProfile = steamOwnedGamesService.fetch(identifier);
+		if (steamProfile == null) {
+			return null;
+		}
 		SteamProfileOwnedGamesResponse response = steamProfile.getResponse();
 		if (response == null) {
 			return null;
@@ -69,7 +71,7 @@ public class SteamPlayerService {
 		player.setLastUpdated(time);
 
 		List<SteamGame> steamGames = response.getGames();
-		if (steamGames.isEmpty()) {
+		if (steamGames == null || steamGames.isEmpty()) {
 			return null;
 		} else {
 			List<GameSnapshot> snapshots = Lists.newArrayList();
@@ -96,11 +98,11 @@ public class SteamPlayerService {
 			player.getSnapshots().addAll(snapshots);
 		}
 
-		if (newPlayer) {
+		if (optionEnabled(options, FetchOption.RESOLVE_PROFILE)) {
 			player = resolveProfile(player);
 		}
 
-		if (save) {
+		if (optionEnabled(options, FetchOption.SAVE_PLAYER)) {
 			gameRepository.persist(player.getGames());
 			player = entityManager.merge(player);
 			entityManager.flush();
@@ -108,14 +110,17 @@ public class SteamPlayerService {
 		return player;
 	}
 
-	@Transactional
-	public List<Player> fetchPlayers(String... identifiers) {
+	public boolean optionEnabled(FetchOption[] options, FetchOption option) {
+		return Arrays.stream(options).anyMatch(o -> o == option);
+	}
+
+	public List<Player> fetchPlayers(String[] identifiers, FetchOption... options) {
 		List<Player> players = Lists.newArrayList();
 		List<Game> games = Lists.newArrayList();
 
 		for (String identifier : identifiers) {
 			try {
-				Player player = fetchPlayer(null, false, identifier);
+				Player player = fetchPlayer(null, identifier, options);
 				if (player == null) {
 					continue;
 				}
