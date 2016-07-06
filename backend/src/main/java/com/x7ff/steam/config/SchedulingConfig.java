@@ -15,6 +15,9 @@ import org.springframework.scheduling.support.CronTrigger;
 public class SchedulingConfig implements SchedulingConfigurer {
 
 	@Inject
+	private SteamTrackerConfig steamTrackerConfig;
+
+	@Inject
 	private ScheduledSnapshotUpdateTask snapshotUpdateTask;
 
 	@Inject
@@ -22,6 +25,9 @@ public class SchedulingConfig implements SchedulingConfigurer {
 
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+		if (steamTrackerConfig.getUpdater().isDisableScheduledTasks()) {
+			return;
+		}
 		taskRegistrar.addFixedDelayTask(snapshotUpdateTask, snapshotUpdateTask.getDelay());
 		taskRegistrar.addTriggerTask(profileUpdateTask, new CronTrigger("0 0 0 * * *"));
 	}

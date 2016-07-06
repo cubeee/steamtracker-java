@@ -97,6 +97,12 @@ public class SteamTrackerConfig {
 		private boolean enableManualUpdating;
 
 		/**
+		 * Flag for optionally disabling scheduled tasks from being started.
+		 * May be useful in development environment when doing frequent restarts.
+		 */
+		private boolean disableScheduledTasks;
+
+		/**
 		 * Delay between automatic player updates in minutes. Delay is started after the previous update has finished.
 		 * Default interval is set at 12 hours.
 		 */
