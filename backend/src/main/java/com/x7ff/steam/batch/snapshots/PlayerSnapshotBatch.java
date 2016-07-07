@@ -54,7 +54,6 @@ public class PlayerSnapshotBatch {
 	@Qualifier("mostPlayed")
 	private MostPlayedGamesStatistics mostPlayedGamesStatistics;
 
-	@Bean
 	public Job playerProcessJob() {
 		String jobName = "player_update_job";
 		return jobBuilderFactory.get(jobName)
