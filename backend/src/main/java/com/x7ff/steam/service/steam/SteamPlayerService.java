@@ -21,6 +21,7 @@ import com.x7ff.steam.domain.steam.SteamProfileOwnedGames;
 import com.x7ff.steam.domain.steam.SteamProfileOwnedGamesResponse;
 import com.x7ff.steam.domain.steam.SteamProfilesResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SteamPlayerService {
@@ -48,6 +49,7 @@ public class SteamPlayerService {
 		this.steamProfileService = steamProfileService;
 	}
 
+	@Transactional
 	public Player fetchPlayer(Player player, String identifier, FetchOption... options) {
 		SteamProfileOwnedGames steamProfile = steamOwnedGamesService.fetch(identifier);
 		if (steamProfile == null) {
@@ -58,13 +60,10 @@ public class SteamPlayerService {
 			return null;
 		}
 
-		boolean newPlayer = false;
-
 		ZonedDateTime time = ZonedDateTime.now();
 		if (player == null) {
 			player = new Player(identifier);
 			player.setCreationTime(time);
-			newPlayer = true;
 		}
 		player.setIdentifier(identifier);
 		player.setGameCount(response.getGameCount());

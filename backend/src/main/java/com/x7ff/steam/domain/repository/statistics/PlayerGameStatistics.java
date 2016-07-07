@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.MostPlayedGame;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.GameRepository;
@@ -17,18 +18,28 @@ import org.jooq.GroupField;
 import org.jooq.Param;
 import org.jooq.Record4;
 import org.jooq.Table;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import static org.jooq.impl.DSL.param;
 
 @Component("playerGameStatistics")
-public final class PlayerGameStatistics extends MostPlayedGamesStatistics {
+public class PlayerGameStatistics extends MostPlayedGamesStatistics {
+	public static final String CACHE_KEY = "playerGameStats";
+	public static final String CACHE_KEY_TODAY = CACHE_KEY + "Today";
+	public static final String CACHE_KEY_WEEK = CACHE_KEY + "Week";
+	public static final String CACHE_KEY_ALLTIME = CACHE_KEY + "AllTime";
 
 	private final Param<Object> playerIdParam = param("player_id");
 
 	@Inject
-	public PlayerGameStatistics(EntityManager entityManager, GameRepository gameRepository, DSLContext dslContext) {
-		super(entityManager, gameRepository, dslContext);
+	public PlayerGameStatistics(EntityManager entityManager,
+	                            CacheManager cacheManager,
+	                            SteamTrackerConfig steamTrackerConfig,
+	                            GameRepository gameRepository,
+	                            DSLContext dslContext) {
+		super(entityManager, cacheManager, steamTrackerConfig, gameRepository, dslContext);
 	}
 
 	/**
@@ -38,6 +49,7 @@ public final class PlayerGameStatistics extends MostPlayedGamesStatistics {
 	 * @param limit Maximum number of games to return
 	 * @return Most played games in the last 24 hours
 	 */
+	@Cacheable(value = CACHE_KEY_TODAY, key = "#player?.id")
 	public List<MostPlayedGame> getTodaysMostPlayed(Player player, int limit) {
 		ZonedDateTime now = ZonedDateTime.now();
 		ZonedDateTime yesterday = now.minusHours(24);
@@ -51,6 +63,7 @@ public final class PlayerGameStatistics extends MostPlayedGamesStatistics {
 	 * @param limit Maximum number of games to return
 	 * @return Most played games in the last 7 days
 	 */
+	@Cacheable(value = CACHE_KEY_WEEK, key = "#player?.id")
 	public List<MostPlayedGame> getLastWeekMostPlayed(Player player, int limit) {
 		return super.getLastWeekMostPlayed(limit, getStatisticsContext(player));
 	}
@@ -62,6 +75,7 @@ public final class PlayerGameStatistics extends MostPlayedGamesStatistics {
 	 * @param limit Maximum number of games to return
 	 * @return Most played games since the beginning of tracking
 	 */
+	@Cacheable(value = CACHE_KEY_ALLTIME, key = "#player?.id")
 	public List<MostPlayedGame> getAllTimeMostPlayed(Player player, int limit) {
 		return getMostPlayedGames(player, FAR_DATE, ZonedDateTime.now(), limit);
 	}

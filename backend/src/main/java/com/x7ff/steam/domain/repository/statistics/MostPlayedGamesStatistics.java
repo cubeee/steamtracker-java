@@ -13,11 +13,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.google.common.collect.Lists;
+import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Game;
 import com.x7ff.steam.domain.GameSnapshot;
 import com.x7ff.steam.domain.MostPlayedGame;
 import com.x7ff.steam.domain.converter.ZonedDateTimeAttributeConverter;
 import com.x7ff.steam.domain.repository.GameRepository;
+import com.x7ff.steam.util.annotation.CacheableKey;
+import com.x7ff.steam.util.annotation.CacheableKeyGenerator;
 import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -28,6 +31,11 @@ import org.jooq.Record4;
 import org.jooq.SelectJoinStep;
 import org.jooq.Table;
 import org.jooq.impl.SQLDataType;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import static org.jooq.impl.DSL.*;
@@ -37,8 +45,15 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 	public static final ZonedDateTime FAR_DATE = ZonedDateTime.of(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0), ZoneId.systemDefault());
 	public static final int NO_LIMIT = -1;
 
-	private final DSLContext create;
+	public static final String CACHE_NAME = "frontpage_stats";
+	public static final String CACHE_NAME_TODAY = "today";
+	public static final String CACHE_NAME_WEEK = "week";
+	public static final String CACHE_NAME_ALLTIME = "all_time";
+	public static final String CACHE_NAME_COLLECTIVE = "collective";
+
+	private final CacheManager cacheManager;
 	private final GameRepository gameRepository;
+	private final DSLContext create;
 
 	private final Param<Object> dateFrom = param("dateFrom");
 	private final Param<Object> dateTo = param("dateTo");
@@ -51,8 +66,13 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 	private final Field<Integer> inc = minutesPlayed.minus(increase).as("increase");
 
 	@Inject
-	public MostPlayedGamesStatistics(EntityManager entityManager, GameRepository gameRepository, DSLContext dslContext) {
-		super(entityManager);
+	public MostPlayedGamesStatistics(EntityManager entityManager,
+	                                 CacheManager cacheManager,
+	                                 SteamTrackerConfig steamTrackerConfig,
+	                                 GameRepository gameRepository,
+	                                 DSLContext dslContext) {
+		super(entityManager, steamTrackerConfig);
+		this.cacheManager = cacheManager;
 		this.gameRepository = gameRepository;
 		this.create = dslContext;
 	}
@@ -163,6 +183,8 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 	 * @param context Optional context for the query
 	 * @return Collective tracked minutes played of players' games.
 	 */
+	@Cacheable(value = CACHE_NAME, keyGenerator = CacheableKeyGenerator.NAME)
+	@CacheableKey(CACHE_NAME_COLLECTIVE)
 	public long getCollectiveMinutesTracked(Optional<StatisticsContext> context) {
 		long minutesPlayed = 0;
 		for (MostPlayedGame mostPlayedGame : getMostPlayedGames(FAR_DATE, ZonedDateTime.now(), NO_LIMIT, context)) {
@@ -178,6 +200,8 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 	 * @param context Optional context for the query
 	 * @return Most played games in the last 24 hours
 	 */
+	@Cacheable(value = CACHE_NAME, keyGenerator = CacheableKeyGenerator.NAME)
+	@CacheableKey(CACHE_NAME_TODAY)
 	public List<MostPlayedGame> getTodaysMostPlayed(int limit, Optional<StatisticsContext> context) {
 		ZonedDateTime now = ZonedDateTime.now();
 		ZonedDateTime yesterday = now.minusHours(24);
@@ -191,6 +215,8 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 	 * @param context Optional context for the query
 	 * @return Most played games in the last 7 days
 	 */
+	@Cacheable(value = CACHE_NAME, keyGenerator = CacheableKeyGenerator.NAME)
+	@CacheableKey(CACHE_NAME_WEEK)
 	public List<MostPlayedGame> getLastWeekMostPlayed(int limit, Optional<StatisticsContext> context) {
 		ZonedDateTime now = ZonedDateTime.now();
 		ZonedDateTime lastWeek = now.minusDays(7);
@@ -204,8 +230,48 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 	 * @param context Optional context for the query
 	 * @return Most played games since the beginning of tracking
 	 */
+	@Cacheable(value = CACHE_NAME, keyGenerator = CacheableKeyGenerator.NAME)
+	@CacheableKey(CACHE_NAME_ALLTIME)
 	public List<MostPlayedGame> getAllTimeMostPlayed(int limit, Optional<StatisticsContext> context) {
 		return getMostPlayedGames(FAR_DATE, ZonedDateTime.now(), limit, context);
+	}
+
+	@Bean(name = CacheableKeyGenerator.NAME)
+	private KeyGenerator statsKeyGenerator() {
+		return new CacheableKeyGenerator();
+	}
+
+	/**
+	 * Call the cacheable methods to cache them
+	 */
+	public void refreshCache() {
+		Optional<StatisticsContext> context = Optional.empty();
+		int limit = steamTrackerConfig.getFrontPage().getGamesInTables();
+
+		String[] refreshedCacheNames = {
+				CACHE_NAME_COLLECTIVE,
+				CACHE_NAME_TODAY,
+				CACHE_NAME_WEEK,
+				CACHE_NAME_ALLTIME,
+		};
+
+		Cache cache = cacheManager.getCache(CACHE_NAME);
+		for (String cacheName : refreshedCacheNames) {
+			switch (cacheName) {
+				case CACHE_NAME_COLLECTIVE:
+					cache.put(CACHE_NAME_COLLECTIVE, getCollectiveMinutesTracked(context));
+					break;
+				case CACHE_NAME_TODAY:
+					cache.put(CACHE_NAME_TODAY, getTodaysMostPlayed(limit, context));
+					break;
+				case CACHE_NAME_WEEK:
+					cache.put(CACHE_NAME_WEEK, getLastWeekMostPlayed(limit, context));
+					break;
+				case CACHE_NAME_ALLTIME:
+					cache.put(CACHE_NAME_ALLTIME, getAllTimeMostPlayed(limit, context));
+					break;
+			}
+		}
 	}
 
 }

@@ -30,6 +30,8 @@ public final class IndexController {
 		this.steamTrackerConfig = steamTrackerConfig;
 		this.playerRepository = playerRepository;
 		this.statsRepository = statsRepository;
+
+
 	}
 
 	@RequestMapping("/")

@@ -6,15 +6,21 @@ import javax.persistence.EntityManagerFactory;
 import com.x7ff.steam.batch.PlayerBatchUtils;
 import com.x7ff.steam.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.Player;
+import com.x7ff.steam.domain.repository.statistics.MostPlayedGamesStatistics;
 import com.x7ff.steam.service.steam.SteamPlayerService;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -41,11 +47,22 @@ public class PlayerSnapshotBatch {
 	@Inject
 	private PlayerWriter playerWriter;
 
+	@Inject
+	private JobExplorer jobExplorer;
+
+	@Inject
+	@Qualifier("mostPlayed")
+	private MostPlayedGamesStatistics mostPlayedGamesStatistics;
+
+	@Bean
 	public Job playerProcessJob() {
-		return jobBuilderFactory.get("player_update_job")
+		String jobName = "player_update_job";
+		return jobBuilderFactory.get(jobName)
 				.repository(jobRepository)
+				.listener(new LastRunJobExecutionListener(jobName, jobExplorer, steamTrackerConfig))
 				.incrementer(new RunIdIncrementer())
 				.flow(playerProcessStep())
+				.next(cachePopulatorStep())
 				.end()
 				.build();
 	}
@@ -57,6 +74,14 @@ public class PlayerSnapshotBatch {
 				.processor(playerProcessor())
 				.writer(playerWriter())
 				.build();
+	}
+
+	@Bean
+	private TaskletStep cachePopulatorStep() {
+		return stepBuilderFactory.get("cache_populator").tasklet((contribution, chunkContext) -> {
+			mostPlayedGamesStatistics.refreshCache();
+			return RepeatStatus.FINISHED;
+		}).build();
 	}
 
 	private JpaPagingItemReader<Player> playerReader() {
