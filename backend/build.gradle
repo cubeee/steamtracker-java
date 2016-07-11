@@ -32,6 +32,7 @@ dependencies {
     compile deps.jsoup
     compile deps.lombok
     compile deps.jooq
+    compile deps.flyway
     compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-freemarker'

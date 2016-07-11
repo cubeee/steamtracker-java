@@ -4,11 +4,14 @@ import java.time.ZonedDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.x7ff.steam.domain.steam.SteamGame;
 import org.jooq.Name;
@@ -23,15 +26,17 @@ public final class GameSnapshot {
 	public static final Name DATE = DSL.name("date");
 
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name="game_snapshot_id_seq", sequenceName = "game_snapshot_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_snapshot_id_seq")
+	@Column(name = "id", updatable = false)
 	private Long id;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "player_id")
+	@JoinColumn(name = "player_id", foreignKey = @ForeignKey(name = "fk_player_id"))
 	private Player player;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "game_id")
+	@JoinColumn(name = "game_id", foreignKey = @ForeignKey(name = "fk_game_id"))
 	private Game game;
 
 	@Column(name = "minutes_played", nullable = false)
