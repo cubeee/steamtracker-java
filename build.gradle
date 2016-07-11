@@ -15,7 +15,8 @@ ext.deps = [
     javaxInject          : dependencies.create("javax.inject:javax.inject:1"),
     jsoup                : dependencies.create("org.jsoup:jsoup:1.9.2"),
     lombok               : dependencies.create("org.projectlombok:lombok:1.16.8"),
-    jooq                 : dependencies.create("org.jooq:jooq:3.8.2")
+    jooq                 : dependencies.create("org.jooq:jooq:3.8.2"),
+    flyway               : dependencies.create("org.flywaydb:flyway-core:4.0.3")
 ]
 
 apply plugin: 'base'
