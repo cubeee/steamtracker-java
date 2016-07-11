@@ -4,9 +4,12 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
@@ -14,6 +17,7 @@ import com.x7ff.steam.domain.Game;
 import com.x7ff.steam.domain.GameSnapshot;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.GameRepository;
+import com.x7ff.steam.domain.repository.GameSnapshotRepository;
 import com.x7ff.steam.domain.repository.PlayerRepository;
 import com.x7ff.steam.domain.steam.SteamGame;
 import com.x7ff.steam.domain.steam.SteamProfile;
@@ -22,9 +26,12 @@ import com.x7ff.steam.domain.steam.SteamProfileOwnedGamesResponse;
 import com.x7ff.steam.domain.steam.SteamProfilesResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 
 @Service
 public class SteamPlayerService {
+	private final Logger logger = Logger.getLogger(SteamPlayerService.class.getName());
+
 	// todo: implement daily query limits
 	private static final int DAILY_API_QUERY_LIMIT = 100_000;
 
@@ -70,31 +77,42 @@ public class SteamPlayerService {
 		player.setLastUpdated(time);
 
 		List<SteamGame> steamGames = response.getGames();
+		List<Game> games = Lists.newArrayList();
+
 		if (steamGames == null || steamGames.isEmpty()) {
 			return null;
 		} else {
 			List<GameSnapshot> snapshots = Lists.newArrayList();
+			List<GameSnapshot> lastSnapshots = getLastSnapshots(player);
 
-			player.getGames().clear();
 			for (SteamGame steamGame : response.getGames()) {
 				if (steamGame.getMinutesPlayed() == 0) {
 					continue;
 				}
 				Game game = Game.from(steamGame);
-				player.getGames().add(game);
+				games.add(game);
+
+				GameSnapshot lastSnapshot = getLastSnapshot(lastSnapshots, steamGame);
+				if (lastSnapshot != null && steamGame.getMinutesPlayed() <= lastSnapshot.getMinutesPlayed()) {
+					continue;
+				}
 
 				GameSnapshot snapshot = GameSnapshot.from(player, game, steamGame, time);
 				snapshots.add(snapshot);
 			}
 
-			Collections.sort(snapshots, (snapshot, other) -> {
-				if (snapshot == null || other == null) {
-					return 0;
-				}
-				return Ints.compare(other.getMinutesPlayed(), snapshot.getMinutesPlayed());
-			});
+			player.setGames(games);
 
-			player.getSnapshots().addAll(snapshots);
+			if (!snapshots.isEmpty()) {
+				Collections.sort(snapshots, (snapshot, other) -> {
+					if (snapshot == null || other == null) {
+						return 0;
+					}
+					return Ints.compare(other.getMinutesPlayed(), snapshot.getMinutesPlayed());
+				});
+
+				player.setSnapshots(snapshots);
+			}
 		}
 
 		if (optionEnabled(options, FetchOption.RESOLVE_PROFILE)) {
@@ -102,14 +120,13 @@ public class SteamPlayerService {
 		}
 
 		if (optionEnabled(options, FetchOption.SAVE_PLAYER)) {
-			gameRepository.persist(player.getGames());
 			player = entityManager.merge(player);
 			entityManager.flush();
 		}
 		return player;
 	}
 
-	public boolean optionEnabled(FetchOption[] options, FetchOption option) {
+	private boolean optionEnabled(FetchOption[] options, FetchOption option) {
 		return Arrays.stream(options).anyMatch(o -> o == option);
 	}
 
@@ -169,6 +186,36 @@ public class SteamPlayerService {
 		player.setAvatarMedium(profile.getAvatarMedium());
 		player.setAvatarFull(profile.getAvatarFull());
 		player.setCountryCode(profile.getCountryCode());
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<GameSnapshot> getLastSnapshots(Player player) {
+		List<GameSnapshot> emptyList = Lists.newArrayList();
+		if (!player.hasId()) {
+			return emptyList;
+		}
+		Query query = entityManager.createNativeQuery(
+				"SELECT DISTINCT ON(game_id) * FROM game_snapshot " +
+						"WHERE player_id = :player_id ORDER BY game_id ASC, date DESC", GameSnapshot.class);
+		query.setParameter("player_id", player.getId());
+		try {
+			return query.getResultList();
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Failed to get last snapshots", e);
+		}
+		return emptyList;
+	}
+
+	private GameSnapshot getLastSnapshot(List<GameSnapshot> snapshots, SteamGame game) {
+		if (snapshots.isEmpty() || game == null) {
+			return null;
+		}
+		for (GameSnapshot snapshot : snapshots) {
+			if (snapshot.getGame().getAppId() == game.getAppId()) {
+				return snapshot;
+			}
+		}
+		return null;
 	}
 
 }

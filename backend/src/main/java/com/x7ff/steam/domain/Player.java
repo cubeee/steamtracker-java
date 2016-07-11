@@ -54,11 +54,13 @@ public final class Player {
 	private ZonedDateTime lastUpdated;
 
 	@Column(name = "snapshots")
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy(value = "minutes_played DESC")
 	private List<GameSnapshot> snapshots;
 
-	private final transient List<Game> games = Lists.newArrayList();
+	@Column(name = "games")
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Game> games;
 
 	protected Player() {
 	}
@@ -195,6 +197,10 @@ public final class Player {
 
 	public List<Game> getGames() {
 		return games;
+	}
+
+	public void setGames(List<Game> games) {
+		this.games = games;
 	}
 
 }
