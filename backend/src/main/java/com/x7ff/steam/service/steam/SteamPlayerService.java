@@ -17,7 +17,6 @@ import com.x7ff.steam.domain.Game;
 import com.x7ff.steam.domain.GameSnapshot;
 import com.x7ff.steam.domain.Player;
 import com.x7ff.steam.domain.repository.GameRepository;
-import com.x7ff.steam.domain.repository.GameSnapshotRepository;
 import com.x7ff.steam.domain.repository.PlayerRepository;
 import com.x7ff.steam.domain.steam.SteamGame;
 import com.x7ff.steam.domain.steam.SteamProfile;
@@ -101,8 +100,6 @@ public class SteamPlayerService {
 				snapshots.add(snapshot);
 			}
 
-			player.setGames(games);
-
 			if (!snapshots.isEmpty()) {
 				Collections.sort(snapshots, (snapshot, other) -> {
 					if (snapshot == null || other == null) {
@@ -120,9 +117,12 @@ public class SteamPlayerService {
 		}
 
 		if (optionEnabled(options, FetchOption.SAVE_PLAYER)) {
+			games = gameRepository.persist(games);
 			player = entityManager.merge(player);
 			entityManager.flush();
 		}
+		player.setGames(games);
+
 		return player;
 	}
 
