@@ -34,8 +34,6 @@ import org.jooq.impl.SQLDataType;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import static org.jooq.impl.DSL.*;
@@ -234,11 +232,6 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 	@CacheableKey(CACHE_NAME_ALLTIME)
 	public List<MostPlayedGame> getAllTimeMostPlayed(int limit, Optional<StatisticsContext> context) {
 		return getMostPlayedGames(FAR_DATE, ZonedDateTime.now(), limit, context);
-	}
-
-	@Bean(name = CacheableKeyGenerator.NAME)
-	private KeyGenerator statsKeyGenerator() {
-		return new CacheableKeyGenerator();
 	}
 
 	/**

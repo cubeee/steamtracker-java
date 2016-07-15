@@ -3,6 +3,7 @@ package com.x7ff.steam.config;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import com.x7ff.steam.util.annotation.CacheableKeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -40,6 +41,11 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 		PropertySourcesPlaceholderConfigurer c = new PropertySourcesPlaceholderConfigurer();
 		c.setIgnoreUnresolvablePlaceholders(true);
 		return c;
+	}
+
+	@Bean(name = CacheableKeyGenerator.NAME)
+	public CacheableKeyGenerator cacheableKeyGenerator() {
+		return new CacheableKeyGenerator();
 	}
 
 	@Override
