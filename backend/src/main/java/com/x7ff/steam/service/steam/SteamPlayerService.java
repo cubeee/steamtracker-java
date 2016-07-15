@@ -153,7 +153,16 @@ public class SteamPlayerService {
 	}
 
 	public Player resolveProfile(Player player) {
-		SteamProfilesResponse response = steamProfileService.fetch(player.getIdentifier()).getResponse();
+		SteamProfilesResponse response;
+		try {
+			response = steamProfileService.fetch(player.getIdentifier()).getResponse();
+		} catch (RestClientException e) {
+			logger.warning("Player profile for '" + player.getDisplayName() + "' couldn't be resolved: " + e.getMessage());
+			return player;
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Player profile for '" + player.getDisplayName() + "' couldn't be resolved", e);
+			return player;
+		}
 		List<SteamProfile> profiles = response.getProfiles();
 		if (profiles.isEmpty()) {
 			return player;
@@ -168,7 +177,16 @@ public class SteamPlayerService {
 			throw new IllegalArgumentException("Maximum of " + MAX_PROFILE_BATCH_SIZE + " players' profiles can be resolved at once");
 		}
 		List<String> identifiers = players.stream().map(Player::getIdentifier).collect(Collectors.toList());
-		SteamProfilesResponse response = steamProfileService.fetch(identifiers).getResponse();
+		SteamProfilesResponse response;
+		try {
+			response = steamProfileService.fetch(identifiers).getResponse();
+		} catch (RestClientException e) {
+			logger.warning("Batch profile resolve failed: " + e.getMessage());
+			return;
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Batch profile resolve failed", e);
+			return;
+		}
 		List<SteamProfile> profiles = response.getProfiles();
 		if (profiles.isEmpty()) {
 			return;
