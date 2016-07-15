@@ -59,7 +59,7 @@ public final class Player {
 	private List<GameSnapshot> snapshots;
 
 	@Column(name = "games")
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Game> games;
 
 	protected Player() {
