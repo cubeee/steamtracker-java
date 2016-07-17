@@ -1,12 +1,12 @@
 <#macro timePlayed mins detailed=true>
 <#compress>
+    <#assign hours=(mins/60)?floor>
     <#setting number_format=",##0">
-    <#assign hours=mins/60>
     <#if detailed>
-        <#if mins lt 60>
-        ${mins} minute<#if mins == 0 || mins gt 0>s</#if>
+        <#if mins lt 61>
+            ${mins} minute<#if mins != 1>s</#if>
         <#else>
-        ${hours} hour<#if hours == 0 || hours gt 0>s</#if>
+            ${hours} hour<#if hours != 1>s</#if>
         </#if>
     <#else>
         ${hours}
