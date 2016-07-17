@@ -250,6 +250,7 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 
 		Cache cache = cacheManager.getCache(CACHE_NAME);
 		for (String cacheName : refreshedCacheNames) {
+			cache.evict(cacheName);
 			switch (cacheName) {
 				case CACHE_NAME_COLLECTIVE:
 					cache.put(CACHE_NAME_COLLECTIVE, getCollectiveMinutesTracked(context));
