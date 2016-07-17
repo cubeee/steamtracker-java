@@ -58,7 +58,7 @@ public class PlayerSnapshotBatch {
 		String jobName = "player_update_job";
 		return jobBuilderFactory.get(jobName)
 				.repository(jobRepository)
-				.listener(new LastRunJobExecutionListener(jobName, jobExplorer, steamTrackerConfig))
+				.listener(new LastRunJobExecutionListener(jobName, jobExplorer, steamTrackerConfig.getUpdater().getSnapshotUpdateInterval()))
 				.incrementer(new RunIdIncrementer())
 				.flow(playerProcessStep())
 				.next(cachePopulatorStep())
