@@ -34,3 +34,13 @@
         </#list>
     </#if>
 </#macro>
+
+<#macro filledTable fillEmpty columns rows curRows>
+    <#if fillEmpty>
+        <@fixedSizeTable columns=columns rows=rows curRows=curRows>
+            <#nested>
+        </@fixedSizeTable>
+    <#else>
+        <#nested>
+    </#if>
+</#macro>

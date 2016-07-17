@@ -37,14 +37,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=todays_played?size>
+                        <@macros.filledTable fillEmpty=fillTables columns=2 rows=gamesInTables curRows=todays_played?size>
                             <#list todays_played as game>
                             <tr>
                                 <td><div><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</div></td>
                                 <td title="${game.minutesPlayed} minutes"><div><@macros.timePlayed mins=game.minutesPlayed detailed=true /></div></td>
                             </tr>
                             </#list>
-                        </@macros.fixedSizeTable>
+                        </@macros.filledTable>
                         </tbody>
                     </table>
 
@@ -57,14 +57,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=weeks_played?size>
+                        <@macros.filledTable fillEmpty=fillTables columns=2 rows=gamesInTables curRows=weeks_played?size fillEmpty=fillTables>
                             <#list weeks_played as game>
                             <tr>
                                 <td><div><@macros.gameImage id=game.game.appId url=game.game.iconUrl /> ${game.game.name}</div></td>
                                 <td title="${game.minutesPlayed} minutes"><div><@macros.timePlayed mins=game.minutesPlayed detailed=true /></div></td>
                             </tr>
                             </#list>
-                        </@macros.fixedSizeTable>
+                        </@macros.filledTable>
                         </tbody>
                     </table>
                 </div>
