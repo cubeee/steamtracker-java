@@ -85,12 +85,12 @@ public class SteamPlayerService {
 			List<GameSnapshot> lastSnapshots = getLastSnapshots(player);
 
 			for (SteamGame steamGame : response.getGames()) {
-				if (steamGame.getMinutesPlayed() == 0) {
-					continue;
-				}
 				Game game = Game.from(steamGame);
 				games.add(game);
 
+				if (steamGame.getMinutesPlayed() == 0) {
+					continue;
+				}
 				GameSnapshot lastSnapshot = getLastSnapshot(lastSnapshots, steamGame);
 				if (lastSnapshot != null && steamGame.getMinutesPlayed() <= lastSnapshot.getMinutesPlayed()) {
 					continue;
