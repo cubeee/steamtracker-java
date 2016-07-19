@@ -81,6 +81,10 @@ public class SteamPlayerService {
 		player.setGameCount(response.getGameCount());
 		player.setLastUpdated(time);
 
+		if (optionEnabled(options, FetchOption.RESOLVE_PROFILE)) {
+			player = resolveProfile(player);
+		}
+
 		List<SteamGame> steamGames = response.getGames();
 		List<Game> games = Lists.newArrayList();
 
@@ -116,10 +120,6 @@ public class SteamPlayerService {
 
 				player.setSnapshots(snapshots);
 			}
-		}
-
-		if (optionEnabled(options, FetchOption.RESOLVE_PROFILE)) {
-			player = resolveProfile(player);
 		}
 
 		if (optionEnabled(options, FetchOption.SAVE_PLAYER)) {
