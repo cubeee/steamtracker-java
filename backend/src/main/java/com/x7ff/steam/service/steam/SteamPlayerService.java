@@ -82,7 +82,7 @@ public class SteamPlayerService {
 		player.setLastUpdated(time);
 
 		if (optionEnabled(options, FetchOption.RESOLVE_PROFILE)) {
-			player = resolveProfile(player);
+			resolveProfile(player);
 		}
 
 		List<SteamGame> steamGames = response.getGames();
@@ -158,24 +158,23 @@ public class SteamPlayerService {
 		return players;
 	}
 
-	public Player resolveProfile(Player player) {
+	public void resolveProfile(Player player) {
 		SteamProfilesResponse response;
 		try {
 			response = steamProfileService.fetch(player.getIdentifier()).getResponse();
 		} catch (RestClientException e) {
 			logger.warning("Player profile for '" + player.getDisplayName() + "' couldn't be resolved: " + e.getMessage());
-			return player;
+			return;
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Player profile for '" + player.getDisplayName() + "' couldn't be resolved", e);
-			return player;
+			return;
 		}
 		List<SteamProfile> profiles = response.getProfiles();
 		if (profiles.isEmpty()) {
-			return player;
+			return;
 		}
 		SteamProfile profile = profiles.get(0);
 		updatePlayerInformation(player, profile);
-		return player;
 	}
 
 	public void resolveProfiles(List<Player> players) throws Exception {
