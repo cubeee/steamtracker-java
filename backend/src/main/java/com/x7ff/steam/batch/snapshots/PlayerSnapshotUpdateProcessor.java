@@ -26,7 +26,7 @@ public final class PlayerSnapshotUpdateProcessor implements ItemProcessor<Player
 			return new PlayerUpdate(player, false);
 		}
 		Player result = steamPlayerService.fetchPlayer(player, player.getIdentifier(), FetchOption.RESOLVE_PROFILE);
-		return new PlayerUpdate(player, result != null);
+		return new PlayerUpdate(result, result != null);
 	}
 
 }
