@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.google.common.base.Objects;
 import com.x7ff.steam.domain.steam.SteamGame;
 import org.jooq.Name;
 import org.jooq.impl.DSL;
@@ -88,6 +89,24 @@ public final class GameSnapshot {
 		snapshot.setMinutesPlayed(steamGame.getMinutesPlayed());
 		snapshot.setDate(time);
 		return snapshot;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		GameSnapshot that = (GameSnapshot) o;
+		return minutesPlayed == that.minutesPlayed &&
+				Objects.equal(player, that.player) &&
+				Objects.equal(game, that.game) &&
+				Objects.equal(date, that.date);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(player, game, minutesPlayed, date);
 	}
 
 }
