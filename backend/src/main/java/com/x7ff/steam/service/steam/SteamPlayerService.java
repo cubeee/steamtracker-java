@@ -57,7 +57,13 @@ public class SteamPlayerService {
 
 	@Transactional
 	public Player fetchPlayer(Player player, String identifier, FetchOption... options) {
-		SteamProfileOwnedGames steamProfile = steamOwnedGamesService.fetch(identifier);
+		SteamProfileOwnedGames steamProfile;
+		try {
+			steamProfile = steamOwnedGamesService.fetch(identifier);
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Failed to fetch player", e);
+			return null;
+		}
 		if (steamProfile == null) {
 			return null;
 		}
