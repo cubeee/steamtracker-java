@@ -34,7 +34,7 @@
                 </div>
                 <div class="player-links col-md-2 col-xs-12 align-right">
                     <ul>
-                        <li><a class="button button-small" href="https://steamcommunity.com/profiles/${player.identifier}/">View on Steam</a></li>
+                        <li><a class="button button-small" target="_blank" href="https://steamcommunity.com/profiles/${player.identifier}/">View on Steam</a></li>
                     </ul>
                 </div>
             </div>
