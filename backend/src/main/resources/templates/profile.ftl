@@ -44,6 +44,10 @@
         <div class="row">
             <div class="col-md-7 col-xs-12">
                 <div class="row">
+                    <#if todays_played?size == 0 && weeks_played?size == 0>
+                        <h1 class="text-medium text-with-subtitle">Freshly added account</h1>
+                        <p class="text-medium text-gray">Nothing tracked yet, go play some games and check back later!</p>
+                    <#else>
                     <div class="col-md-12 col-xs-12">
                         <h3 class="text-medium">Most played in the last 24 hours</h3>
                         <table class="table game-table">
@@ -90,6 +94,7 @@
                             </tbody>
                         </table>
                     </div>
+                    </#if>
                 </div>
             </div>
 
