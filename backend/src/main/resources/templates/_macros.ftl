@@ -44,3 +44,27 @@
         <#nested>
     </#if>
 </#macro>
+
+<#macro avatar url size>
+    <#compress>
+    <div class="avatar ${size}">
+        <div class="player-avatar ${size}" style="background: url(${url}) no-repeat;"></div>
+    </div>
+    </#compress>
+</#macro>
+
+<#macro cutText text len>
+    <#assign strLen=text?length>
+    <#if strLen &lt; len>
+        ${text}
+    <#else>
+        <#assign overflow=(strLen)-len />
+        ${text?substring(0,strLen-overflow)}...
+    </#if>
+</#macro>
+
+<#macro steam_auth_img>
+    <a href="<@spring.url '/auth/steam/' />">
+        <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" alt="Sign in" />
+    </a>
+</#macro>
