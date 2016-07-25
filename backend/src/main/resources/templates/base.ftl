@@ -31,11 +31,6 @@
             <div class="row">
                 <div class="col-xs-12 col-md-9">
                     <a class="text-medium text-white text-logo" href="/">Steam Tracker</a>
-                    <div class="tabs tabs-compact nav">
-                        <@layout.block name="navigation-links">
-
-                        </@layout.block>
-                    </div>
                 </div>
                 <div class="search-container col-xs-12 col-md-3 form-row">
                     <form class="form-collapse" method="post" action="<@spring.url '/search' />">
