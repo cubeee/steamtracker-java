@@ -18,7 +18,7 @@ import com.google.common.collect.Lists;
 import com.x7ff.steam.util.CountryCode;
 
 @Entity
-public final class Player {
+public final class Player extends PlayerUserDetails {
 
 	@Id
 	@SequenceGenerator(name="player_id_seq", sequenceName = "player_id_seq", allocationSize = 1)
@@ -201,6 +201,11 @@ public final class Player {
 
 	public void setGames(List<Game> games) {
 		this.games = games;
+	}
+
+	@Override
+	public String getUsername() {
+		return getDisplayName();
 	}
 
 }
