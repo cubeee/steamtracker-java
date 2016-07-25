@@ -1,4 +1,7 @@
 <#import "spring.ftl" as spring />
+<#import "_macros.ftl" as macros />
+<#import "_functions.ftl" as functions />
+<#assign security=JspTaglibs["/META-INF/security.tld"] />
 <!DOCTYPE html>
 <html lang="en">
     <head>
