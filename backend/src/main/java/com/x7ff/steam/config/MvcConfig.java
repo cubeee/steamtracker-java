@@ -64,7 +64,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 				.addTransformer(new AppCacheManifestTransformer());
 	}
 
-	private boolean cacheResources() {
+	boolean cacheResources() {
 		return !environment.acceptsProfiles("development");
 	}
 

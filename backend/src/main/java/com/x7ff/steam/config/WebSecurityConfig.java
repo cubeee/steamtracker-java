@@ -12,6 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+	@Inject
+	private MvcConfig mvcConfig;
+
 	private final static String ADMIN_ROLE = "ADMIN";
 
 	@Override
@@ -22,13 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// permit all non-configured requests
 		http.authorizeRequests().anyRequest().permitAll();
 
-		// login
-		// http.formLogin().loginPage("/login").permitAll();
-
-		// logout
-		// http.logout().logoutUrl("/logout").permitAll();
-
-		http.headers().cacheControl().disable();
+		if (!mvcConfig.cacheResources()) {
+			http.headers().cacheControl().disable();
+		}
 	}
 
 	@Inject

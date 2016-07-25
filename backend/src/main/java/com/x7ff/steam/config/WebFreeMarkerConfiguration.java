@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @Configuration
-public class WebFreeMarkerConfiguration extends FreeMarkerAutoConfiguration.FreeMarkerWebConfiguration {
+public class WebFreeMarkerConfiguration extends WebMvcConfigurerAdapter {
+
+	@Inject
+	private MvcConfig mvcConfig;
 
 	private static final ImmutableMap<String, Object> DIRECTIVES = ImmutableMap.of(
 			"extends", new ExtendsDirective(),
