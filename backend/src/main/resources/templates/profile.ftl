@@ -1,6 +1,7 @@
 <@layout.extends name="base.ftl">
     <#import "spring.ftl" as spring />
     <#import "_macros.ftl" as macros />
+    <#import "_functions.ftl" as functions />
     <#assign pageTitle="${player.getDisplayName()}" />
 
     <@layout.put block="body">
@@ -36,6 +37,14 @@
                     <ul>
                         <li><a class="button button-small" target="_blank" href="https://steamcommunity.com/profiles/${player.identifier}/">View on Steam</a></li>
                     </ul>
+                    <#if functions.authenticated()>
+                        <#if functions.authenticated_field_alt("principal.identifier", "") == player.identifier>
+                            <!-- player's own profile controls go here -->
+                        </#if>
+                    <#else>
+                        <p class="text-medium text-gray">Your profile?<br />Sign in to manage!</p>
+                        <@macros.steam_auth_img />
+                    </#if>
                 </div>
             </div>
         </div>
