@@ -18,6 +18,7 @@ import org.jooq.GroupField;
 import org.jooq.Param;
 import org.jooq.Record4;
 import org.jooq.Table;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -114,6 +115,22 @@ public class PlayerGameStatistics extends MostPlayedGamesStatistics {
 		StatisticsContext context = new StatisticsContext();
 		context.addItem(playerIdParam.getParamName(), player.getId());
 		return Optional.of(context);
+	}
+
+	/**
+	 * Evict the caches of a player
+	 */
+	public void evictPlayerCaches(Long playerId) {
+		String[] refreshedCacheNames = {
+				CACHE_KEY_TODAY,
+				CACHE_KEY_WEEK,
+				CACHE_KEY_ALLTIME,
+		};
+
+		for (String cacheName : refreshedCacheNames) {
+			Cache cache = cacheManager.getCache(cacheName);
+			cache.evict(playerId);
+		}
 	}
 
 }

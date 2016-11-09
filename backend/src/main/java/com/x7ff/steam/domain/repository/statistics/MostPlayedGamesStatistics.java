@@ -43,13 +43,13 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
 	public static final ZonedDateTime FAR_DATE = ZonedDateTime.of(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0), ZoneId.systemDefault());
 	public static final int NO_LIMIT = -1;
 
-	public static final String CACHE_NAME = "frontpage_stats";
-	public static final String CACHE_NAME_TODAY = "today";
-	public static final String CACHE_NAME_WEEK = "week";
-	public static final String CACHE_NAME_ALLTIME = "all_time";
-	public static final String CACHE_NAME_COLLECTIVE = "collective";
+	private static final String CACHE_NAME = "frontpage_stats";
+	private static final String CACHE_NAME_TODAY = "today";
+	private static final String CACHE_NAME_WEEK = "week";
+	private static final String CACHE_NAME_ALLTIME = "all_time";
+	private static final String CACHE_NAME_COLLECTIVE = "collective";
 
-	private final CacheManager cacheManager;
+	protected final CacheManager cacheManager;
 	private final GameRepository gameRepository;
 	private final DSLContext create;
 

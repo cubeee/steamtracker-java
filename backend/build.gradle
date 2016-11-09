@@ -34,6 +34,7 @@ dependencies {
     compile deps.jooq
     compile deps.flyway
     compile deps.jspApi
+    compile deps.guava
     compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-freemarker'
