@@ -3,6 +3,7 @@
 !.git*
 build/
 lib/
+out/
 *.iml
 *.ipr
 *.iws
