@@ -1,36 +1,40 @@
 plugins {
     id 'com.moowork.node' version '0.12'
-    id "com.moowork.gulp" version '0.12'
 }
 
 apply plugin: 'base'
 
 node {
-    version = '4.4.6'
+    version = '7.9.0'
     download = true
 }
 
-task packageInstall(type: NpmTask) {
-    args = [ 'install' ]
+task semanticBuild(type: NpmTask) {
+    group = 'Node'
+    description = 'Build Semantic UI'
+    args = ['run', 'build-semantic']
 }
 
-task gulpBuild(type: GulpTask) {
-    args = [ 'build' ]
+task webpack(type: NpmTask, dependsOn: "npmInstall") {
+    group = 'Node'
+    description = 'Pack frontend resources with webpack'
+    args = ['run', 'build']
+    inputs.dir 'src'
+    inputs.file 'webpack.config.js'
+    outputs.dir "$distsDir/${project.name}"
 }
 
-task gulpBuildSass(type: NpmTask) {
-    args = [ 'run', 'build-sass']
-}
-
-task gulpWatchSass(type: NpmTask) {
-    args = [ 'run', 'watch-sass']
+task webpackWatch(type: NpmTask) {
+    group = 'Node'
+    description = 'Watch frontend changes with webpack'
+    args = ['run', 'watch']
 }
 
 task jar(type: Jar) {
     group = LifecycleBasePlugin.BUILD_GROUP
     description = 'Package frontend resources into a jar'
 
-    from tasks.gulpBuild
+    from tasks.webpack
 
     eachFile { file ->
         file.path = file.path.startsWith("META-INF") ?: "${project.name}/" + file.path

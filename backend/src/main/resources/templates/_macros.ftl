@@ -22,6 +22,20 @@
     </#compress>
 </#macro>
 
+<#macro gameTable>
+<table class="ui celled table game-table">
+    <thead>
+    <tr>
+        <th>Game</th>
+        <th class="four wide">Time played</th>
+    </tr>
+    </thead>
+    <tbody>
+        <#nested>
+    </tbody>
+</table>
+</#macro>
+
 <#macro fixedSizeTable columns rows curRows>
     <#nested>
     <#if curRows lt rows>
