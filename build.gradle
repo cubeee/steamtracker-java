@@ -4,20 +4,20 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'com.github.ben-manes', name: 'gradle-versions-plugin', version: '0.12.0'
+        classpath group: 'com.github.ben-manes', name: 'gradle-versions-plugin', version: '0.14.0'
     }
 }
 
 ext.deps = [
     freemarkerInheritance: dependencies.create("kr.pe.kwonnam.freemarker:freemarker-template-inheritance:0.4.RELEASE"),
-    guava                : dependencies.create("com.google.guava:guava:19.0"),
-    postgresql           : dependencies.create("org.postgresql:postgresql:9.4.1208"),
+    guava                : dependencies.create("com.google.guava:guava:21.0"),
+    postgresql           : dependencies.create("org.postgresql:postgresql:9.4.1212"),
     javaxInject          : dependencies.create("javax.inject:javax.inject:1"),
-    jspApi               : dependencies.create("javax.servlet.jsp:jsp-api:2.2.1-b03"),
-    jsoup                : dependencies.create("org.jsoup:jsoup:1.9.2"),
-    lombok               : dependencies.create("org.projectlombok:lombok:1.16.8"),
-    jooq                 : dependencies.create("org.jooq:jooq:3.8.2"),
-    flyway               : dependencies.create("org.flywaydb:flyway-core:4.0.3")
+    jspApi               : dependencies.create("javax.servlet.jsp:javax.servlet.jsp-api:2.3.2-b02"),
+    jsoup                : dependencies.create("org.jsoup:jsoup:1.10.2"),
+    lombok               : dependencies.create("org.projectlombok:lombok:1.16.16"),
+    jooq                 : dependencies.create("org.jooq:jooq:3.9.1"),
+    flyway               : dependencies.create("org.flywaydb:flyway-core:4.1.2")
 ]
 
 apply plugin: 'base'
