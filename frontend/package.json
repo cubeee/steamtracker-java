@@ -14,9 +14,11 @@
     "node": "7.9.0"
   },
   "scripts": {
-    "build": "webpack --progress -p --display-error-details",
-    "watch": "webpack --progress -d --watch --watch-poll",
-    "build-semantic": "cd src/semantic && gulp build"
+    "build": "webpack --hide-modules",
+    "watch": "webpack --progress -d --watch --watch-poll"
+  },
+  "peerDependencies": {
+    "webpack": "2.4.1"
   },
   "devDependencies": {
     "webpack": "2.4.1",
@@ -25,7 +27,9 @@
     "webpack-fail-plugin": "1.0.6",
     "style-loader": "0.16.1",
     "css-loader": "0.28.0",
+    "less": "2.7.2",
     "less-loader": "4.0.3",
-    "semantic-ui": "2.2.10"
+    "file-loader": "0.11.1",
+    "semantic-ui-css": "2.2.10"
   }
 }

@@ -16,14 +16,23 @@ module.exports = {
         ]
     },
     output: {
-        path: path.resolve(__dirname, 'build/dist/static/'),
+        path: path.resolve(__dirname, 'build', 'dist', 'static'),
+        publicPath: '/',
         filename: '[name].js'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.less$/,
                 loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' })
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                loader: 'file-loader?name=images/[name].[ext]'
+            },
+            {
+                test: /\.(eot|svg|ttf|otf|woff|woff2)?$/,
+                loader: 'file-loader?name=fonts/[name].[ext]'
             }
         ]
     },
