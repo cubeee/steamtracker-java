@@ -6,7 +6,7 @@ var webpack = require('webpack'),
 
 module.exports = {
     entry: {
-        global: './src'
+        global: ['./src/index.less', './src/index.js']
     },
     resolve: {
         extensions: [
@@ -59,6 +59,11 @@ module.exports = {
                 uniqueSelectors: { add: true },
                 zindex: { add: true }
             }
+        }),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery'
         }),
         FailPlugin
     ]
