@@ -22,6 +22,10 @@
     </#compress>
 </#macro>
 
+<#macro gameImg id url classes>
+    <img src="//media.steampowered.com/steamcommunity/public/images/apps/#{id}/${url}.jpg" class="${classes}" />
+</#macro>
+
 <#macro gameTable>
 <table class="ui celled table game-table">
     <thead>
@@ -81,4 +85,8 @@
     <a href="<@spring.url '/auth/steam/' />">
         <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" alt="Sign in" />
     </a>
+</#macro>
+
+<#macro steam_auth_button>
+<a href="<@spring.url '/auth/steam/' />" class="ui inverted button">Sign in with Steam</a>
 </#macro>

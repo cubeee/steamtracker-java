@@ -20,13 +20,12 @@
         <meta property="og:type" content="website" />
         <title><#if pageTitle??>${pageTitle} - Steam Tracker<#else>Steam Tracker</#if></title>
         <@layout.block name="stylesheets">
-        <link rel="stylesheet" type="text/css" href="<@spring.url '/semantic.min.css' />" />
         <link rel="stylesheet" type="text/css" href="<@spring.url '/global.css' />" />
         </@layout.block>
+        <script type="application/javascript" src="<@spring.url '/global.js' />"></script>
         <@layout.block name="header-scripts">
 
         </@layout.block>
-        <script src="//use.fontawesome.com/89317662ce.js"></script>
     </head>
     <body>
         <@layout.block name="navigation">
@@ -49,9 +48,7 @@
             </div>
         </div>
         </@layout.block>
-        <div class="ui page grid main">
         <@layout.block name="body"></@layout.block>
-        </div>
     <@layout.block name="scripts">
 
     </@layout.block>
