@@ -7,30 +7,6 @@
     <@layout.put block="navigation" type="replace"></@layout.put>
 
     <@layout.put block="body">
-    <style>
-        .masthead.segment {
-            min-height: 10em;
-            padding: 1em 0em;
-        }
-        .masthead .logo.item img {
-            margin-right: 1em;
-        }
-        .masthead .ui.menu .ui.button {
-            margin-left: 0.5em;
-        }
-        .masthead h1.ui.header {
-            margin-top: 1em;
-            margin-bottom: 0;
-            font-size: 4em;
-            font-weight: normal;
-        }
-        .masthead h2 {
-            margin-bottom: 1.5em;
-            font-size: 1.7em;
-            font-weight: normal;
-        }
-    </style>
-
     <div class="pusher">
         <div class="ui inverted vertical masthead center aligned segment">
             <div class="ui large secondary inverted pointing menu">
@@ -111,7 +87,7 @@
                                             <!--<img src="/images/avatar2/small/lena.png" class="ui mini rounded image">-->
                                             <@macros.gameImg id=game.game.appId url=game.game.iconUrl classes="ui mini rounded image" />
                                             <div class="content">
-                                            ${game.game.name}
+                                                ${game.game.name}
                                                 <div class="sub header" title="${game.minutesPlayed} minutes">
                                                     <@macros.timePlayed mins=game.minutesPlayed />
                                                 </div>
@@ -130,7 +106,7 @@
                 <#if weeks_played?size gt 0>
                 <table class="ui celled table game-table main-game-table">
                     <tbody>
-                        <@macros.filledTable fillEmpty=fillTables columns=2 rows=gamesInTables curRows=weeks_played?size fillEmpty=fillTables>
+                        <@macros.filledTable fillEmpty=fillTables columns=2 rows=gamesInTables curRows=weeks_played?size>
                             <#list weeks_played as game>
                             <tr>
                                 <td>
@@ -181,10 +157,5 @@
             </div>
         </div>
     </div>
-    <div class="ui inverted vertical masthead center aligned segment">
-        <!-- TODO: fill -->
-        <p>SteamTracker</p>
-    </div>
     </@layout.put>
-
 </@layout.extends>

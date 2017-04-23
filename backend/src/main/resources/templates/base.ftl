@@ -29,28 +29,45 @@
     </head>
     <body>
         <@layout.block name="navigation">
-        <div class="ui grid">
-            <!-- todo: mobile navbar? -->
-            <div class="row">
-                <div class="ui inverted fixed menu navbar page grid">
-                    <a href="/" class="brand item">Steam Tracker</a>
-                    <div class="right menu">
-                        <div class="item">
-                            <form class="ui icon input" method="post" action="<@spring.url '/search' />">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                <input class="search-field" name="identifier" placeholder="Search profile" type="text">
-                                <i class="search icon"></i>
-                            </form>
+        <div class="ui inverted vertical segment">
+            <div class="ui grid">
+                <div class="twelve wide centered column" style="padding-top: 0; padding-bottom: 0;">
+                    <div class="ui huge inverted menu">
+                        <div class="header item"><a href="<@spring.url '/' />">SteamTracker</a></div>
+                        <div class="right menu">
+                            <div class="item">
+                                <form class="ui icon input" method="post" action="<@spring.url '/search' />">
+                                    <div class="ui transparent inverted icon input">
+                                        <i class="search icon"></i>
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        <input type="text" name="identifier" placeholder="Search">
+                                    </div>
+                                </form>
+                            </div>
+                            <#if functions.authenticated()>
+                                <#assign identifier="${functions.authenticated_field('principal.identifier')}" />
+                                <a class="item" href="<@spring.url '/player/${identifier}/' />">Profile</a>
+                                <a class="item" href="<@spring.url '/auth/logout/' />">Log out</a>
+                            <#else>
+                            <div class="item">
+                                <@macros.steam_auth_img />
+                            </div>
+                            </#if>
                         </div>
-                        <!-- todo: profile dropdown -->
                     </div>
                 </div>
             </div>
         </div>
         </@layout.block>
-        <@layout.block name="body"></@layout.block>
-    <@layout.block name="scripts">
 
-    </@layout.block>
+        <@layout.block name="body"></@layout.block>
+
+        <@layout.block name="footer">
+        <div class="ui inverted vertical masthead center aligned segment">
+            <!-- TODO: fill -->
+            <p>SteamTracker</p>
+        </div>
+        </@layout.block>
+        <@layout.block name="scripts"></@layout.block>
     </body>
 </html>

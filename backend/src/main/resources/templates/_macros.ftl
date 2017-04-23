@@ -22,18 +22,34 @@
     </#compress>
 </#macro>
 
+<#macro commonGameTable fillTables maxRows games>
+    <@gameTable>
+        <@filledTable fillEmpty=fillTables columns=1 rows=maxRows curRows=games?size>
+            <#list games as game>
+            <tr>
+                <td>
+                    <h4 class="ui image header">
+                        <@gameImg id=game.game.appId url=game.game.iconUrl classes="ui mini rounded image" />
+                        <div class="content">
+                        ${game.game.name}
+                            <div class="sub header" title="${game.minutesPlayed} minutes">
+                                <@timePlayed mins=game.minutesPlayed />
+                            </div>
+                        </div>
+                    </h4>
+                </td>
+            </tr>
+            </#list>
+        </@filledTable>
+    </@gameTable>
+</#macro>
+
 <#macro gameImg id url classes>
     <img src="//media.steampowered.com/steamcommunity/public/images/apps/#{id}/${url}.jpg" class="${classes}" />
 </#macro>
 
 <#macro gameTable>
-<table class="ui celled table game-table">
-    <thead>
-    <tr>
-        <th>Game</th>
-        <th class="four wide">Time played</th>
-    </tr>
-    </thead>
+<table class="ui celled table game-table main-game-table">
     <tbody>
         <#nested>
     </tbody>
