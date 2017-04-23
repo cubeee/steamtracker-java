@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="ui row">
-                    <div class="six wide column">
+                    <div class="six wide computer sixteen wide mobile column">
                         <h3>Most played in the last 24 hours</h3>
                         <#if todays_played?size == 0>
                             <p>No statistics for the last 24 hours</p>
@@ -52,7 +52,7 @@
                             <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=todays_played />
                         </#if>
                     </div>
-                    <div class="six wide column">
+                    <div class="six wide computer sixteen wide mobile  column">
                         <h3>Most played in the last 7 days</h3>
                         <#if weeks_played?size == 0>
                             <p>No statistics for the last 7 days</p>
@@ -60,7 +60,7 @@
                             <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=weeks_played />
                         </#if>
                     </div>
-                    <div class="four wide column">
+                    <div class="four wide computer sixteen wide mobile  column">
                         <h3 class="text-medium">Most played games</h3>
                         <@macros.commonGameTable fillTables=false maxRows=gamesInTables games=most_played />
                     </div>
