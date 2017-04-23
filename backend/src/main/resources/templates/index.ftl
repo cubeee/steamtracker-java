@@ -29,7 +29,7 @@
                     </div>
                 <#else>
                     <div class="right item">
-                        <@macros.steam_auth_button />
+                        <@macros.steam_auth_img />
                     </div>
                 </#if>
                 </div>
@@ -56,7 +56,7 @@
                     <div class="row">
                         <div class="ui twelve wide center aligned column">
                             <a class="ui large black image label">
-                            ${tracked_players}
+                                ${tracked_players}
                                 <div class="detail">Players tracked</div>
                             </a>
                             <a class="ui large black image label">
