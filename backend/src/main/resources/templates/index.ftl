@@ -77,82 +77,19 @@
             <div class="four wide column">
                 <h3 class="text-medium">Most played in the last 24 hours</h3>
                 <#if todays_played?size gt 0>
-                    <table class="ui celled table game-table main-game-table">
-                        <tbody>
-                            <@macros.filledTable fillEmpty=fillTables columns=1 rows=gamesInTables curRows=todays_played?size>
-                                <#list todays_played as game>
-                                <tr>
-                                    <td>
-                                        <h4 class="ui image header">
-                                            <!--<img src="/images/avatar2/small/lena.png" class="ui mini rounded image">-->
-                                            <@macros.gameImg id=game.game.appId url=game.game.iconUrl classes="ui mini rounded image" />
-                                            <div class="content">
-                                                ${game.game.name}
-                                                <div class="sub header" title="${game.minutesPlayed} minutes">
-                                                    <@macros.timePlayed mins=game.minutesPlayed />
-                                                </div>
-                                            </div>
-                                        </h4>
-                                    </td>
-                                </tr>
-                                </#list>
-                            </@macros.filledTable>
-                        </tbody>
-                    </table>
+                    <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=todays_played />
                 </#if>
             </div>
             <div class="four wide column">
                 <h3 class="text-medium">Most played in the last 7 days</h3>
                 <#if weeks_played?size gt 0>
-                <table class="ui celled table game-table main-game-table">
-                    <tbody>
-                        <@macros.filledTable fillEmpty=fillTables columns=2 rows=gamesInTables curRows=weeks_played?size>
-                            <#list weeks_played as game>
-                            <tr>
-                                <td>
-                                    <h4 class="ui image header">
-                                        <!--<img src="/images/avatar2/small/lena.png" class="ui mini rounded image">-->
-                                        <@macros.gameImg id=game.game.appId url=game.game.iconUrl classes="ui mini rounded image" />
-                                        <div class="content">
-                                        ${game.game.name}
-                                            <div class="sub header" title="${game.minutesPlayed} minutes">
-                                                <@macros.timePlayed mins=game.minutesPlayed />
-                                            </div>
-                                        </div>
-                                    </h4>
-                                </td>
-                            </tr>
-                            </#list>
-                        </@macros.filledTable>
-                    </tbody>
-                </table>
+                    <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=weeks_played />
                 </#if>
             </div>
             <div class="four wide column">
                 <h3 class="text-medium">Most played</h3>
                 <#if most_played?size gt 0>
-                <table class="ui celled table game-table">
-                    <tbody>
-                        <@macros.fixedSizeTable columns=2 rows=gamesInTables curRows=most_played?size>
-                            <#list most_played as game>
-                            <tr>
-                                <td>
-                                    <h4 class="ui image header">
-                                        <!--<img src="/images/avatar2/small/lena.png" class="ui mini rounded image">-->
-                                        <@macros.gameImg id=game.game.appId url=game.game.iconUrl classes="ui mini rounded image" />
-                                        <div class="content">
-                                            ${game.game.name}
-                                            <div class="sub header" title="${game.minutesPlayed} minutes">
-                                                <@macros.timePlayed mins=game.minutesPlayed />
-                                            </div>
-                                        </div>
-                                    </h4>
-                                </td>
-                            </tr>
-                            </#list>
-                        </@macros.fixedSizeTable>
-                    </tbody>
-                </table>
+                    <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=most_played />
                 </#if>
             </div>
         </div>
