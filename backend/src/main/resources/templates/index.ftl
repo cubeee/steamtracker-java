@@ -12,19 +12,12 @@
             <div class="ui large secondary inverted pointing menu">
                 <div class="ui container">
                 <#if functions.authenticated()>
-                    <#assign avatar="${functions.authenticated_field('principal.avatarMedium')}" />
                     <#assign identifier="${functions.authenticated_field('principal.identifier')}" />
                     <#assign username="${functions.authenticated_field('principal.username')}" />
-                    <!--<a class="item" href="/">Home</a>
-
-                    <div class="right item">
-                        <a class="item" href="<@spring.url '/player/${identifier}/' />">Profile</a>
-                        <a class="item" href="<@spring.url '/auth/logout/' />">Sign out</a>
-                    </div>-->
                     <div class="ui inverted menu">
-                        <a class="active item">Home</a>
                         <div class="right menu">
-                            <a class="ui item">Sign out</a>
+                            <a class="item"><a class="item" href="<@spring.url '/player/${identifier}/' />">Profile</a></a>
+                            <a class="item"><a class="item" href="<@spring.url '/auth/logout/' />">Log out</a></a>
                         </div>
                     </div>
                 <#else>
