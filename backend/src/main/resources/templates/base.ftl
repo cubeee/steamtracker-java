@@ -21,38 +21,54 @@
         <meta property="og:type" content="website" />
         <title><#if pageTitle??>${pageTitle} - Steam Tracker<#else>Steam Tracker</#if></title>
         <@layout.block name="stylesheets">
-        <link rel="stylesheet" type="text/css" href="<@spring.url '/css/sierra.min.css' />" />
-        <link rel="stylesheet" type="text/css" href="<@spring.url '/css/site.css' />" />
+        <link rel="stylesheet" type="text/css" href="<@spring.url '/global.css' />" />
         </@layout.block>
+        <script type="application/javascript" src="<@spring.url '/global.js' />"></script>
         <@layout.block name="header-scripts">
 
         </@layout.block>
-        <script src="//use.fontawesome.com/89317662ce.js"></script>
     </head>
     <body>
         <@layout.block name="navigation">
-        <div class="navigation">
-            <div class="row">
-                <div class="col-xs-12 col-md-9">
-                    <a class="text-medium text-white text-logo" href="/">Steam Tracker</a>
-                </div>
-                <div class="search-container col-xs-12 col-md-3 form-row">
-                    <form class="form-collapse" method="post" action="<@spring.url '/search' />">
-                        <div class="input input-with-icon full-width search">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                            <input class="search-field" name="identifier" placeholder="Search profile" type="text">
-                            <button class="input-icon fa fa-search fa-lg" type="submit"></button>
+        <div class="ui inverted vertical segment">
+            <div class="ui grid">
+                <div class="twelve wide centered column" style="padding-top: 0; padding-bottom: 0;">
+                    <div class="ui huge inverted menu">
+                        <div class="header item"><a href="<@spring.url '/' />">SteamTracker</a></div>
+                        <div class="right menu">
+                            <div class="item">
+                                <form class="ui icon input" method="post" action="<@spring.url '/search' />">
+                                    <div class="ui transparent inverted icon input">
+                                        <i class="search icon"></i>
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        <input type="text" name="identifier" placeholder="Search">
+                                    </div>
+                                </form>
+                            </div>
+                            <#if functions.authenticated()>
+                                <#assign identifier="${functions.authenticated_field('principal.identifier')}" />
+                                <a class="item" href="<@spring.url '/player/${identifier}/' />">Profile</a>
+                                <a class="item" href="<@spring.url '/auth/logout/' />">Log out</a>
+                            <#else>
+                            <div class="item">
+                                <@macros.steam_auth_img />
+                            </div>
+                            </#if>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
         </@layout.block>
-        <main class="main">
-        <@layout.block name="body"></@layout.block>
-        </main>
-    <@layout.block name="scripts">
 
-    </@layout.block>
+        <@layout.block name="body"></@layout.block>
+
+        <@layout.block name="footer">
+        <div class="ui inverted vertical masthead center aligned segment">
+            <!-- TODO: fill -->
+            <p>SteamTracker</p>
+        </div>
+        </@layout.block>
+        <@layout.block name="scripts"></@layout.block>
     </body>
 </html>

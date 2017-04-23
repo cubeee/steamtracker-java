@@ -11,33 +11,25 @@
     "url": "https://github.com/cubeee/steam-tracker"
   },
   "engines": {
-    "node": "4.4.6"
+    "node": "7.9.0"
   },
   "scripts": {
-    "build": "gulp build",
-    "build-sass": "gulp sass:build",
-    "watch-sass": "gulp sass:watch",
-    "build-js": "gulp js:browserify",
-    "watch-js": "gulp js:watch",
-    "dist": "gulp dist",
-    "build-sierra": "gulp build_sierra"
+    "build": "webpack --hide-modules",
+    "watch": "webpack --progress -d --watch --watch-poll"
+  },
+  "peerDependencies": {
+    "webpack": "2.4.1"
   },
   "devDependencies": {
-    "gulp": "*",
-    "gulp-sass": "*",
-    "gulp-chug": "*",
-    "gulp-minify-css": "*",
-    "gulp-uglify": "*",
-    "sierra-library": "*",
-    "require-dir": "*",
-    "rmdir": "*",
-    "run-sequence": "*",
-    "browserify": "*",
-    "vinyl-buffer": "*",
-    "event-stream": "*",
-    "glob": "*",
-    "path": "*",
-    "which": "*",
-    "vinyl-source-stream": "*"
+    "webpack": "2.4.1",
+    "extract-text-webpack-plugin": "2.1.0",
+    "optimize-css-assets-webpack-plugin": "1.3.1",
+    "webpack-fail-plugin": "1.0.6",
+    "style-loader": "0.16.1",
+    "css-loader": "0.28.0",
+    "less": "2.7.2",
+    "less-loader": "4.0.3",
+    "file-loader": "0.11.1",
+    "semantic-ui-css": "2.2.10"
   }
 }
