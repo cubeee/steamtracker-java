@@ -37,37 +37,33 @@
             <div class="ui text container">
                 <h1 class="ui inverted header">SteamTracker</h1>
                 <h2>Track your Steam profile progression</h2>
-                <div class="ui ten column centered grid">
-                    <div class="ui twelve wide column">
-                        <form class="ui form" method="post" action="<@spring.url '/search' />">
-                                <div class="fields">
-                                    <div class="sixteen wide centered field">
-                                    <div class="ui fluid big icon input">
-                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                        <input class="prompt" name="identifier" type="text" placeholder="Steam profile url, id or custom name">
-                                        <i class="search icon"></i>
+                <div class="ui ten column centered tight grid">
+                    <div class="row">
+                        <div class="ui twelve wide column">
+                            <form class="ui form" method="post" action="<@spring.url '/search' />">
+                                    <div class="fields">
+                                        <div class="sixteen wide centered field">
+                                        <div class="ui fluid big icon input">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                            <input class="prompt" name="identifier" type="text" placeholder="Steam profile url, id or custom name">
+                                            <i class="search icon"></i>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui vertical segment">
-            <div class="ui container">
-                <div class="ui center aligned equal width grid">
-                    <div class="ui centered column">
-                        <a class="ui large grey image label">
+                    <div class="row">
+                        <div class="ui twelve wide center aligned column">
+                            <a class="ui large black image label">
                             ${tracked_players}
-                            <div class="detail">Players tracked</div>
-                        </a>
-                    </div>
-                    <div class="ui centered column">
-                        <a class="ui large grey image label">
-                            <@macros.timePlayed mins=collective_tracked detailed=false />
-                            <div class="detail">Collective hours tracked</div>
-                        </a>
+                                <div class="detail">Players tracked</div>
+                            </a>
+                            <a class="ui large black image label">
+                                <@macros.timePlayed mins=collective_tracked detailed=false />
+                                <div class="detail">Collective hours tracked</div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
