@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     runtime project(path: ':frontend', configuration: 'archives')
+    compile project(path: ':shared')
     compile deps.freemarkerInheritance
     compile deps.postgresql
     compile deps.javaxInject
