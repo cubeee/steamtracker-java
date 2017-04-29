@@ -2,10 +2,10 @@ package com.x7ff.steam.updater.batch.snapshots;
 
 import javax.inject.Inject;
 
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import com.x7ff.steam.shared.domain.Player;
 import com.x7ff.steam.shared.service.steam.FetchOption;
 import com.x7ff.steam.shared.service.steam.SteamPlayerService;
+import com.x7ff.steam.updater.config.UpdaterConfig;
 import org.springframework.batch.item.ItemProcessor;
 
 public final class PlayerSnapshotUpdateProcessor implements ItemProcessor<Player, PlayerUpdate> {
@@ -15,9 +15,9 @@ public final class PlayerSnapshotUpdateProcessor implements ItemProcessor<Player
 	private final long updateInterval;
 
 	@Inject
-	public PlayerSnapshotUpdateProcessor(SteamTrackerConfig steamTrackerConfig, SteamPlayerService steamPlayerService) {
+	public PlayerSnapshotUpdateProcessor(UpdaterConfig updaterConfig, SteamPlayerService steamPlayerService) {
 		this.steamPlayerService = steamPlayerService;
-		this.updateInterval = steamTrackerConfig.getUpdater().getSnapshotUpdateInterval();
+		this.updateInterval = updaterConfig.getSnapshotUpdateInterval();
 	}
 
 	@Override

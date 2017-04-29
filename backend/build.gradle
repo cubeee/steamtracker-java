@@ -34,9 +34,6 @@ dependencies {
     compile deps.guava
     compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.springframework.boot:spring-boot-starter-freemarker'
-    compile ('org.springframework.boot:spring-boot-starter-web') {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-    }
     compile 'org.springframework.boot:spring-boot-starter-undertow'
     compile 'org.springframework.security:spring-security-openid'
     compile 'org.springframework.security:spring-security-taglibs'

@@ -11,11 +11,15 @@ spring:
     url: jdbc:postgresql://localhost:5432/steamtracker
     username: steamtracker
     password: steamtracker
+  profiles:
+    include: 'updater-production'
+
 server:
   port: 8891
   error:
     whitelabel:
       enabled: false
+
 logging:
   path: /opt/steam-tracker/logs/
   file: stdout.log
@@ -24,9 +28,3 @@ steamtracker:
   timezone: GMT
   steam:
     api-key: <key>
-  updater:
-    enable-manual-updating: false
-    automatic-update-interval: 720
-    snapshot-update-interval: 360
-    snapshots-page-size: 100
-    snapshots-chunk-size: 100

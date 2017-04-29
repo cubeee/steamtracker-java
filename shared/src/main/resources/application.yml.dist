@@ -4,10 +4,6 @@ spring:
     web-environment: true
   profiles:
     active: development
-  freemarker:
-    cache: false
-    charset: UTF-8
-    content-type: text/html
   data:
     jpa:
       repositories:
@@ -28,7 +24,6 @@ spring:
     password: steamtracker
 
 server:
-  port: 8888
   compression:
     enabled: true
 
@@ -39,3 +34,8 @@ flyway:
   enabled: true
   locations:
     classpath:migrations
+
+steamtracker:
+  timezone: GMT
+  steam:
+    api-key: <api_key>

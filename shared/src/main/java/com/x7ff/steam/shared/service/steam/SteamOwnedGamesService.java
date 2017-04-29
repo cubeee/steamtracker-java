@@ -2,7 +2,7 @@ package com.x7ff.steam.shared.service.steam;
 
 import javax.inject.Inject;
 
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
+import com.x7ff.steam.shared.config.SharedConfig;
 import com.x7ff.steam.shared.domain.steam.SteamProfileOwnedGames;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public final class SteamOwnedGamesService extends SteamService<SteamProfileOwnedGames> {
 
 	@Inject
-	public SteamOwnedGamesService(SteamTrackerConfig steamTrackerConfig) {
-		super(steamTrackerConfig);
+	public SteamOwnedGamesService(SharedConfig sharedConfig) {
+		super(sharedConfig);
 	}
 
 	@Override

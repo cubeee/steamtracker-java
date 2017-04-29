@@ -3,11 +3,11 @@ package com.x7ff.steam.updater.batch.snapshots;
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import com.x7ff.steam.shared.domain.Player;
 import com.x7ff.steam.shared.domain.repository.statistics.MostPlayedGamesStatistics;
 import com.x7ff.steam.shared.service.steam.SteamPlayerService;
 import com.x7ff.steam.updater.batch.PlayerBatchUtils;
+import com.x7ff.steam.updater.config.UpdaterConfig;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 public class PlayerSnapshotBatch {
 
 	@Inject
-	private SteamTrackerConfig steamTrackerConfig;
+	private UpdaterConfig updaterConfig;
 
 	@Inject
 	private SteamPlayerService steamPlayerService;
@@ -58,7 +58,7 @@ public class PlayerSnapshotBatch {
 		String jobName = "player_update_job";
 		return jobBuilderFactory.get(jobName)
 				.repository(jobRepository)
-				.listener(new LastRunJobExecutionListener(jobName, jobExplorer, steamTrackerConfig.getUpdater()
+				.listener(new LastRunJobExecutionListener(jobName, jobExplorer, updaterConfig
 						.getSnapshotUpdateInterval()))
 				.incrementer(new RunIdIncrementer())
 				.flow(playerProcessStep())
@@ -69,7 +69,7 @@ public class PlayerSnapshotBatch {
 
 	private Step playerProcessStep() {
 		return stepBuilderFactory.get("process_player")
-				.<Player, PlayerUpdate>chunk(steamTrackerConfig.getUpdater().getSnapshotsChunkSize())
+				.<Player, PlayerUpdate>chunk(updaterConfig.getSnapshotsChunkSize())
 				.reader(playerReader())
 				.processor(playerProcessor())
 				.writer(playerWriter())
@@ -85,7 +85,7 @@ public class PlayerSnapshotBatch {
 	}
 
 	private JpaPagingItemReader<Player> playerReader() {
-		return PlayerBatchUtils.getPlayerReader(steamTrackerConfig.getUpdater().getSnapshotsPageSize(), entityManagerFactory);
+		return PlayerBatchUtils.getPlayerReader(updaterConfig.getSnapshotsPageSize(), entityManagerFactory);
 	}
 
 	private ItemWriter<PlayerUpdate> playerWriter() {
@@ -93,7 +93,7 @@ public class PlayerSnapshotBatch {
 	}
 
 	private PlayerSnapshotUpdateProcessor playerProcessor() {
-		return new PlayerSnapshotUpdateProcessor(steamTrackerConfig, steamPlayerService);
+		return new PlayerSnapshotUpdateProcessor(updaterConfig, steamPlayerService);
 	}
 
 	public JobRepository getJobRepository() {

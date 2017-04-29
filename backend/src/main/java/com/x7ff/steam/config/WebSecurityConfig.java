@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import com.x7ff.steam.service.SteamUserDetailsService;
+import com.x7ff.steam.shared.config.MvcConfig;
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
 import org.springframework.context.annotation.Bean;

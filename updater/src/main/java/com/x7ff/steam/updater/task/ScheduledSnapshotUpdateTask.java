@@ -5,9 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import com.x7ff.steam.updater.batch.PlayerBatchUtils;
 import com.x7ff.steam.updater.batch.snapshots.PlayerSnapshotBatch;
+import com.x7ff.steam.updater.config.UpdaterConfig;
 import org.springframework.batch.core.Job;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public final class ScheduledSnapshotUpdateTask implements Runnable {
 	private static final Logger logger = Logger.getLogger(ScheduledSnapshotUpdateTask.class.getName());
 
 	@Inject
-	private SteamTrackerConfig steamTrackerConfig;
+	private UpdaterConfig updaterConfig;
 
 	@Inject
 	private PlayerSnapshotBatch snapshotBatch;
@@ -35,7 +35,7 @@ public final class ScheduledSnapshotUpdateTask implements Runnable {
 	}
 
 	public long getDelay() {
-		return TimeUnit.MINUTES.toMillis(steamTrackerConfig.getUpdater().getAutomaticUpdateInterval());
+		return TimeUnit.MINUTES.toMillis(updaterConfig.getAutomaticUpdateInterval());
 	}
 
 }

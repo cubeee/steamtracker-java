@@ -2,7 +2,6 @@ package com.x7ff.steam.updater.config;
 
 import javax.inject.Inject;
 
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import com.x7ff.steam.updater.task.ScheduledProfileUpdateTask;
 import com.x7ff.steam.updater.task.ScheduledSnapshotUpdateTask;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,7 @@ import org.springframework.scheduling.support.CronTrigger;
 public class SchedulingConfig implements SchedulingConfigurer {
 
 	@Inject
-	private SteamTrackerConfig steamTrackerConfig;
+	private UpdaterConfig updaterConfig;
 
 	@Inject
 	private ScheduledSnapshotUpdateTask snapshotUpdateTask;
@@ -26,7 +25,7 @@ public class SchedulingConfig implements SchedulingConfigurer {
 
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-		if (steamTrackerConfig.getUpdater().isDisableScheduledTasks()) {
+		if (updaterConfig.isDisableScheduledTasks()) {
 			return;
 		}
 		taskRegistrar.addFixedDelayTask(snapshotUpdateTask, snapshotUpdateTask.getDelay());

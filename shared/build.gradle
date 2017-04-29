@@ -25,6 +25,7 @@ repositories {
 }
 
 dependencies {
+    compile deps.postgresql
     compile deps.javaxInject
     compile deps.jooq
     compile deps.lombok
@@ -32,8 +33,10 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile ('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
     optional 'org.springframework.boot:spring-boot-configuration-processor'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 compileJava.dependsOn processResources

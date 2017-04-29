@@ -3,16 +3,13 @@ spring:
     hibernate:
       ddl-auto: update
 
+server:
+  port: 8889
+
 steamtracker:
   timezone: GMT
   steam:
     api-key: <key>
-  updater:
-    enable-manual-updating: false
-    automatic-update-interval: 720
-    snapshot-update-interval: 360
-    snapshots-page-size: 100
-    snapshots-chunk-size: 100
   front-page:
     games-in-tables: 10
     fill-tables: true

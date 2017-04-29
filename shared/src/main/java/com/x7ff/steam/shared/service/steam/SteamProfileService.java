@@ -3,7 +3,7 @@ package com.x7ff.steam.shared.service.steam;
 import javax.inject.Inject;
 
 import com.google.common.base.Joiner;
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
+import com.x7ff.steam.shared.config.SharedConfig;
 import com.x7ff.steam.shared.domain.steam.SteamProfiles;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 public final class SteamProfileService extends SteamService<SteamProfiles> {
 
 	@Inject
-	public SteamProfileService(SteamTrackerConfig steamTrackerConfig) {
-		super(steamTrackerConfig);
+	public SteamProfileService(SharedConfig sharedConfig) {
+		super(sharedConfig);
 	}
 
 	@Override

@@ -4,20 +4,20 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.google.common.base.Preconditions;
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
+import com.x7ff.steam.shared.config.SharedConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public abstract class SteamService<R> {
 
-	protected final SteamTrackerConfig steamTrackerConfig;
+	protected final SharedConfig sharedConfig;
 
 	protected final RestTemplate restTemplate;
 
 	@Inject
-	public SteamService(SteamTrackerConfig steamTrackerConfig) {
-		this.steamTrackerConfig = steamTrackerConfig;
+	public SteamService(SharedConfig sharedConfig) {
+		this.sharedConfig = sharedConfig;
 		this.restTemplate = new RestTemplate();
 	}
 
@@ -42,7 +42,7 @@ public abstract class SteamService<R> {
 
 	protected String getURL(String parameters) {
 		return String.format("https://api.steampowered.com/%s/%s/%s/?key=%s%s",
-				getInterfaceName(), getCallName(), getVersion(), steamTrackerConfig.getSteam().getApiKey(), parameters);
+				getInterfaceName(), getCallName(), getVersion(), sharedConfig.getSteam().getApiKey(), parameters);
 	}
 
 }

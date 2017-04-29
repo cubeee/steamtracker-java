@@ -1,5 +1,7 @@
 package com.x7ff.steam.shared.config;
 
+import java.util.TimeZone;
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,35 +14,39 @@ import org.springframework.validation.annotation.Validated;
 
 @Configuration
 @ConfigurationProperties(prefix = "steamtracker")
-@EnableConfigurationProperties(SteamTrackerConfig.class)
+@EnableConfigurationProperties(SharedConfig.class)
 @Getter
 @Setter
 @Validated
-public class SteamTrackerConfig {
+public class SharedConfig {
+
+	@NotNull
+	private String timezone = "GMT";
+
+	@PostConstruct
+	public void init() {
+		TimeZone.setDefault(TimeZone.getTimeZone(timezone));
+	}
 
 	/**
-	 * Front page related configuration
+	 * Steam related configuration
 	 */
 	@NotNull
-	private FrontPageConfig frontPage = new FrontPageConfig();
+	private SteamConfig steam = new SteamConfig();
 
 	/**
-	 * Front page related configuration
+	 * Steam related configuration
 	 */
 	@Getter
 	@Setter
-	public class FrontPageConfig {
+	public class SteamConfig {
 
 		/**
-		 * Number of games to show in tables.
+		 * Key for fetching information from Steam API
 		 */
-		@Size(min=1)
-		private int gamesInTables = 10;
-
-		/**
-		 * Create empty table cells where the amount of games is less than <i>gamesInTables</i>.
-		 */
-		private boolean fillTables;
+		@NotNull
+		@Size(min = 32, max = 32)
+		private String apiKey;
 
 	}
 

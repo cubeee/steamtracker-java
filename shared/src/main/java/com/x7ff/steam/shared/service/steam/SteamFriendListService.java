@@ -2,7 +2,7 @@ package com.x7ff.steam.shared.service.steam;
 
 import javax.inject.Inject;
 
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
+import com.x7ff.steam.shared.config.SharedConfig;
 import com.x7ff.steam.shared.domain.steam.friends.SteamFriends;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public final class SteamFriendListService extends SteamService<SteamFriends> {
 
 	@Inject
-	public SteamFriendListService(SteamTrackerConfig steamTrackerConfig) {
-		super(steamTrackerConfig);
+	public SteamFriendListService(SharedConfig sharedConfig) {
+		super(sharedConfig);
 	}
 
 	@Override
