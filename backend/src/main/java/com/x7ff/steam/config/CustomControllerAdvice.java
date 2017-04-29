@@ -2,6 +2,7 @@ package com.x7ff.steam.config;
 
 import javax.inject.Inject;
 
+import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;

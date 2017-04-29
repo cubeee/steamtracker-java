@@ -3,7 +3,7 @@ package com.x7ff.steam.config;
 import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
-import com.x7ff.steam.service.auth.SteamUserDetailsService;
+import com.x7ff.steam.service.SteamUserDetailsService;
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
 import org.springframework.context.annotation.Bean;

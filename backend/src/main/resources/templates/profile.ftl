@@ -23,12 +23,14 @@
                                         </div>
                                     </#if>
                                     <div class="description">
+                                        <#if player.countryCode??>
                                         <p class="country">
                                             <img class="country-flag" src="//steamcommunity-a.akamaihd.net/public/images/countryflags/${player.countryCode?lower_case}.gif" />
                                             <#if player.getCountry()??>
                                             ${player.getCountry()}
                                             </#if>
                                         </p>
+                                        </#if>
                                     </div>
                                     <div class="extra">
                                         <br />

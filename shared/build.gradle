@@ -1,13 +1,39 @@
-version '1.0'
+buildscript {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+
+    dependencies {
+        classpath group: 'org.springframework.build.gradle', name: 'propdeps-plugin', version: '0.0.7'
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: "$springBootVersion"
+    }
+}
 
 apply from: "$rootDir/gradle/java.gradle"
-
-sourceCompatibility = 1.8
+apply plugin: 'propdeps'
+apply plugin: 'org.springframework.boot'
 
 repositories {
-    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
 }
 
 dependencies {
+    compile deps.javaxInject
+    compile deps.jooq
+    compile deps.lombok
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
+    optional 'org.springframework.boot:spring-boot-configuration-processor'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+compileJava.dependsOn processResources

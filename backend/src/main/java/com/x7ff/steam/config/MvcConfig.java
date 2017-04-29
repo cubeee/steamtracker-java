@@ -3,7 +3,7 @@ package com.x7ff.steam.config;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import com.x7ff.steam.util.annotation.CacheableKeyGenerator;
+import com.x7ff.steam.shared.util.annotation.CacheableKeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;

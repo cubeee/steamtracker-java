@@ -29,23 +29,15 @@ dependencies {
     compile project(path: ':shared')
     compile deps.freemarkerInheritance
     compile deps.postgresql
-    compile deps.javaxInject
-    compile deps.jsoup
-    compile deps.lombok
-    compile deps.jooq
     compile deps.flyway
     compile deps.jspApi
     compile deps.guava
     compile 'org.springframework.boot:spring-boot-devtools'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-freemarker'
-    compile 'org.springframework.boot:spring-boot-starter-security'
-    compile 'org.springframework.boot:spring-boot-starter-batch'
     compile ('org.springframework.boot:spring-boot-starter-web') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
     }
     compile 'org.springframework.boot:spring-boot-starter-undertow'
-    compile 'com.fasterxml.jackson.core:jackson-databind'
     compile 'org.springframework.security:spring-security-openid'
     compile 'org.springframework.security:spring-security-taglibs'
     compile 'org.springframework:spring-webmvc'
