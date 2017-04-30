@@ -1,0 +1,18 @@
+[Unit]
+Description=Steam Tracker Updater
+After=network.target
+
+[Service]
+Type=simple
+User=steamtracker
+Group=steamtracker
+WorkingDirectory=/opt/steam-tracker-updater
+ExecStart=/opt/steam-tracker-updater/run
+Restart=on-failure
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=true
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

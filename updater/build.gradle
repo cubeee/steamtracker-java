@@ -46,7 +46,7 @@ compileJava.dependsOn processResources
 
 jar {
     baseName = 'steam-tracker-updater'
-    libsDirName = file("$rootDir/deploy/files/steam-tracker")
+    libsDirName = file("$rootDir/deploy/files/steam-tracker-updater")
 
     exclude('application-development.*')
     exclude('*.dist')

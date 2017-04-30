@@ -10,7 +10,7 @@
 
   tasks:
   - name: Copy systemd to remote server
-    copy: src=../files/systemd/steam-tracker.service dest=/etc/systemd/system/steam-tracker.service
+    copy: src=../files/steam-tracker/systemd/steam-tracker.service dest=/etc/systemd/system/steam-tracker.service
 
   - name: Ensure program directory exists
     file: path={{ dest }} state=directory mode=755 owner={{ user }} group={{ group }}
@@ -25,6 +25,7 @@
       checksum: yes
       rsync_opts:
         - "--exclude=*.dist"
+        - "--exclude=systemd/"
     sudo: no
 
   - name: Remove write permissions from program directory
