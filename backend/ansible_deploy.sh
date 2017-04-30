@@ -35,4 +35,4 @@ fi
 chmod +x ${RUN_FILE}
 
 echo "Deploying..."
-ansible-playbook -i ${HOSTS_FILE} ${DEPLOY_DIR}/ansible/playbook.yml -u ${DEPLOY_USER} -s -K
+ansible-playbook -i ${HOSTS_FILE} ${DEPLOY_DIR}/ansible/playbook-backend.yml -u ${DEPLOY_USER} -s -K
