@@ -14,9 +14,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableBatchProcessing
 @EnableCaching
 @EnableJpaRepositories("com.x7ff.steam")
-@EntityScan(basePackages = { "com.x7ff.steam.shared.domain" })
+@EntityScan(basePackages = { "com.x7ff.steam" })
 @ComponentScan(
-		basePackages = { "com.x7ff.steam.shared" },
+		basePackages = { "com.x7ff.steam" },
 		excludeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = Tool.class) }
 )
 public class Updater {

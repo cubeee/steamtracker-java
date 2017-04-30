@@ -6,13 +6,17 @@ import javax.validation.constraints.Min;
 import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
 
 @Configuration
+@ConfigurationProperties
 @EnableConfigurationProperties({ SteamTrackerConfig.class, UpdaterConfig.class })
 @Getter
 @Setter
+@Validated
 public class UpdaterConfig {
 
 	/**
