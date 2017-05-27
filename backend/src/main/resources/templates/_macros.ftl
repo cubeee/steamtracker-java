@@ -17,7 +17,7 @@
 <#macro gameImage id url>
     <#compress>
     <div class="rounded-corners image">
-        <div class="rounded-corners game-image" style="background: url(http://media.steampowered.com/steamcommunity/public/images/apps/#{id}/${url}.jpg) no-repeat;"></div>
+        <div class="rounded-corners game-image" style="background: url(http://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/#{id}/${url}.jpg) no-repeat;"></div>
     </div>
     </#compress>
 </#macro>
@@ -45,7 +45,7 @@
 </#macro>
 
 <#macro gameImg id url classes>
-    <img src="//media.steampowered.com/steamcommunity/public/images/apps/#{id}/${url}.jpg" class="${classes}" />
+    <img src="//steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/#{id}/${url}.jpg" class="${classes}" />
 </#macro>
 
 <#macro gameTable>
