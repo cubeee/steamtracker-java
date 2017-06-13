@@ -8,7 +8,12 @@ import com.x7ff.steam.shared.service.steam.SteamPlayerService;
 import com.x7ff.steam.updater.config.UpdaterConfig;
 import org.springframework.batch.item.ItemProcessor;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public final class PlayerSnapshotUpdateProcessor implements ItemProcessor<Player, PlayerUpdate> {
+
+	private static final Logger logger = Logger.getLogger(PlayerSnapshotUpdateProcessor.class.getSimpleName());
 
 	private final SteamPlayerService steamPlayerService;
 
@@ -25,7 +30,13 @@ public final class PlayerSnapshotUpdateProcessor implements ItemProcessor<Player
 		if (!player.updateNeeded(updateInterval)) {
 			return new PlayerUpdate(player, false);
 		}
-		Player result = steamPlayerService.fetchPlayer(player, player.getIdentifier(), FetchOption.RESOLVE_PROFILE);
+		Player result;
+		try {
+			result = steamPlayerService.fetchPlayer(player, player.getIdentifier(), FetchOption.RESOLVE_PROFILE);
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Failed to fetch player snapshot", e);
+			result = null;
+		}
 		return new PlayerUpdate(result, result != null);
 	}
 
