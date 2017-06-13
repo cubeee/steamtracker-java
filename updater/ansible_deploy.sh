@@ -19,7 +19,7 @@ if [ ${DEPLOY_FAT_JAR} ] && [ ${DEPLOY_FAT_JAR} == "n" ]; then
     echo "Building and collecting dependencies..."
     ../gradlew jar copyDependencies
 
-    deps=($(find ${DEPLOY_DIR}/files/steam-tracker-updater/libs -type f -name '*.jar' -printf 'libs\\/%f\040'))
+    deps=$(find ${DEPLOY_DIR}/files/steam-tracker-updater/libs -type f -name '*.jar' -printf 'libs\\/%f\040')
 
     template_file="${DEPLOY_DIR}/ansible/templates/run-updater.sep.tmpl"
     libs=$(IFS=:; echo "${deps[*]}")
