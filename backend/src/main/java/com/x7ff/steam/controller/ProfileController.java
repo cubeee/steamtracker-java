@@ -3,13 +3,13 @@ package com.x7ff.steam.controller;
 import java.util.Optional;
 import javax.inject.Inject;
 
-import com.x7ff.steam.config.SteamTrackerConfig;
-import com.x7ff.steam.domain.Player;
-import com.x7ff.steam.domain.repository.PlayerRepository;
-import com.x7ff.steam.domain.repository.statistics.PlayerGameStatistics;
-import com.x7ff.steam.service.steam.FetchOption;
-import com.x7ff.steam.service.steam.SteamPlayerService;
-import com.x7ff.steam.util.SteamUtils;
+import com.x7ff.steam.shared.config.SteamTrackerConfig;
+import com.x7ff.steam.shared.domain.Player;
+import com.x7ff.steam.shared.domain.repository.PlayerRepository;
+import com.x7ff.steam.shared.domain.repository.statistics.PlayerGameStatistics;
+import com.x7ff.steam.shared.service.steam.FetchOption;
+import com.x7ff.steam.shared.service.steam.SteamPlayerService;
+import com.x7ff.steam.shared.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -25,8 +25,6 @@ public final class ProfileController {
 	private final SteamPlayerService steamPlayerService;
 	private final PlayerGameStatistics statsRepository;
 
-	private final boolean manualUpdatingEnabled;
-
 	@Inject
 	public ProfileController(SteamTrackerConfig steamTrackerConfig,
 	                         PlayerRepository playerRepository,
@@ -36,7 +34,6 @@ public final class ProfileController {
 		this.playerRepository = playerRepository;
 		this.steamPlayerService = steamPlayerService;
 		this.statsRepository = statsRepository;
-		this.manualUpdatingEnabled = steamTrackerConfig.getUpdater().isEnableManualUpdating();
 	}
 
 	@RequestMapping("/player/{rawIdentifier}/")
@@ -46,26 +43,12 @@ public final class ProfileController {
 		String identifier = optionalIdentifier.get();
 
 		Player player = playerRepository.findByIdentifier(identifier);
-		boolean updateNeeded = true;
 		if (player == null) {
 			player = getPlayer(null, identifier);
-			updateNeeded = false;
 		}
 
 		if (player == null) {
 			throw new NotFoundException();
-		}
-
-		if (manualUpdatingEnabled) {
-			if (updateNeeded) {
-				updateNeeded = player.updateNeeded(steamTrackerConfig.getUpdater().getManualUpdateInterval());
-			}
-			if (updateNeeded) {
-				player = getPlayer(player, identifier);
-				if (player == null) {
-					throw new NotFoundException();
-				}
-			}
 		}
 
 		int games = steamTrackerConfig.getFrontPage().getGamesInTables();

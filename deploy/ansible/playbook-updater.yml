@@ -1,0 +1,41 @@
+---
+- name: Deploy playbook
+  hosts: hosts
+
+  vars:
+    dest: /opt/steam-tracker-updater
+    user: steamtracker
+    group: steamtracker
+    deployer: deployer
+
+  tasks:
+  - name: Copy systemd to remote server
+    copy: src=../files/steam-tracker-updater/systemd/steam-tracker-updater.service dest=/etc/systemd/system/steam-tracker-updater.service
+
+  - name: Ensure program directory exists
+    file: path={{ dest }} state=directory mode=755 owner={{ user }} group={{ group }}
+
+  - name: Give write permissions to program directory
+    file: owner={{ deployer }} mode="u+rw" path={{ dest }} recurse=yes
+
+  - name: Copy files to remote server
+    synchronize:
+      src: ../files/steam-tracker-updater/
+      dest: "{{ dest }}"
+      checksum: yes
+      rsync_opts:
+        - "--exclude=*.dist"
+        - "--exclude=systemd/"
+    sudo: no
+
+  - name: Remove write permissions from program directory
+    file: owner={{ deployer }} mode="u-rw" path={{ dest }} recurse=yes
+
+  - name: Reload systemd daemon
+    command: systemctl daemon-reload
+
+  - name: Enable systemd service
+    command: systemctl enable steam-tracker-updater
+
+  - name: Restart systemd service
+    command: systemctl restart steam-tracker-updater

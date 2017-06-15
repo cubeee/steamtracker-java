@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
 import com.google.common.collect.ImmutableMap;
+import com.x7ff.steam.shared.config.MvcConfig;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.ext.jsp.TaglibFactory;
 import freemarker.template.TemplateException;

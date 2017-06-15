@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8891
+
+steamtracker:
+  timezone: GMT
+  steam:
+    api-key: <key>

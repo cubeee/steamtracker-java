@@ -1,4 +1,5 @@
 rootProject.name = 'steamtracker'
 include 'frontend'
 include 'backend'
-
+include 'shared'
+include 'updater'

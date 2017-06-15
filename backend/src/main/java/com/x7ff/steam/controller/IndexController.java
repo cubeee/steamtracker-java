@@ -3,12 +3,12 @@ package com.x7ff.steam.controller;
 import java.util.Optional;
 import javax.inject.Inject;
 
-import com.x7ff.steam.config.SteamTrackerConfig;
+import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import com.x7ff.steam.domain.PlayerSearch;
-import com.x7ff.steam.domain.repository.PlayerRepository;
-import com.x7ff.steam.domain.repository.statistics.MostPlayedGamesStatistics;
-import com.x7ff.steam.domain.repository.statistics.StatisticsContext;
-import com.x7ff.steam.util.SteamUtils;
+import com.x7ff.steam.shared.domain.repository.PlayerRepository;
+import com.x7ff.steam.shared.domain.repository.statistics.MostPlayedGamesStatistics;
+import com.x7ff.steam.shared.domain.repository.statistics.StatisticsContext;
+import com.x7ff.steam.shared.util.SteamUtils;
 import com.x7ff.steam.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
