@@ -1,0 +1,11 @@
+language: java
+jdk:
+  - oraclejdk8
+install: true
+script:
+  - ./gradlew :backend:check
+  - ./gradlew :backend:build
+  - ./gradlew :backend:test
+  - ./gradlew :updater:check
+  - ./gradlew :updater:build
+  - ./gradlew :updater:test

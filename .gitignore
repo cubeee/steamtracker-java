@@ -7,3 +7,5 @@ out/
 *.iml
 *.ipr
 *.iws
+
+!.travis.yml
