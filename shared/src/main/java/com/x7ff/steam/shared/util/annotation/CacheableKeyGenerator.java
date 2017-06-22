@@ -7,13 +7,13 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.core.annotation.AnnotationUtils;
 
 public final class CacheableKeyGenerator implements KeyGenerator {
-	public static final String NAME = "cacheableKeyGenerator";
+    public static final String NAME = "cacheableKeyGenerator";
 
-	@Override
-	public Object generate(Object target, Method method, Object... params) {
-		CacheableKey annotation = AnnotationUtils.findAnnotation(method, CacheableKey.class);
-		Preconditions.checkNotNull(annotation, "A CacheableKey annotation is required when using a CacheableKeyGenerator");
-		return annotation.value();
-	}
+    @Override
+    public Object generate(Object target, Method method, Object... params) {
+        CacheableKey annotation = AnnotationUtils.findAnnotation(method, CacheableKey.class);
+        Preconditions.checkNotNull(annotation, "A CacheableKey annotation is required when using a CacheableKeyGenerator");
+        return annotation.value();
+    }
 
 }

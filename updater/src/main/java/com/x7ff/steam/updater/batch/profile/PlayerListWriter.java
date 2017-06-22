@@ -12,32 +12,32 @@ import org.springframework.stereotype.Component;
 @Component
 public final class PlayerListWriter extends JpaItemWriter<List<Player>> {
 
-	private boolean saveGames;
+    private boolean saveGames;
 
-	@Inject
-	private GameRepository gameRepository;
+    @Inject
+    private GameRepository gameRepository;
 
-	@Inject
-	private PlayerRepository playerRepository;
+    @Inject
+    private PlayerRepository playerRepository;
 
-	@Override
-	public void write(List<? extends List<Player>> items) {
-		for (List<Player> players : items) {
-			if (saveGames) {
-				for (Player player : players) {
-					gameRepository.persist(player.getGames());
-				}
-			}
-			playerRepository.save(players);
-		}
-	}
+    @Override
+    public void write(List<? extends List<Player>> items) {
+        for (List<Player> players : items) {
+            if (saveGames) {
+                for (Player player : players) {
+                    gameRepository.persist(player.getGames());
+                }
+            }
+            playerRepository.save(players);
+        }
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
+    @Override
+    public void afterPropertiesSet() throws Exception {
 
-	}
+    }
 
-	public void setSaveGames(boolean saveGames) {
-		this.saveGames = saveGames;
-	}
+    public void setSaveGames(boolean saveGames) {
+        this.saveGames = saveGames;
+    }
 }

@@ -13,30 +13,30 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 @Configuration
 public class BackendMvcConfig extends WebMvcConfigurationSupport {
-	private static final int ONE_YEAR = 31556926;
+    private static final int ONE_YEAR = 31556926;
 
-	@Inject
-	private MvcConfig mvcConfig;
+    @Inject
+    private MvcConfig mvcConfig;
 
-	@Override
-	protected void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new DomainInterceptor());
-	}
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new DomainInterceptor());
+    }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		VersionResourceResolver resourceResolver = new VersionResourceResolver();
-		resourceResolver.addVersionStrategy(new ContentVersionStrategy(), "/**");
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        VersionResourceResolver resourceResolver = new VersionResourceResolver();
+        resourceResolver.addVersionStrategy(new ContentVersionStrategy(), "/**");
 
-		registry.addResourceHandler("/**")
-				.addResourceLocations(
-						"classpath:/static/",
-						"classpath:/templates/"
-				)
-				.setCachePeriod(ONE_YEAR)
-				.resourceChain(mvcConfig.cacheResources())
-				.addResolver(resourceResolver)
-				.addTransformer(new AppCacheManifestTransformer());
-	}
+        registry.addResourceHandler("/**")
+                .addResourceLocations(
+                        "classpath:/static/",
+                        "classpath:/templates/"
+                )
+                .setCachePeriod(ONE_YEAR)
+                .resourceChain(mvcConfig.cacheResources())
+                .addResolver(resourceResolver)
+                .addTransformer(new AppCacheManifestTransformer());
+    }
 
 }

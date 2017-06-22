@@ -15,38 +15,38 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 public final class PlayerBatchUtils {
 
-	public static JpaPagingItemReader<Player> getPlayerReader(int pageSize, EntityManagerFactory entityManagerFactory) {
-		JpaPagingItemReader<Player> reader = new JpaPagingItemReader<>();
-		reader.setQueryString("SELECT p FROM Player p");
-		reader.setPageSize(pageSize);
-		reader.setEntityManagerFactory(entityManagerFactory);
-		return reader;
-	}
+    public static JpaPagingItemReader<Player> getPlayerReader(int pageSize, EntityManagerFactory entityManagerFactory) {
+        JpaPagingItemReader<Player> reader = new JpaPagingItemReader<>();
+        reader.setQueryString("SELECT p FROM Player p");
+        reader.setPageSize(pageSize);
+        reader.setEntityManagerFactory(entityManagerFactory);
+        return reader;
+    }
 
-	public static JpaPagingItemListReader<Player> getPlayerListReader(int pageSize, EntityManagerFactory entityManagerFactory) {
-		JpaPagingItemListReader<Player> reader = new JpaPagingItemListReader<>();
-		reader.setQueryString("SELECT p FROM Player p");
-		reader.setPageSize(pageSize);
-		reader.setEntityManagerFactory(entityManagerFactory);
-		return reader;
-	}
+    public static JpaPagingItemListReader<Player> getPlayerListReader(int pageSize, EntityManagerFactory entityManagerFactory) {
+        JpaPagingItemListReader<Player> reader = new JpaPagingItemListReader<>();
+        reader.setQueryString("SELECT p FROM Player p");
+        reader.setPageSize(pageSize);
+        reader.setEntityManagerFactory(entityManagerFactory);
+        return reader;
+    }
 
-	public static SimpleJobLauncher asyncJobLauncher(JobRepository jobRepository, String threadNamePrefix) throws Exception {
-		SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-		jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor(threadNamePrefix));
-		jobLauncher.setJobRepository(jobRepository);
-		jobLauncher.afterPropertiesSet();
-		return jobLauncher;
-	}
+    public static SimpleJobLauncher asyncJobLauncher(JobRepository jobRepository, String threadNamePrefix) throws Exception {
+        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
+        jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor(threadNamePrefix));
+        jobLauncher.setJobRepository(jobRepository);
+        jobLauncher.afterPropertiesSet();
+        return jobLauncher;
+    }
 
-	public static JobParameters getTimeJobParameters() {
-		Map<String, JobParameter> parameters = Maps.newHashMap();
-		parameters.put("time", new JobParameter(System.currentTimeMillis()));
-		return new JobParameters(parameters);
-	}
+    public static JobParameters getTimeJobParameters() {
+        Map<String, JobParameter> parameters = Maps.newHashMap();
+        parameters.put("time", new JobParameter(System.currentTimeMillis()));
+        return new JobParameters(parameters);
+    }
 
-	private PlayerBatchUtils() {
+    private PlayerBatchUtils() {
 
-	}
+    }
 
 }

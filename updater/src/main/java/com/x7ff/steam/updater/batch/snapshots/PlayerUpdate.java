@@ -4,21 +4,21 @@ import com.x7ff.steam.shared.domain.Player;
 
 public final class PlayerUpdate {
 
-	private final Player player;
+    private final Player player;
 
-	private final boolean updated;
+    private final boolean updated;
 
-	public PlayerUpdate(Player player, boolean updated) {
-		this.player = player;
-		this.updated = updated;
-	}
+    public PlayerUpdate(Player player, boolean updated) {
+        this.player = player;
+        this.updated = updated;
+    }
 
-	public Player getPlayer() {
-		return player;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public boolean isUpdated() {
-		return updated;
-	}
+    public boolean isUpdated() {
+        return updated;
+    }
 
 }

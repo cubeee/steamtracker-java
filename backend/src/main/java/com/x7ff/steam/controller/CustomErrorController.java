@@ -11,32 +11,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public final class CustomErrorController implements ErrorController {
-	private static final String PATH = "/error";
+    private static final String PATH = "/error";
 
-	@RequestMapping(path = PATH, method = { RequestMethod.GET, RequestMethod.POST })
-	public String show(HttpServletResponse response, Model model) {
-		int status = response.getStatus();
-		model.addAttribute("status", status);
-		return getTemplateForStatus(status);
-	}
+    @RequestMapping(path = PATH, method = {RequestMethod.GET, RequestMethod.POST})
+    public String show(HttpServletResponse response, Model model) {
+        int status = response.getStatus();
+        model.addAttribute("status", status);
+        return getTemplateForStatus(status);
+    }
 
-	@Override
-	public String getErrorPath() {
-		return PATH;
-	}
+    @Override
+    public String getErrorPath() {
+        return PATH;
+    }
 
-	private String getTemplateForStatus(int status) {
-		String template;
-		switch (HttpStatus.valueOf(status)) {
-			case NOT_FOUND:
-				template = "404";
-				break;
+    private String getTemplateForStatus(int status) {
+        String template;
+        switch (HttpStatus.valueOf(status)) {
+            case NOT_FOUND:
+                template = "404";
+                break;
 
-			default:
-				template = "error";
-				break;
-		}
-		return "errors/" + template;
-	}
+            default:
+                template = "error";
+                break;
+        }
+        return "errors/" + template;
+    }
 
 }

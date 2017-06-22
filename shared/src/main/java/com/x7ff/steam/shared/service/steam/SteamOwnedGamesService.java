@@ -9,28 +9,28 @@ import org.springframework.stereotype.Service;
 @Service
 public final class SteamOwnedGamesService extends SteamService<SteamProfileOwnedGames> {
 
-	@Inject
-	public SteamOwnedGamesService(SharedConfig sharedConfig) {
-		super(sharedConfig);
-	}
+    @Inject
+    public SteamOwnedGamesService(SharedConfig sharedConfig) {
+        super(sharedConfig);
+    }
 
-	@Override
-	public SteamProfileOwnedGames fetch(String... args) {
-		return fetchRestTemplate(SteamProfileOwnedGames.class, getParameters(args));
-	}
+    @Override
+    public SteamProfileOwnedGames fetch(String... args) {
+        return fetchRestTemplate(SteamProfileOwnedGames.class, getParameters(args));
+    }
 
-	@Override
-	protected String getInterfaceName() {
-		return "IPlayerService";
-	}
+    @Override
+    protected String getInterfaceName() {
+        return "IPlayerService";
+    }
 
-	@Override
-	protected String getCallName() {
-		return "GetOwnedGames";
-	}
+    @Override
+    protected String getCallName() {
+        return "GetOwnedGames";
+    }
 
-	protected String getParameters(String... identifiers) {
-		return "&steamid=" + identifiers[0] + "&format=json&include_appinfo=1&include_played_free_games=1";
-	}
+    protected String getParameters(String... identifiers) {
+        return "&steamid=" + identifiers[0] + "&format=json&include_appinfo=1&include_played_free_games=1";
+    }
 
 }

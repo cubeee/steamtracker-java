@@ -26,78 +26,78 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlayerSnapshotBatch {
 
-	@Inject
-	private UpdaterConfig updaterConfig;
+    @Inject
+    private UpdaterConfig updaterConfig;
 
-	@Inject
-	private SteamPlayerService steamPlayerService;
+    @Inject
+    private SteamPlayerService steamPlayerService;
 
-	@Inject
-	private JobBuilderFactory jobBuilderFactory;
+    @Inject
+    private JobBuilderFactory jobBuilderFactory;
 
-	@Inject
-	private StepBuilderFactory stepBuilderFactory;
+    @Inject
+    private StepBuilderFactory stepBuilderFactory;
 
-	@Inject
-	private EntityManagerFactory entityManagerFactory;
+    @Inject
+    private EntityManagerFactory entityManagerFactory;
 
-	@Inject
-	private JobRepository jobRepository;
+    @Inject
+    private JobRepository jobRepository;
 
-	@Inject
-	private PlayerWriter playerWriter;
+    @Inject
+    private PlayerWriter playerWriter;
 
-	@Inject
-	private JobExplorer jobExplorer;
+    @Inject
+    private JobExplorer jobExplorer;
 
-	@Inject
-	@Qualifier("mostPlayed")
-	private MostPlayedGamesStatistics mostPlayedGamesStatistics;
+    @Inject
+    @Qualifier("mostPlayed")
+    private MostPlayedGamesStatistics mostPlayedGamesStatistics;
 
-	public Job playerProcessJob() {
-		String jobName = "player_update_job";
-		return jobBuilderFactory.get(jobName)
-				.repository(jobRepository)
-				.listener(new LastRunJobExecutionListener(jobName, jobExplorer, updaterConfig
-						.getSnapshotUpdateInterval()))
-				.incrementer(new RunIdIncrementer())
-				.flow(playerProcessStep())
-				.next(cachePopulatorStep())
-				.end()
-				.build();
-	}
+    public Job playerProcessJob() {
+        String jobName = "player_update_job";
+        return jobBuilderFactory.get(jobName)
+                .repository(jobRepository)
+                .listener(new LastRunJobExecutionListener(jobName, jobExplorer, updaterConfig
+                        .getSnapshotUpdateInterval()))
+                .incrementer(new RunIdIncrementer())
+                .flow(playerProcessStep())
+                .next(cachePopulatorStep())
+                .end()
+                .build();
+    }
 
-	private Step playerProcessStep() {
-		return stepBuilderFactory.get("process_player")
-				.<Player, PlayerUpdate>chunk(updaterConfig.getSnapshotsChunkSize())
-				.reader(playerReader())
-				.processor(playerProcessor())
-				.writer(playerWriter())
-				.build();
-	}
+    private Step playerProcessStep() {
+        return stepBuilderFactory.get("process_player")
+                .<Player, PlayerUpdate>chunk(updaterConfig.getSnapshotsChunkSize())
+                .reader(playerReader())
+                .processor(playerProcessor())
+                .writer(playerWriter())
+                .build();
+    }
 
-	@Bean
-	private TaskletStep cachePopulatorStep() {
-		return stepBuilderFactory.get("cache_populator").tasklet((contribution, chunkContext) -> {
-			mostPlayedGamesStatistics.refreshCache();
-			return RepeatStatus.FINISHED;
-		}).build();
-	}
+    @Bean
+    private TaskletStep cachePopulatorStep() {
+        return stepBuilderFactory.get("cache_populator").tasklet((contribution, chunkContext) -> {
+            mostPlayedGamesStatistics.refreshCache();
+            return RepeatStatus.FINISHED;
+        }).build();
+    }
 
-	private JpaPagingItemReader<Player> playerReader() {
-		return PlayerBatchUtils.getPlayerReader(updaterConfig.getSnapshotsPageSize(), entityManagerFactory);
-	}
+    private JpaPagingItemReader<Player> playerReader() {
+        return PlayerBatchUtils.getPlayerReader(updaterConfig.getSnapshotsPageSize(), entityManagerFactory);
+    }
 
-	private ItemWriter<PlayerUpdate> playerWriter() {
-		return playerWriter;
-	}
+    private ItemWriter<PlayerUpdate> playerWriter() {
+        return playerWriter;
+    }
 
-	private PlayerSnapshotUpdateProcessor playerProcessor() {
-		return new PlayerSnapshotUpdateProcessor(updaterConfig, steamPlayerService);
-	}
+    private PlayerSnapshotUpdateProcessor playerProcessor() {
+        return new PlayerSnapshotUpdateProcessor(updaterConfig, steamPlayerService);
+    }
 
-	public JobRepository getJobRepository() {
-		return jobRepository;
-	}
+    public JobRepository getJobRepository() {
+        return jobRepository;
+    }
 
 }

@@ -8,107 +8,107 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SteamProfile {
 
-	@JsonProperty("personaname")
-	private String name;
+    @JsonProperty("personaname")
+    private String name;
 
-	@JsonProperty("steamid")
-	private String identifier;
+    @JsonProperty("steamid")
+    private String identifier;
 
-	@JsonProperty("avatar")
-	private String avatar;
+    @JsonProperty("avatar")
+    private String avatar;
 
-	@JsonProperty("avatarmedium")
-	private String avatarMedium;
+    @JsonProperty("avatarmedium")
+    private String avatarMedium;
 
-	@JsonProperty("avatarfull")
-	private String avatarFull;
+    @JsonProperty("avatarfull")
+    private String avatarFull;
 
-	@JsonProperty("primaryclanid")
-	private String clanId;
+    @JsonProperty("primaryclanid")
+    private String clanId;
 
-	@JsonProperty("timecreated")
-	private long timeCreated;
+    @JsonProperty("timecreated")
+    private long timeCreated;
 
-	@JsonProperty("loccountrycode")
-	private String countryCode;
+    @JsonProperty("loccountrycode")
+    private String countryCode;
 
-	@JsonProperty("personaname")
-	public String getName() {
-		return name;
-	}
+    @JsonProperty("personaname")
+    public String getName() {
+        return name;
+    }
 
-	@JsonProperty("personaname")
-	public void setName(String name) {
-		this.name = name;
-	}
+    @JsonProperty("personaname")
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@JsonProperty("steamid")
-	public String getIdentifier() {
-		return identifier;
-	}
+    @JsonProperty("steamid")
+    public String getIdentifier() {
+        return identifier;
+    }
 
-	@JsonProperty("steamid")
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
+    @JsonProperty("steamid")
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
-	@JsonProperty("avatar")
-	public String getAvatar() {
-		return avatar;
-	}
+    @JsonProperty("avatar")
+    public String getAvatar() {
+        return avatar;
+    }
 
-	@JsonProperty("avatar")
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
+    @JsonProperty("avatar")
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
-	@JsonProperty("avatarmedium")
-	public String getAvatarMedium() {
-		return avatarMedium;
-	}
+    @JsonProperty("avatarmedium")
+    public String getAvatarMedium() {
+        return avatarMedium;
+    }
 
-	@JsonProperty("avatarmedium")
-	public void setAvatarMedium(String avatarMedium) {
-		this.avatarMedium = avatarMedium;
-	}
+    @JsonProperty("avatarmedium")
+    public void setAvatarMedium(String avatarMedium) {
+        this.avatarMedium = avatarMedium;
+    }
 
-	@JsonProperty("avatarfull")
-	public String getAvatarFull() {
-		return avatarFull;
-	}
+    @JsonProperty("avatarfull")
+    public String getAvatarFull() {
+        return avatarFull;
+    }
 
-	@JsonProperty("avatarfull")
-	public void setAvatarFull(String avatarFull) {
-		this.avatarFull = avatarFull;
-	}
+    @JsonProperty("avatarfull")
+    public void setAvatarFull(String avatarFull) {
+        this.avatarFull = avatarFull;
+    }
 
-	@JsonProperty("primaryclanid")
-	public String getClanId() {
-		return clanId;
-	}
+    @JsonProperty("primaryclanid")
+    public String getClanId() {
+        return clanId;
+    }
 
-	@JsonProperty("primaryclanid")
-	public void setClanId(String clanId) {
-		this.clanId = clanId;
-	}
+    @JsonProperty("primaryclanid")
+    public void setClanId(String clanId) {
+        this.clanId = clanId;
+    }
 
-	@JsonProperty("timecreated")
-	public long getTimeCreated() {
-		return timeCreated;
-	}
+    @JsonProperty("timecreated")
+    public long getTimeCreated() {
+        return timeCreated;
+    }
 
-	@JsonProperty("timecreated")
-	public void setTimeCreated(long timeCreated) {
-		this.timeCreated = timeCreated;
-	}
+    @JsonProperty("timecreated")
+    public void setTimeCreated(long timeCreated) {
+        this.timeCreated = timeCreated;
+    }
 
-	@JsonProperty("loccountrycode")
-	public String getCountryCode() {
-		return countryCode;
-	}
+    @JsonProperty("loccountrycode")
+    public String getCountryCode() {
+        return countryCode;
+    }
 
-	@JsonProperty("loccountrycode")
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
+    @JsonProperty("loccountrycode")
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 }

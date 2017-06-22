@@ -10,24 +10,24 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class PlayerRepositoryImpl extends SimpleJpaRepository<Player, Long> implements PlayerRepository {
 
-	private final EntityManager entityManager;
+    private final EntityManager entityManager;
 
-	@Inject
-	public PlayerRepositoryImpl(EntityManager entityManager) {
-		super(Player.class, entityManager);
-		this.entityManager = entityManager;
-	}
+    @Inject
+    public PlayerRepositoryImpl(EntityManager entityManager) {
+        super(Player.class, entityManager);
+        this.entityManager = entityManager;
+    }
 
-	@Override
-	public Player findByIdentifier(String identifier) {
-		try {
-			return (Player) entityManager
-					.createQuery("SELECT p FROM Player p WHERE p.identifier = :identifier")
-					.setParameter("identifier", identifier)
-					.getSingleResult();
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    @Override
+    public Player findByIdentifier(String identifier) {
+        try {
+            return (Player) entityManager
+                    .createQuery("SELECT p FROM Player p WHERE p.identifier = :identifier")
+                    .setParameter("identifier", identifier)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

@@ -14,28 +14,28 @@ import org.springframework.stereotype.Component;
 @Component
 public final class ScheduledSnapshotUpdateTask implements Runnable {
 
-	private static final Logger logger = Logger.getLogger(ScheduledSnapshotUpdateTask.class.getName());
+    private static final Logger logger = Logger.getLogger(ScheduledSnapshotUpdateTask.class.getName());
 
-	@Inject
-	private UpdaterConfig updaterConfig;
+    @Inject
+    private UpdaterConfig updaterConfig;
 
-	@Inject
-	private PlayerSnapshotBatch snapshotBatch;
+    @Inject
+    private PlayerSnapshotBatch snapshotBatch;
 
-	@Override
-	public void run() {
-		Job job = snapshotBatch.playerProcessJob();
-		try {
-			PlayerBatchUtils.asyncJobLauncher(
-					snapshotBatch.getJobRepository(), "PlayerSnapshotUpdate")
-					.run(job, PlayerBatchUtils.getTimeJobParameters());
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Failed to update snapshots", e);
-		}
-	}
+    @Override
+    public void run() {
+        Job job = snapshotBatch.playerProcessJob();
+        try {
+            PlayerBatchUtils.asyncJobLauncher(
+                    snapshotBatch.getJobRepository(), "PlayerSnapshotUpdate")
+                    .run(job, PlayerBatchUtils.getTimeJobParameters());
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Failed to update snapshots", e);
+        }
+    }
 
-	public long getDelay() {
-		return TimeUnit.MINUTES.toMillis(updaterConfig.getAutomaticUpdateInterval());
-	}
+    public long getDelay() {
+        return TimeUnit.MINUTES.toMillis(updaterConfig.getAutomaticUpdateInterval());
+    }
 
 }

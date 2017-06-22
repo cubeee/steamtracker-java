@@ -10,17 +10,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SteamFriendsList {
 
-	@JsonProperty("friends")
-	private List<SteamFriend> friends;
+    @JsonProperty("friends")
+    private List<SteamFriend> friends;
 
-	@JsonProperty("friends")
-	public List<SteamFriend> getFriends() {
-		return friends;
-	}
+    @JsonProperty("friends")
+    public List<SteamFriend> getFriends() {
+        return friends;
+    }
 
-	@JsonProperty("friends")
-	public void setFriends(List<SteamFriend> friends) {
-		this.friends = friends;
-	}
+    @JsonProperty("friends")
+    public void setFriends(List<SteamFriend> friends) {
+        this.friends = friends;
+    }
 
 }

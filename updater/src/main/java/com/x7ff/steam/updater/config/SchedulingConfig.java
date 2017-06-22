@@ -14,22 +14,22 @@ import org.springframework.scheduling.support.CronTrigger;
 @EnableScheduling
 public class SchedulingConfig implements SchedulingConfigurer {
 
-	@Inject
-	private UpdaterConfig updaterConfig;
+    @Inject
+    private UpdaterConfig updaterConfig;
 
-	@Inject
-	private ScheduledSnapshotUpdateTask snapshotUpdateTask;
+    @Inject
+    private ScheduledSnapshotUpdateTask snapshotUpdateTask;
 
-	@Inject
-	private ScheduledProfileUpdateTask profileUpdateTask;
+    @Inject
+    private ScheduledProfileUpdateTask profileUpdateTask;
 
-	@Override
-	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-		if (updaterConfig.isDisableScheduledTasks()) {
-			return;
-		}
-		taskRegistrar.addFixedDelayTask(snapshotUpdateTask, snapshotUpdateTask.getDelay());
-		taskRegistrar.addTriggerTask(profileUpdateTask, new CronTrigger("0 0 0 * * *"));
-	}
+    @Override
+    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        if (updaterConfig.isDisableScheduledTasks()) {
+            return;
+        }
+        taskRegistrar.addFixedDelayTask(snapshotUpdateTask, snapshotUpdateTask.getDelay());
+        taskRegistrar.addTriggerTask(profileUpdateTask, new CronTrigger("0 0 0 * * *"));
+    }
 
 }

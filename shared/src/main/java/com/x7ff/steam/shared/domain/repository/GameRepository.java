@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Integer> {
 
-	default List<Game> persist(List<Game> games) {
-		if (games.isEmpty()) {
-			return games;
-		}
-		return save(games);
-	}
+    default List<Game> persist(List<Game> games) {
+        if (games.isEmpty()) {
+            return games;
+        }
+        return save(games);
+    }
 
 }

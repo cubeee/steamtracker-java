@@ -7,13 +7,13 @@ import com.x7ff.steam.shared.config.SteamTrackerConfig;
 
 public abstract class StatisticsProvider<T> {
 
-	protected final EntityManager entityManager;
-	protected final SteamTrackerConfig steamTrackerConfig;
+    protected final EntityManager entityManager;
+    protected final SteamTrackerConfig steamTrackerConfig;
 
-	@Inject
-	public StatisticsProvider(EntityManager entityManager, SteamTrackerConfig steamTrackerConfig) {
-		this.entityManager = entityManager;
-		this.steamTrackerConfig = steamTrackerConfig;
-	}
+    @Inject
+    public StatisticsProvider(EntityManager entityManager, SteamTrackerConfig steamTrackerConfig) {
+        this.entityManager = entityManager;
+        this.steamTrackerConfig = steamTrackerConfig;
+    }
 
 }

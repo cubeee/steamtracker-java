@@ -14,15 +14,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableBatchProcessing
 @EnableCaching
 @EnableJpaRepositories("com.x7ff.steam")
-@EntityScan(basePackages = { "com.x7ff.steam" })
+@EntityScan(basePackages = {"com.x7ff.steam"})
 @ComponentScan(
-		basePackages = { "com.x7ff.steam" },
-		excludeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = Tool.class) }
+        basePackages = {"com.x7ff.steam"},
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = Tool.class)}
 )
 public class Updater {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Updater.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Updater.class, args);
+    }
 
 }

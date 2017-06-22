@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlayerProfileBatchProcessor implements ItemProcessor<List<Player>, List<Player>> {
 
-	@Inject
-	private SteamPlayerService steamPlayerService;
+    @Inject
+    private SteamPlayerService steamPlayerService;
 
-	@Override
-	public List<Player> process(List<Player> players) throws Exception {
-		steamPlayerService.resolveProfiles(players);
-		return players;
-	}
+    @Override
+    public List<Player> process(List<Player> players) throws Exception {
+        steamPlayerService.resolveProfiles(players);
+        return players;
+    }
 
 }

@@ -13,31 +13,31 @@ import java.util.logging.Logger;
 
 public final class PlayerSnapshotUpdateProcessor implements ItemProcessor<Player, PlayerUpdate> {
 
-	private static final Logger logger = Logger.getLogger(PlayerSnapshotUpdateProcessor.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(PlayerSnapshotUpdateProcessor.class.getSimpleName());
 
-	private final SteamPlayerService steamPlayerService;
+    private final SteamPlayerService steamPlayerService;
 
-	private final long updateInterval;
+    private final long updateInterval;
 
-	@Inject
-	public PlayerSnapshotUpdateProcessor(UpdaterConfig updaterConfig, SteamPlayerService steamPlayerService) {
-		this.steamPlayerService = steamPlayerService;
-		this.updateInterval = updaterConfig.getSnapshotUpdateInterval();
-	}
+    @Inject
+    public PlayerSnapshotUpdateProcessor(UpdaterConfig updaterConfig, SteamPlayerService steamPlayerService) {
+        this.steamPlayerService = steamPlayerService;
+        this.updateInterval = updaterConfig.getSnapshotUpdateInterval();
+    }
 
-	@Override
-	public PlayerUpdate process(Player player) throws Exception {
-		if (!player.updateNeeded(updateInterval)) {
-			return new PlayerUpdate(player, false);
-		}
-		Player result;
-		try {
-			result = steamPlayerService.fetchPlayer(player, player.getIdentifier(), FetchOption.RESOLVE_PROFILE);
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Failed to fetch player snapshot", e);
-			result = null;
-		}
-		return new PlayerUpdate(result, result != null);
-	}
+    @Override
+    public PlayerUpdate process(Player player) throws Exception {
+        if (!player.updateNeeded(updateInterval)) {
+            return new PlayerUpdate(player, false);
+        }
+        Player result;
+        try {
+            result = steamPlayerService.fetchPlayer(player, player.getIdentifier(), FetchOption.RESOLVE_PROFILE);
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Failed to fetch player snapshot", e);
+            result = null;
+        }
+        return new PlayerUpdate(result, result != null);
+    }
 
 }

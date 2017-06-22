@@ -2,10 +2,12 @@
   "name": "frontend",
   "private": true,
   "description": "Steam user tracker",
-  "contributors": [{
-    "name": "Cube",
-    "url": "https://0x7ff.com/"
-  }],
+  "contributors": [
+    {
+      "name": "Cube",
+      "url": "https://0x7ff.com/"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/cubeee/steam-tracker"

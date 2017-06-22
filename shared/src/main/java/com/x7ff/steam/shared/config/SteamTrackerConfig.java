@@ -18,30 +18,30 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class SteamTrackerConfig {
 
-	/**
-	 * Front page related configuration
-	 */
-	@NotNull
-	private FrontPageConfig frontPage = new FrontPageConfig();
+    /**
+     * Front page related configuration
+     */
+    @NotNull
+    private FrontPageConfig frontPage = new FrontPageConfig();
 
-	/**
-	 * Front page related configuration
-	 */
-	@Getter
-	@Setter
-	public class FrontPageConfig {
+    /**
+     * Front page related configuration
+     */
+    @Getter
+    @Setter
+    public class FrontPageConfig {
 
-		/**
-		 * Number of games to show in tables.
-		 */
-		@Size(min=1)
-		private int gamesInTables = 10;
+        /**
+         * Number of games to show in tables.
+         */
+        @Size(min = 1)
+        private int gamesInTables = 10;
 
-		/**
-		 * Create empty table cells where the amount of games is less than <i>gamesInTables</i>.
-		 */
-		private boolean fillTables;
+        /**
+         * Create empty table cells where the amount of games is less than <i>gamesInTables</i>.
+         */
+        private boolean fillTables;
 
-	}
+    }
 
 }

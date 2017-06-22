@@ -12,20 +12,20 @@ import org.springframework.stereotype.Component;
 @Component
 public final class ScheduledProfileUpdateTask implements Runnable {
 
-	private static final Logger logger = Logger.getLogger(ScheduledSnapshotUpdateTask.class.getName());
+    private static final Logger logger = Logger.getLogger(ScheduledSnapshotUpdateTask.class.getName());
 
-	@Inject
-	private PlayerProfileBatch profileBatch;
+    @Inject
+    private PlayerProfileBatch profileBatch;
 
-	@Override
-	public void run() {
-		Job job = profileBatch.profileProcessJob();
-		try {
-			PlayerBatchUtils.asyncJobLauncher(
-					profileBatch.getJobRepository(), "PlayerProfileBatchUpdate")
-					.run(job, PlayerBatchUtils.getTimeJobParameters());
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Failed to update snapshots", e);
-		}
-	}
+    @Override
+    public void run() {
+        Job job = profileBatch.profileProcessJob();
+        try {
+            PlayerBatchUtils.asyncJobLauncher(
+                    profileBatch.getJobRepository(), "PlayerProfileBatchUpdate")
+                    .run(job, PlayerBatchUtils.getTimeJobParameters());
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Failed to update snapshots", e);
+        }
+    }
 }

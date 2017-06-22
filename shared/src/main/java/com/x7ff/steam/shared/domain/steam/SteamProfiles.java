@@ -6,17 +6,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SteamProfiles {
 
-	@JsonProperty("response")
-	private SteamProfilesResponse response;
+    @JsonProperty("response")
+    private SteamProfilesResponse response;
 
-	@JsonProperty("response")
-	public SteamProfilesResponse getResponse() {
-		return response;
-	}
+    @JsonProperty("response")
+    public SteamProfilesResponse getResponse() {
+        return response;
+    }
 
-	@JsonProperty("response")
-	public void setResponse(SteamProfilesResponse response) {
-		this.response = response;
-	}
+    @JsonProperty("response")
+    public void setResponse(SteamProfilesResponse response) {
+        this.response = response;
+    }
 
 }

@@ -2,18 +2,18 @@ package com.x7ff.steam.domain;
 
 public final class PlayerSearch {
 
-	private String identifier;
+    private String identifier;
 
-	protected PlayerSearch() {
+    protected PlayerSearch() {
 
-	}
+    }
 
-	public String getIdentifier() {
-		return identifier;
-	}
+    public String getIdentifier() {
+        return identifier;
+    }
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
 }

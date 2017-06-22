@@ -20,52 +20,52 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlayerProfileBatch {
 
-	@Inject
-	private JobBuilderFactory jobBuilderFactory;
+    @Inject
+    private JobBuilderFactory jobBuilderFactory;
 
-	@Inject
-	private StepBuilderFactory stepBuilderFactory;
+    @Inject
+    private StepBuilderFactory stepBuilderFactory;
 
-	@Inject
-	private JobRepository jobRepository;
+    @Inject
+    private JobRepository jobRepository;
 
-	@Inject
-	private EntityManagerFactory entityManagerFactory;
+    @Inject
+    private EntityManagerFactory entityManagerFactory;
 
-	@Inject
-	private PlayerListWriter playerListWriter;
+    @Inject
+    private PlayerListWriter playerListWriter;
 
-	@Inject
-	private PlayerProfileBatchProcessor batchProcessor;
+    @Inject
+    private PlayerProfileBatchProcessor batchProcessor;
 
-	public Job profileProcessJob() {
-		return jobBuilderFactory.get("profile_update_job")
-				.repository(jobRepository)
-				.incrementer(new RunIdIncrementer())
-				.flow(updateStep())
-				.end()
-				.build();
-	}
+    public Job profileProcessJob() {
+        return jobBuilderFactory.get("profile_update_job")
+                .repository(jobRepository)
+                .incrementer(new RunIdIncrementer())
+                .flow(updateStep())
+                .end()
+                .build();
+    }
 
-	private Step updateStep() {
-		return stepBuilderFactory.get("process_player")
-				.<List<Player>, List<Player>>chunk(SteamPlayerService.MAX_PROFILE_BATCH_SIZE)
-				.reader(playerReader())
-				.processor(batchProcessor)
-				.writer(playerWriter())
-				.build();
-	}
+    private Step updateStep() {
+        return stepBuilderFactory.get("process_player")
+                .<List<Player>, List<Player>>chunk(SteamPlayerService.MAX_PROFILE_BATCH_SIZE)
+                .reader(playerReader())
+                .processor(batchProcessor)
+                .writer(playerWriter())
+                .build();
+    }
 
-	private JpaPagingItemListReader<Player> playerReader() {
-		return PlayerBatchUtils.getPlayerListReader(SteamPlayerService.MAX_PROFILE_BATCH_SIZE, entityManagerFactory);
-	}
+    private JpaPagingItemListReader<Player> playerReader() {
+        return PlayerBatchUtils.getPlayerListReader(SteamPlayerService.MAX_PROFILE_BATCH_SIZE, entityManagerFactory);
+    }
 
-	private ItemWriter<List<Player>> playerWriter() {
-		return playerListWriter;
-	}
+    private ItemWriter<List<Player>> playerWriter() {
+        return playerListWriter;
+    }
 
-	public JobRepository getJobRepository() {
-		return jobRepository;
-	}
+    public JobRepository getJobRepository() {
+        return jobRepository;
+    }
 
 }

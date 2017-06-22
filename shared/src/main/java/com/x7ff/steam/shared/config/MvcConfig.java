@@ -15,36 +15,36 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 @Configuration
 public class MvcConfig extends WebMvcConfigurationSupport {
 
-	@Inject
-	private Environment environment;
+    @Inject
+    private Environment environment;
 
-	@Inject
-	private RequestMappingHandlerAdapter adapter;
+    @Inject
+    private RequestMappingHandlerAdapter adapter;
 
-	@PostConstruct
-	public void removeRedirectModelAtttributes() {
-		adapter.setIgnoreDefaultModelOnRedirect(true);
-	}
+    @PostConstruct
+    public void removeRedirectModelAtttributes() {
+        adapter.setIgnoreDefaultModelOnRedirect(true);
+    }
 
-	@Bean
-	public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
-		return new ResourceUrlEncodingFilter();
-	}
+    @Bean
+    public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
+        return new ResourceUrlEncodingFilter();
+    }
 
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-		PropertySourcesPlaceholderConfigurer c = new PropertySourcesPlaceholderConfigurer();
-		c.setIgnoreUnresolvablePlaceholders(true);
-		return c;
-	}
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        PropertySourcesPlaceholderConfigurer c = new PropertySourcesPlaceholderConfigurer();
+        c.setIgnoreUnresolvablePlaceholders(true);
+        return c;
+    }
 
-	@Bean(name = CacheableKeyGenerator.NAME)
-	public CacheableKeyGenerator cacheableKeyGenerator() {
-		return new CacheableKeyGenerator();
-	}
+    @Bean(name = CacheableKeyGenerator.NAME)
+    public CacheableKeyGenerator cacheableKeyGenerator() {
+        return new CacheableKeyGenerator();
+    }
 
-	public boolean cacheResources() {
-		return !environment.acceptsProfiles("development");
-	}
+    public boolean cacheResources() {
+        return !environment.acceptsProfiles("development");
+    }
 
 }

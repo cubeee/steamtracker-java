@@ -8,43 +8,43 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SteamFriend {
 
-	@JsonProperty("steamid")
-	private String steamId;
+    @JsonProperty("steamid")
+    private String steamId;
 
-	@JsonProperty("relationship")
-	private String relationship;
+    @JsonProperty("relationship")
+    private String relationship;
 
-	@JsonProperty("friend_since")
-	private long friendSince;
+    @JsonProperty("friend_since")
+    private long friendSince;
 
-	@JsonProperty("steamid")
-	public String getSteamId() {
-		return steamId;
-	}
+    @JsonProperty("steamid")
+    public String getSteamId() {
+        return steamId;
+    }
 
-	@JsonProperty("steamid")
-	public void setSteamId(String steamId) {
-		this.steamId = steamId;
-	}
+    @JsonProperty("steamid")
+    public void setSteamId(String steamId) {
+        this.steamId = steamId;
+    }
 
-	@JsonProperty("relationship")
-	public String getRelationship() {
-		return relationship;
-	}
+    @JsonProperty("relationship")
+    public String getRelationship() {
+        return relationship;
+    }
 
-	@JsonProperty("relationship")
-	public void setRelationship(String relationship) {
-		this.relationship = relationship;
-	}
+    @JsonProperty("relationship")
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
 
-	@JsonProperty("friend_since")
-	public long getFriendSince() {
-		return friendSince;
-	}
+    @JsonProperty("friend_since")
+    public long getFriendSince() {
+        return friendSince;
+    }
 
-	@JsonProperty("friend_since")
-	public void setFriendSince(long friendSince) {
-		this.friendSince = friendSince;
-	}
+    @JsonProperty("friend_since")
+    public void setFriendSince(long friendSince) {
+        this.friendSince = friendSince;
+    }
 
 }

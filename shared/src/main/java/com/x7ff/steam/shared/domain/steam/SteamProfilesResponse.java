@@ -10,17 +10,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SteamProfilesResponse {
 
-	@JsonProperty("players")
-	private List<SteamProfile> profiles;
+    @JsonProperty("players")
+    private List<SteamProfile> profiles;
 
-	@JsonProperty("players")
-	public List<SteamProfile> getProfiles() {
-		return profiles;
-	}
+    @JsonProperty("players")
+    public List<SteamProfile> getProfiles() {
+        return profiles;
+    }
 
-	@JsonProperty("players")
-	public void setProfiles(List<SteamProfile> profiles) {
-		this.profiles = profiles;
-	}
+    @JsonProperty("players")
+    public void setProfiles(List<SteamProfile> profiles) {
+        this.profiles = profiles;
+    }
 
 }

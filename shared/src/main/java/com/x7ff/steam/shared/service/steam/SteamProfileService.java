@@ -10,33 +10,33 @@ import org.springframework.stereotype.Service;
 @Service
 public final class SteamProfileService extends SteamService<SteamProfiles> {
 
-	@Inject
-	public SteamProfileService(SharedConfig sharedConfig) {
-		super(sharedConfig);
-	}
+    @Inject
+    public SteamProfileService(SharedConfig sharedConfig) {
+        super(sharedConfig);
+    }
 
-	@Override
-	public SteamProfiles fetch(String... args) {
-		return fetchRestTemplate(SteamProfiles.class, getParameters(args));
-	}
+    @Override
+    public SteamProfiles fetch(String... args) {
+        return fetchRestTemplate(SteamProfiles.class, getParameters(args));
+    }
 
-	@Override
-	protected String getInterfaceName() {
-		return "ISteamUser";
-	}
+    @Override
+    protected String getInterfaceName() {
+        return "ISteamUser";
+    }
 
-	@Override
-	protected String getCallName() {
-		return "GetPlayerSummaries";
-	}
+    @Override
+    protected String getCallName() {
+        return "GetPlayerSummaries";
+    }
 
-	@Override
-	protected String getVersion() {
-		return "v0002";
-	}
+    @Override
+    protected String getVersion() {
+        return "v0002";
+    }
 
-	protected String getParameters(String... identifiers) {
-		return "&steamids=" + Joiner.on(",").join(identifiers);
-	}
+    protected String getParameters(String... identifiers) {
+        return "&steamids=" + Joiner.on(",").join(identifiers);
+    }
 
 }

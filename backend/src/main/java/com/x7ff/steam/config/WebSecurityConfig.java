@@ -1,7 +1,5 @@
 package com.x7ff.steam.config;
 
-import javax.inject.Inject;
-
 import com.google.common.collect.Lists;
 import com.x7ff.steam.service.SteamUserDetailsService;
 import com.x7ff.steam.shared.config.MvcConfig;
@@ -17,45 +15,47 @@ import org.springframework.security.openid.AxFetchListFactory;
 import org.springframework.security.openid.OpenID4JavaConsumer;
 import org.springframework.security.openid.OpenIDAuthenticationProvider;
 
+import javax.inject.Inject;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Inject
-	private SteamUserDetailsService steamUserDetailsService;
+    @Inject
+    private SteamUserDetailsService steamUserDetailsService;
 
-	@Inject
-	private MvcConfig mvcConfig;
+    @Inject
+    private MvcConfig mvcConfig;
 
-	private final static String ADMIN_ROLE = "ADMIN";
+    private final static String ADMIN_ROLE = "ADMIN";
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		// pages that require authorization
-		// http.authorizeRequests().antMatchers("/authed").hasAuthority(ADMIN_ROLE)
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // pages that require authorization
+        // http.authorizeRequests().antMatchers("/authed").hasAuthority(ADMIN_ROLE)
 
-		// permit all non-configured requests
-		http.authorizeRequests().anyRequest().permitAll();
+        // permit all non-configured requests
+        http.authorizeRequests().anyRequest().permitAll();
 
-		if (!mvcConfig.cacheResources()) {
-			http.headers().cacheControl().disable();
-		}
-	}
+        if (!mvcConfig.cacheResources()) {
+            http.headers().cacheControl().disable();
+        }
+    }
 
-	@Inject
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		OpenIDAuthenticationProvider provider = new OpenIDAuthenticationProvider();
-		provider.setUserDetailsService(steamUserDetailsService);
+    @Inject
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        OpenIDAuthenticationProvider provider = new OpenIDAuthenticationProvider();
+        provider.setUserDetailsService(steamUserDetailsService);
 
-		auth.authenticationProvider(provider);
-	}
+        auth.authenticationProvider(provider);
+    }
 
-	@Bean
-	public OpenID4JavaConsumer openID4JavaConsumer() throws ConsumerException {
-		ConsumerManager consumerManager = new ConsumerManager();
-		AxFetchListFactory attributesToFetchFactory = identifier -> Lists.newArrayList();
-		consumerManager.setMaxAssocAttempts(0);
-		return new OpenID4JavaConsumer(consumerManager, attributesToFetchFactory);
-	}
+    @Bean
+    public OpenID4JavaConsumer openID4JavaConsumer() throws ConsumerException {
+        ConsumerManager consumerManager = new ConsumerManager();
+        AxFetchListFactory attributesToFetchFactory = identifier -> Lists.newArrayList();
+        consumerManager.setMaxAssocAttempts(0);
+        return new OpenID4JavaConsumer(consumerManager, attributesToFetchFactory);
+    }
 
 }

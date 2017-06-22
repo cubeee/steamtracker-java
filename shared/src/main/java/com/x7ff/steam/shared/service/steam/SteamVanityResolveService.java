@@ -9,24 +9,24 @@ import org.springframework.stereotype.Service;
 @Service
 public final class SteamVanityResolveService extends SteamService<SteamVanityResolve> {
 
-	@Inject
-	public SteamVanityResolveService(SharedConfig sharedConfig) {
-		super(sharedConfig);
-	}
+    @Inject
+    public SteamVanityResolveService(SharedConfig sharedConfig) {
+        super(sharedConfig);
+    }
 
-	@Override
-	public SteamVanityResolve fetch(String... names) {
-		return fetchRestTemplate(SteamVanityResolve.class, "&vanityurl=" + names[0]);
-	}
+    @Override
+    public SteamVanityResolve fetch(String... names) {
+        return fetchRestTemplate(SteamVanityResolve.class, "&vanityurl=" + names[0]);
+    }
 
-	@Override
-	protected String getInterfaceName() {
-		return "ISteamUser";
-	}
+    @Override
+    protected String getInterfaceName() {
+        return "ISteamUser";
+    }
 
-	@Override
-	protected String getCallName() {
-		return "ResolveVanityURL";
-	}
+    @Override
+    protected String getCallName() {
+        return "ResolveVanityURL";
+    }
 
 }

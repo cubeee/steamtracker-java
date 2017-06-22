@@ -9,14 +9,14 @@ buildscript {
 }
 
 ext.deps = [
-    freemarkerInheritance: dependencies.create("kr.pe.kwonnam.freemarker:freemarker-template-inheritance:0.4.RELEASE"),
-    guava                : dependencies.create("com.google.guava:guava:21.0"),
-    postgresql           : dependencies.create("org.postgresql:postgresql:9.4.1212"),
-    javaxInject          : dependencies.create("javax.inject:javax.inject:1"),
-    jspApi               : dependencies.create("javax.servlet.jsp:javax.servlet.jsp-api:2.3.2-b02"),
-    lombok               : dependencies.create("org.projectlombok:lombok:1.16.16"),
-    jooq                 : dependencies.create("org.jooq:jooq:3.9.1"),
-    flyway               : dependencies.create("org.flywaydb:flyway-core:4.1.2")
+        freemarkerInheritance: dependencies.create("kr.pe.kwonnam.freemarker:freemarker-template-inheritance:0.4.RELEASE"),
+        guava                : dependencies.create("com.google.guava:guava:21.0"),
+        postgresql           : dependencies.create("org.postgresql:postgresql:9.4.1212"),
+        javaxInject          : dependencies.create("javax.inject:javax.inject:1"),
+        jspApi               : dependencies.create("javax.servlet.jsp:javax.servlet.jsp-api:2.3.2-b02"),
+        lombok               : dependencies.create("org.projectlombok:lombok:1.16.16"),
+        jooq                 : dependencies.create("org.jooq:jooq:3.9.1"),
+        flyway               : dependencies.create("org.flywaydb:flyway-core:4.1.2")
 ]
 
 apply plugin: 'base'
