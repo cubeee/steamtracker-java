@@ -1,5 +1,21 @@
 package com.x7ff.steam.shared.service.steam;
 
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Ints;
+import com.x7ff.steam.shared.domain.Game;
+import com.x7ff.steam.shared.domain.GameSnapshot;
+import com.x7ff.steam.shared.domain.Player;
+import com.x7ff.steam.shared.domain.repository.GameRepository;
+import com.x7ff.steam.shared.domain.repository.PlayerRepository;
+import com.x7ff.steam.shared.domain.steam.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,25 +23,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Ints;
-import com.x7ff.steam.shared.domain.Game;
-import com.x7ff.steam.shared.domain.GameSnapshot;
-import com.x7ff.steam.shared.domain.repository.GameRepository;
-import com.x7ff.steam.shared.domain.repository.PlayerRepository;
-import com.x7ff.steam.shared.domain.Player;
-import com.x7ff.steam.shared.domain.steam.SteamGame;
-import com.x7ff.steam.shared.domain.steam.SteamProfile;
-import com.x7ff.steam.shared.domain.steam.SteamProfileOwnedGames;
-import com.x7ff.steam.shared.domain.steam.SteamProfileOwnedGamesResponse;
-import com.x7ff.steam.shared.domain.steam.SteamProfilesResponse;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientException;
 
 @Service
 public class SteamPlayerService {
@@ -60,8 +57,12 @@ public class SteamPlayerService {
 		SteamProfileOwnedGames steamProfile;
 		try {
 			steamProfile = steamOwnedGamesService.fetch(identifier);
+		} catch (HttpClientErrorException e) {
+			logger.warning("Failed to fetch player '" + player.getName() + "' (" + identifier + "): "
+                    + e.getStatusCode() + " - " + e.getStatusText());
+			return null;
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "Failed to fetch player", e);
+			logger.log(Level.WARNING, "Failed to fetch player '" + player.getName() + "' (" + identifier + ")", e);
 			return null;
 		}
 		if (steamProfile == null) {
