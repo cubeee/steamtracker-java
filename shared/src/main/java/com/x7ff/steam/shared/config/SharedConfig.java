@@ -1,22 +1,18 @@
 package com.x7ff.steam.shared.config;
 
-import java.util.TimeZone;
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
+import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.TimeZone;
+
 @Configuration
 @ConfigurationProperties(prefix = "steamtracker")
 @EnableConfigurationProperties(SharedConfig.class)
-@Getter
-@Setter
 @Validated
 public class SharedConfig {
 
@@ -37,8 +33,6 @@ public class SharedConfig {
     /**
      * Steam related configuration
      */
-    @Getter
-    @Setter
     public class SteamConfig {
 
         /**
@@ -48,6 +42,16 @@ public class SharedConfig {
         @Size(min = 32, max = 32)
         private String apiKey;
 
+        public String getApiKey() {
+            return apiKey;
+        }
     }
 
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public SteamConfig getSteam() {
+        return steam;
+    }
 }

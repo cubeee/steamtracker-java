@@ -1,20 +1,16 @@
 package com.x7ff.steam.shared.config;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Configuration
 @ConfigurationProperties(prefix = "steamtracker")
 @EnableConfigurationProperties(SteamTrackerConfig.class)
-@Getter
-@Setter
 @Validated
 public class SteamTrackerConfig {
 
@@ -27,8 +23,6 @@ public class SteamTrackerConfig {
     /**
      * Front page related configuration
      */
-    @Getter
-    @Setter
     public class FrontPageConfig {
 
         /**
@@ -42,6 +36,17 @@ public class SteamTrackerConfig {
          */
         private boolean fillTables;
 
+        public int getGamesInTables() {
+            return gamesInTables;
+        }
+
+        public boolean isFillTables() {
+            return fillTables;
+        }
+    }
+
+    public FrontPageConfig getFrontPage() {
+        return frontPage;
     }
 
 }

@@ -1,21 +1,17 @@
 package com.x7ff.steam.updater.config;
 
-import java.util.concurrent.TimeUnit;
-import javax.validation.constraints.Min;
-
 import com.x7ff.steam.shared.config.SteamTrackerConfig;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
+import java.util.concurrent.TimeUnit;
+
 @Configuration
 @ConfigurationProperties
 @EnableConfigurationProperties({SteamTrackerConfig.class, UpdaterConfig.class})
-@Getter
-@Setter
 @Validated
 public class UpdaterConfig {
 
@@ -51,4 +47,23 @@ public class UpdaterConfig {
     @Min(1)
     private int snapshotsChunkSize = 100;
 
+    public boolean isDisableScheduledTasks() {
+        return disableScheduledTasks;
+    }
+
+    public long getAutomaticUpdateInterval() {
+        return automaticUpdateInterval;
+    }
+
+    public long getSnapshotUpdateInterval() {
+        return snapshotUpdateInterval;
+    }
+
+    public int getSnapshotsPageSize() {
+        return snapshotsPageSize;
+    }
+
+    public int getSnapshotsChunkSize() {
+        return snapshotsChunkSize;
+    }
 }
