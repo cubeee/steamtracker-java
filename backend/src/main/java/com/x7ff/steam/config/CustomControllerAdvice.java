@@ -1,11 +1,11 @@
 package com.x7ff.steam.config;
 
-import javax.inject.Inject;
-
 import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import javax.inject.Inject;
 
 @ControllerAdvice
 public final class CustomControllerAdvice {
@@ -15,6 +15,9 @@ public final class CustomControllerAdvice {
 
     @Inject
     private SteamTrackerConfig steamTrackerConfig;
+
+    @Inject
+    private BackendConfig backendConfig;
 
     @ModelAttribute(value = "developmentMode")
     public boolean isDevelopmentMode() {
@@ -29,6 +32,11 @@ public final class CustomControllerAdvice {
     @ModelAttribute(value = "gamesInTables")
     public int gamesInTables() {
         return steamTrackerConfig.getFrontPage().getGamesInTables();
+    }
+
+    @ModelAttribute(value = "googleAnalyticsId")
+    public String googleAnalyticsId() {
+        return backendConfig.getGoogleAnalyticsId();
     }
 
 }

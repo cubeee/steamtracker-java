@@ -70,5 +70,8 @@
         </div>
         </@layout.block>
         <@layout.block name="scripts"></@layout.block>
+        <@layout.block name="analytics">
+            <@macros.google_analytics_script id=googleAnalyticsId />
+        </@layout.block>
     </body>
 </html>

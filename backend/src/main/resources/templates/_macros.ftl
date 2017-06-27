@@ -106,3 +106,17 @@
 <#macro steam_auth_button>
 <a href="<@spring.url '/auth/steam/' />" class="ui inverted button">Sign in with Steam</a>
 </#macro>
+
+<#macro google_analytics_script id>
+<#if id?has_content>
+<script>
+    !function(t,r,a,c,k,e,d){t.GoogleAnalyticsObject=a;t[a]||(t[a]=function(){
+        (t[a].q=t[a].q||[]).push(arguments)});t[a].l=+new Date;e=r.createElement(c);
+        d=r.getElementsByTagName(c)[0];e.src=k;d.parentNode.insertBefore(e,d)}
+    (window,document,'ga','script','//www.google-analytics.com/analytics.js');
+
+    ga('create', '${id}', 'auto');
+    ga('send', 'pageview');
+</script>
+</#if>
+</#macro>
