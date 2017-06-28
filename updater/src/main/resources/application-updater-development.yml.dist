@@ -1,5 +1,0 @@
-disable-scheduled-tasks: false
-automatic-update-interval: 720
-snapshot-update-interval: 360
-snapshots-page-size: 100
-snapshots-chunk-size: 100

@@ -1,12 +1,9 @@
 package com.x7ff.steam.controller;
 
-import java.util.Optional;
-import javax.inject.Inject;
-
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
+import com.x7ff.steam.config.BackendConfig;
+import com.x7ff.steam.domain.repository.statistics.PlayerGameStatistics;
 import com.x7ff.steam.shared.domain.Player;
 import com.x7ff.steam.shared.domain.repository.PlayerRepository;
-import com.x7ff.steam.shared.domain.repository.statistics.PlayerGameStatistics;
 import com.x7ff.steam.shared.service.steam.FetchOption;
 import com.x7ff.steam.shared.service.steam.SteamPlayerService;
 import com.x7ff.steam.shared.util.SteamUtils;
@@ -17,20 +14,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.inject.Inject;
+import java.util.Optional;
+
 @Controller
 public final class ProfileController {
 
-    private final SteamTrackerConfig steamTrackerConfig;
+    private final BackendConfig backendConfig;
     private final PlayerRepository playerRepository;
     private final SteamPlayerService steamPlayerService;
     private final PlayerGameStatistics statsRepository;
 
     @Inject
-    public ProfileController(SteamTrackerConfig steamTrackerConfig,
+    public ProfileController(BackendConfig backendConfig,
                              PlayerRepository playerRepository,
                              SteamPlayerService steamPlayerService,
                              @Qualifier("playerGameStatistics") PlayerGameStatistics statsRepository) {
-        this.steamTrackerConfig = steamTrackerConfig;
+        this.backendConfig = backendConfig;
         this.playerRepository = playerRepository;
         this.steamPlayerService = steamPlayerService;
         this.statsRepository = statsRepository;
@@ -51,7 +51,7 @@ public final class ProfileController {
             throw new NotFoundException();
         }
 
-        int games = steamTrackerConfig.getFrontPage().getGamesInTables();
+        int games = backendConfig.getFrontPage().getGamesInTables();
         model.addAttribute("most_played", statsRepository.getAllTimeMostPlayed(player, games));
         model.addAttribute("todays_played", statsRepository.getTodaysMostPlayed(player, games));
         model.addAttribute("weeks_played", statsRepository.getLastWeekMostPlayed(player, games));

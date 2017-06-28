@@ -1,15 +1,14 @@
 package com.x7ff.steam.updater.batch.snapshots;
 
-import java.util.List;
-import javax.inject.Inject;
-
 import com.google.common.collect.Lists;
+import com.x7ff.steam.shared.domain.Player;
 import com.x7ff.steam.shared.domain.repository.GameRepository;
 import com.x7ff.steam.shared.domain.repository.PlayerRepository;
-import com.x7ff.steam.shared.domain.repository.statistics.PlayerGameStatistics;
-import com.x7ff.steam.shared.domain.Player;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import java.util.List;
 
 @Component
 public final class PlayerWriter extends JpaItemWriter<PlayerUpdate> {
@@ -19,9 +18,6 @@ public final class PlayerWriter extends JpaItemWriter<PlayerUpdate> {
 
     @Inject
     private GameRepository gameRepository;
-
-    @Inject
-    private PlayerGameStatistics playerGameStatistics;
 
     @Override
     public void write(List<? extends PlayerUpdate> updates) {
@@ -36,9 +32,7 @@ public final class PlayerWriter extends JpaItemWriter<PlayerUpdate> {
         }
         playerRepository.save(players);
 
-        for (Player player : players) {
-            playerGameStatistics.evictPlayerCaches(player.getId());
-        }
+        // TODO: Clear caches
     }
 
     @Override

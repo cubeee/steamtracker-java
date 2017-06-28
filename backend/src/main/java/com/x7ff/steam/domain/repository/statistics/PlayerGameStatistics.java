@@ -1,27 +1,23 @@
-package com.x7ff.steam.shared.domain.repository.statistics;
-
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+package com.x7ff.steam.domain.repository.statistics;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
+import com.x7ff.steam.config.BackendConfig;
 import com.x7ff.steam.shared.domain.MostPlayedGame;
 import com.x7ff.steam.shared.domain.Player;
 import com.x7ff.steam.shared.domain.repository.GameRepository;
-import org.jooq.DSLContext;
-import org.jooq.GroupField;
-import org.jooq.Param;
-import org.jooq.Record4;
-import org.jooq.Table;
+import org.jooq.*;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import static org.jooq.impl.DSL.param;
 
@@ -37,10 +33,10 @@ public class PlayerGameStatistics extends MostPlayedGamesStatistics {
     @Inject
     public PlayerGameStatistics(EntityManager entityManager,
                                 CacheManager cacheManager,
-                                SteamTrackerConfig steamTrackerConfig,
+                                BackendConfig backendConfig,
                                 GameRepository gameRepository,
                                 DSLContext dslContext) {
-        super(entityManager, cacheManager, steamTrackerConfig, gameRepository, dslContext);
+        super(entityManager, cacheManager, backendConfig, gameRepository, dslContext);
     }
 
     /**

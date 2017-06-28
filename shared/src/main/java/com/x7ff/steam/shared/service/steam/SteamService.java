@@ -1,23 +1,23 @@
 package com.x7ff.steam.shared.service.steam;
 
-import java.util.List;
-import javax.inject.Inject;
-
 import com.google.common.base.Preconditions;
-import com.x7ff.steam.shared.config.SharedConfig;
+import com.x7ff.steam.shared.config.SteamConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import javax.inject.Inject;
+import java.util.List;
 
 @Service
 public abstract class SteamService<R> {
 
-    protected final SharedConfig sharedConfig;
+    protected final SteamConfig steamConfig;
 
     protected final RestTemplate restTemplate;
 
     @Inject
-    public SteamService(SharedConfig sharedConfig) {
-        this.sharedConfig = sharedConfig;
+    public SteamService(SteamConfig steamConfig) {
+        this.steamConfig = steamConfig;
         this.restTemplate = new RestTemplate();
     }
 
@@ -37,12 +37,13 @@ public abstract class SteamService<R> {
     }
 
     protected R fetchRestTemplate(Class<R> clazz, String parameters) {
-        return restTemplate.getForObject(getURL(parameters), clazz);
+        String url = getURL(parameters);
+        return restTemplate.getForObject(url, clazz);
     }
 
     protected String getURL(String parameters) {
         return String.format("https://api.steampowered.com/%s/%s/%s/?key=%s%s",
-                getInterfaceName(), getCallName(), getVersion(), sharedConfig.getSteam().getApiKey(), parameters);
+                getInterfaceName(), getCallName(), getVersion(), steamConfig.getApiKey(), parameters);
     }
 
 }

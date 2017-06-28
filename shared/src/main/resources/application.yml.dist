@@ -37,5 +37,6 @@ flyway:
 
 steamtracker:
   timezone: GMT
-  steam:
-    api-key: <api_key>
+
+steam:
+  api-key: <api_key>

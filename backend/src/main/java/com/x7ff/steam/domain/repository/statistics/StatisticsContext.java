@@ -1,9 +1,9 @@
-package com.x7ff.steam.shared.domain.repository.statistics;
-
-import java.util.Map;
+package com.x7ff.steam.domain.repository.statistics;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 public final class StatisticsContext {
 

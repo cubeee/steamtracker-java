@@ -1,5 +1,24 @@
-package com.x7ff.steam.shared.domain.repository.statistics;
+package com.x7ff.steam.domain.repository.statistics;
 
+import com.google.common.collect.Lists;
+import com.x7ff.steam.config.BackendConfig;
+import com.x7ff.steam.shared.domain.Game;
+import com.x7ff.steam.shared.domain.GameSnapshot;
+import com.x7ff.steam.shared.domain.MostPlayedGame;
+import com.x7ff.steam.shared.domain.converter.ZonedDateTimeAttributeConverter;
+import com.x7ff.steam.shared.domain.repository.GameRepository;
+import com.x7ff.steam.shared.util.annotation.CacheableKey;
+import com.x7ff.steam.shared.util.annotation.CacheableKeyGenerator;
+import org.jooq.*;
+import org.jooq.impl.SQLDataType;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -8,39 +27,13 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import com.google.common.collect.Lists;
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
-import com.x7ff.steam.shared.domain.Game;
-import com.x7ff.steam.shared.domain.GameSnapshot;
-import com.x7ff.steam.shared.domain.MostPlayedGame;
-import com.x7ff.steam.shared.domain.converter.ZonedDateTimeAttributeConverter;
-import com.x7ff.steam.shared.domain.repository.GameRepository;
-import com.x7ff.steam.shared.util.annotation.CacheableKey;
-import com.x7ff.steam.shared.util.annotation.CacheableKeyGenerator;
-import org.jooq.AggregateFunction;
-import org.jooq.Condition;
-import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.GroupField;
-import org.jooq.Param;
-import org.jooq.Record4;
-import org.jooq.SelectJoinStep;
-import org.jooq.Table;
-import org.jooq.impl.SQLDataType;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
 
 import static org.jooq.impl.DSL.*;
 
 @Component("mostPlayed")
-public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame> {
-    public static final ZonedDateTime FAR_DATE = ZonedDateTime.of(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0), ZoneId.systemDefault());
+public class MostPlayedGamesStatistics extends StatisticsProvider {
+    public static final ZonedDateTime FAR_DATE = ZonedDateTime.of(
+            LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0), ZoneId.systemDefault());
     public static final int NO_LIMIT = -1;
 
     private static final String CACHE_NAME = "frontpage_stats";
@@ -60,16 +53,19 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
     protected final Field<Object> playerId = field(GameSnapshot.PLAYER_ID);
     private final Field<Object> date = field(GameSnapshot.DATE);
     private final Field<Integer> minutesPlayed = field(GameSnapshot.MINUTES_PLAYED, SQLDataType.INTEGER);
-    private final Field<Integer> increase = coalesce(lag(minutesPlayed).over(partitionBy(gameId, playerId).orderBy(date.asc())), minutesPlayed);
+    private final Field<Integer> increase
+            = coalesce(lag(minutesPlayed)
+            .over(partitionBy(gameId, playerId)
+                    .orderBy(date.asc())), minutesPlayed);
     private final Field<Integer> inc = minutesPlayed.minus(increase).as("increase");
 
     @Inject
     public MostPlayedGamesStatistics(EntityManager entityManager,
                                      CacheManager cacheManager,
-                                     SteamTrackerConfig steamTrackerConfig,
+                                     BackendConfig backendConfig,
                                      GameRepository gameRepository,
                                      DSLContext dslContext) {
-        super(entityManager, steamTrackerConfig);
+        super(entityManager, backendConfig);
         this.cacheManager = cacheManager;
         this.gameRepository = gameRepository;
         this.create = dslContext;
@@ -138,7 +134,8 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
      * @param context Optional context for the query
      * @return Most played games
      */
-    public List<MostPlayedGame> getMostPlayedGames(ZonedDateTime from, ZonedDateTime to, int limit, Optional<StatisticsContext> context) {
+    public List<MostPlayedGame> getMostPlayedGames(ZonedDateTime from, ZonedDateTime to, int limit,
+                                                   Optional<StatisticsContext> context) {
         List<MostPlayedGame> games = Lists.newArrayList();
 
         Param<Object> dateFrom = param("dateFrom");
@@ -239,7 +236,7 @@ public class MostPlayedGamesStatistics extends StatisticsProvider<MostPlayedGame
      */
     public void refreshCache() {
         Optional<StatisticsContext> context = Optional.empty();
-        int limit = steamTrackerConfig.getFrontPage().getGamesInTables();
+        int limit = backendConfig.getFrontPage().getGamesInTables();
 
         String[] refreshedCacheNames = {
                 CACHE_NAME_COLLECTIVE,

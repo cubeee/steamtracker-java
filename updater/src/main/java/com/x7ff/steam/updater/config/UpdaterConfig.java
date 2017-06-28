@@ -1,17 +1,19 @@
 package com.x7ff.steam.updater.config;
 
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
 import java.util.concurrent.TimeUnit;
 
+@Component
 @Configuration
+@EnableConfigurationProperties
 @ConfigurationProperties
-@EnableConfigurationProperties({SteamTrackerConfig.class, UpdaterConfig.class})
 @Validated
 public class UpdaterConfig {
 
@@ -19,6 +21,7 @@ public class UpdaterConfig {
      * Flag for optionally disabling scheduled tasks from being started.
      * May be useful in development environment when doing frequent restarts.
      */
+    @Value("${updater.disable-scheduled-tasks}")
     private boolean disableScheduledTasks;
 
     /**
@@ -26,6 +29,7 @@ public class UpdaterConfig {
      * Default interval is set at 12 hours.
      */
     @Min(1)
+    @Value("${updater.automatic-update-interval}")
     private long automaticUpdateInterval = TimeUnit.HOURS.toMinutes(6);
 
     /**
@@ -33,18 +37,21 @@ public class UpdaterConfig {
      * Default interval is set at 6 hours."
      */
     @Min(1)
+    @Value("${updater.snapshot-update-interval}")
     private long snapshotUpdateInterval = TimeUnit.HOURS.toMinutes(6);
 
     /**
      * The amount of players to fetch from database at once for snapshot updating.
      */
     @Min(1)
+    @Value("${updater.snapshots-page-size}")
     private int snapshotsPageSize = 100;
 
     /**
      * The amount of players to process before saving for snapshot updating.
      */
     @Min(1)
+    @Value("${updater.snapshots-chunk-size}")
     private int snapshotsChunkSize = 100;
 
     public boolean isDisableScheduledTasks() {
@@ -66,4 +73,5 @@ public class UpdaterConfig {
     public int getSnapshotsChunkSize() {
         return snapshotsChunkSize;
     }
+
 }

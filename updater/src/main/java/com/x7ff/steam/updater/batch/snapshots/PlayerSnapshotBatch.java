@@ -1,10 +1,6 @@
 package com.x7ff.steam.updater.batch.snapshots;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
-
 import com.x7ff.steam.shared.domain.Player;
-import com.x7ff.steam.shared.domain.repository.statistics.MostPlayedGamesStatistics;
 import com.x7ff.steam.shared.service.steam.SteamPlayerService;
 import com.x7ff.steam.updater.batch.PlayerBatchUtils;
 import com.x7ff.steam.updater.config.UpdaterConfig;
@@ -19,40 +15,38 @@ import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManagerFactory;
 
 @Component
 public class PlayerSnapshotBatch {
 
-    @Inject
-    private UpdaterConfig updaterConfig;
+    private final UpdaterConfig updaterConfig;
+    private final SteamPlayerService steamPlayerService;
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
+    private final EntityManagerFactory entityManagerFactory;
+    private final JobRepository jobRepository;
+    private final PlayerWriter playerWriter;
+    private final JobExplorer jobExplorer;
 
     @Inject
-    private SteamPlayerService steamPlayerService;
-
-    @Inject
-    private JobBuilderFactory jobBuilderFactory;
-
-    @Inject
-    private StepBuilderFactory stepBuilderFactory;
-
-    @Inject
-    private EntityManagerFactory entityManagerFactory;
-
-    @Inject
-    private JobRepository jobRepository;
-
-    @Inject
-    private PlayerWriter playerWriter;
-
-    @Inject
-    private JobExplorer jobExplorer;
-
-    @Inject
-    @Qualifier("mostPlayed")
-    private MostPlayedGamesStatistics mostPlayedGamesStatistics;
+    public PlayerSnapshotBatch(UpdaterConfig updaterConfig, SteamPlayerService steamPlayerService,
+                               JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
+                               EntityManagerFactory entityManagerFactory, JobRepository jobRepository,
+                               PlayerWriter playerWriter, JobExplorer jobExplorer) {
+        this.updaterConfig = updaterConfig;
+        this.steamPlayerService = steamPlayerService;
+        this.jobBuilderFactory = jobBuilderFactory;
+        this.stepBuilderFactory = stepBuilderFactory;
+        this.entityManagerFactory = entityManagerFactory;
+        this.jobRepository = jobRepository;
+        this.playerWriter = playerWriter;
+        this.jobExplorer = jobExplorer;
+    }
 
     public Job playerProcessJob() {
         String jobName = "player_update_job";
@@ -79,7 +73,7 @@ public class PlayerSnapshotBatch {
     @Bean
     private TaskletStep cachePopulatorStep() {
         return stepBuilderFactory.get("cache_populator").tasklet((contribution, chunkContext) -> {
-            mostPlayedGamesStatistics.refreshCache();
+            // TODO: refresh cache
             return RepeatStatus.FINISHED;
         }).build();
     }

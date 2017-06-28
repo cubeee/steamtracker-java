@@ -11,8 +11,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/steamtracker
     username: steamtracker
     password: steamtracker
-  profiles:
-    include: 'updater-production'
 
 server:
   port: 8891
@@ -28,3 +26,9 @@ steamtracker:
   timezone: GMT
   steam:
     api-key: <key>
+
+disable-scheduled-tasks: false
+automatic-update-interval: 720
+snapshot-update-interval: 360
+snapshots-page-size: 100
+snapshots-chunk-size: 100

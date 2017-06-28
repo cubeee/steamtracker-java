@@ -1,18 +1,18 @@
 package com.x7ff.steam.shared.service.steam;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Joiner;
-import com.x7ff.steam.shared.config.SharedConfig;
+import com.x7ff.steam.shared.config.SteamConfig;
 import com.x7ff.steam.shared.domain.steam.SteamProfiles;
 import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
 
 @Service
 public final class SteamProfileService extends SteamService<SteamProfiles> {
 
     @Inject
-    public SteamProfileService(SharedConfig sharedConfig) {
-        super(sharedConfig);
+    public SteamProfileService(SteamConfig steamConfig) {
+        super(steamConfig);
     }
 
     @Override

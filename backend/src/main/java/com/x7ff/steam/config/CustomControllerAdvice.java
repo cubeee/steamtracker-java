@@ -1,6 +1,5 @@
 package com.x7ff.steam.config;
 
-import com.x7ff.steam.shared.config.SteamTrackerConfig;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,9 +13,6 @@ public final class CustomControllerAdvice {
     private Environment environment;
 
     @Inject
-    private SteamTrackerConfig steamTrackerConfig;
-
-    @Inject
     private BackendConfig backendConfig;
 
     @ModelAttribute(value = "developmentMode")
@@ -26,12 +22,12 @@ public final class CustomControllerAdvice {
 
     @ModelAttribute(value = "fillTables")
     public boolean fillTables() {
-        return steamTrackerConfig.getFrontPage().isFillTables();
+        return backendConfig.getFrontPage().isFillTables();
     }
 
     @ModelAttribute(value = "gamesInTables")
     public int gamesInTables() {
-        return steamTrackerConfig.getFrontPage().getGamesInTables();
+        return backendConfig.getFrontPage().getGamesInTables();
     }
 
     @ModelAttribute(value = "googleAnalyticsId")

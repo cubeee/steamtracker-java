@@ -6,10 +6,11 @@ spring:
 server:
   port: 8889
 
+steam:
+  api-key: <key>
+
 steamtracker:
   timezone: GMT
-  steam:
-    api-key: <key>
   front-page:
     games-in-tables: 10
     fill-tables: true

@@ -24,10 +24,11 @@ logging:
   path: /opt/steam-tracker/logs/
   file: stdout.log
 
+steam:
+  api-key: <key>
+
 steamtracker:
   timezone: GMT
-  steam:
-    api-key: <key>
   front-page:
     games-in-tables: 10
     fill-tables: true
