@@ -41,7 +41,7 @@
                                     <div class="ui transparent inverted icon input">
                                         <i class="search icon"></i>
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                        <input type="text" name="identifier" placeholder="Search">
+                                        <input type="text" name="identifier" placeholder="Search player">
                                     </div>
                                 </form>
                             </div>
