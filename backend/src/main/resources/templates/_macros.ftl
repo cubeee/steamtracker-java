@@ -53,7 +53,7 @@
                     <h4 class="ui image header">
                         <@playerAvatar url=player.player.avatarMedium classes="ui mini rounded image" />
                         <div class="content">
-                            <a href="<@spring.url '/player/{player.player.identifier}/' />">${player.player.name}</a>
+                            <a href="<@spring.url '/player/${player.player.identifier}/' />">${player.player.name}</a>
                             <div class="sub header" title="${player.minutesPlayed} minutes">
                                 <@timePlayed mins=player.minutesPlayed />
                             </div>
