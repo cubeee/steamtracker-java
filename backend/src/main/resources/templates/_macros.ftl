@@ -44,8 +44,34 @@
     </@gameTable>
 </#macro>
 
+<#macro commonPlayerTable fillTables maxRows players>
+    <@gameTable>
+        <@filledTable fillEmpty=fillTables columns=1 rows=maxRows curRows=players?size>
+            <#list players as player>
+            <tr>
+                <td>
+                    <h4 class="ui image header">
+                        <@playerAvatar url=player.player.avatarMedium classes="ui mini rounded image" />
+                        <div class="content">
+                            <a href="<@spring.url '/player/{player.player.identifier}/' />">${player.player.name}</a>
+                            <div class="sub header" title="${player.minutesPlayed} minutes">
+                                <@timePlayed mins=player.minutesPlayed />
+                            </div>
+                        </div>
+                    </h4>
+                </td>
+            </tr>
+            </#list>
+        </@filledTable>
+    </@gameTable>
+</#macro>
+
 <#macro gameImg id url classes>
 <img src="http://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/#{id}/${url}.jpg" class="${classes}" />
+</#macro>
+
+<#macro playerAvatar url classes>
+<img src="${url}" class="${classes}" />
 </#macro>
 
 <#macro gameTable>
