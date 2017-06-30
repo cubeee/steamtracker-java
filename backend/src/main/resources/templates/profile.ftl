@@ -9,7 +9,7 @@
         <div class="twelve wide column">
             <div class="ui grid">
                 <div class="ui player info row">
-                    <div class="fourteen wide computer sixteen wide tablet column">
+                    <div class="fourteen wide computer sixteen wide tablet centered column">
                         <div class="ui items">
                             <div class="item">
                                 <div class="image">
@@ -45,27 +45,29 @@
                         <a target="_blank" href="https://steamcommunity.com/profiles/${player.identifier}/" class="ui secondary button">View on Steam</a>
                     </div>
                 </div>
-                <div class="ui row">
-                    <div class="six wide computer sixteen wide mobile column">
-                        <h3>Most played in the last 24 hours</h3>
-                        <#if todays_played?size == 0>
-                            <p>No statistics for the last 24 hours</p>
-                        <#else>
-                            <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=todays_played />
-                        </#if>
-                    </div>
-                    <div class="six wide computer sixteen wide mobile  column">
-                        <h3>Most played in the last 7 days</h3>
-                        <#if weeks_played?size == 0>
-                            <p>No statistics for the last 7 days</p>
-                        <#else>
-                            <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=weeks_played />
-                        </#if>
-                    </div>
-                    <div class="four wide computer sixteen wide mobile  column">
-                        <h3 class="text-medium">Most played games</h3>
-                        <@macros.commonGameTable fillTables=false maxRows=gamesInTables games=most_played />
-                    </div>
+            </div>
+        </div>
+        <div class="sixteen wide column">
+            <div class="main ui relaxed padded stackable centered grid">
+                <div class="four wide column">
+                    <h3>Most played in the last 24 hours</h3>
+                    <#if todays_played?size == 0>
+                        <p>No statistics for the last 24 hours</p>
+                    <#else>
+                        <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=todays_played />
+                    </#if>
+                </div>
+                <div class="four wide column">
+                    <h3>Most played in the last 7 days</h3>
+                    <#if weeks_played?size == 0>
+                        <p>No statistics for the last 7 days</p>
+                    <#else>
+                        <@macros.commonGameTable fillTables=fillTables maxRows=gamesInTables games=weeks_played />
+                    </#if>
+                </div>
+                <div class="four wide column">
+                    <h3 class="text-medium">Most played games</h3>
+                    <@macros.commonGameTable fillTables=false maxRows=gamesInTables games=most_played />
                 </div>
             </div>
         </div>
