@@ -30,7 +30,7 @@ task webpackWatch(type: NpmTask) {
     args = ['run', 'watch']
 }
 
-task jar(type: Jar) {
+jar {
     group = LifecycleBasePlugin.BUILD_GROUP
     description = 'Package frontend resources into a jar'
 

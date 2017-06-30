@@ -1,30 +1,68 @@
 buildscript {
+    ext {
+        gradleWrapperVersion = '4.0'
+        springBootVersion = '1.5.2.RELEASE'
+
+        gradleVersionsPluginVersion = '0.14.0'
+        propDepsVersion = '0.0.7'
+        freemarkerInheritanceVersion = '0.4.RELEASE'
+        guavaVersion = '21.0'
+        postgresqlVersion = '9.4.1212'
+        javaxVersion = '1'
+        javaxValidationVersion = '1.1.0.Final'
+        jspVersion = '2.3.2-b02'
+        jooqVersion = '3.9.1'
+        flywayVersion = '4.1.2'
+    }
+
     repositories {
         jcenter()
     }
 
     dependencies {
-        classpath group: 'com.github.ben-manes', name: 'gradle-versions-plugin', version: '0.14.0'
+        classpath group: 'com.github.ben-manes', name: 'gradle-versions-plugin', version: gradleVersionsPluginVersion
     }
 }
 
 ext.deps = [
-        freemarkerInheritance: dependencies.create("kr.pe.kwonnam.freemarker:freemarker-template-inheritance:0.4.RELEASE"),
-        guava                : dependencies.create("com.google.guava:guava:21.0"),
-        postgresql           : dependencies.create("org.postgresql:postgresql:9.4.1212"),
-        javaxInject          : dependencies.create("javax.inject:javax.inject:1"),
-        jspApi               : dependencies.create("javax.servlet.jsp:javax.servlet.jsp-api:2.3.2-b02"),
-        jooq                 : dependencies.create("org.jooq:jooq:3.9.1"),
-        flyway               : dependencies.create("org.flywaydb:flyway-core:4.1.2")
+        freemarkerInheritance: dependencies.create("kr.pe.kwonnam.freemarker:freemarker-template-inheritance:$freemarkerInheritanceVersion"),
+        guava                : dependencies.create("com.google.guava:guava:$guavaVersion"),
+        postgresql           : dependencies.create("org.postgresql:postgresql:$postgresqlVersion"),
+        javaxInject          : dependencies.create("javax.inject:javax.inject:$javaxVersion"),
+        javaxValidation      : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),
+        jspApi               : dependencies.create("javax.servlet.jsp:javax.servlet.jsp-api:$jspVersion"),
+        jooq                 : dependencies.create("org.jooq:jooq:$jooqVersion"),
+        flyway               : dependencies.create("org.flywaydb:flyway-core:$flywayVersion")
 ]
 
-apply plugin: 'base'
+apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'com.github.ben-manes.versions'
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.0'
+    gradleVersion = gradleWrapperVersion
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    repositories {
+        jcenter()
+    }
 }

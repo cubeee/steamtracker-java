@@ -1,8 +1,4 @@
 buildscript {
-    ext {
-        springBootVersion = '1.5.2.RELEASE'
-    }
-
     repositories {
         jcenter()
         mavenCentral()
@@ -11,12 +7,11 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'org.springframework.build.gradle', name: 'propdeps-plugin', version: '0.0.7'
-        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: "$springBootVersion"
+        classpath group: 'org.springframework.build.gradle', name: 'propdeps-plugin', version: propDepsVersion
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: springBootVersion
     }
 }
 
-apply from: "$rootDir/gradle/java.gradle"
 apply plugin: 'propdeps'
 apply plugin: 'org.springframework.boot'
 
@@ -28,10 +23,11 @@ dependencies {
     compile deps.postgresql
     compile deps.javaxInject
     compile deps.jooq
-    compile 'javax.validation:validation-api:1.1.0.Final'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'org.springframework.boot:spring-boot-starter-security'
-    compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile deps.guava
+    compile deps.javaxValidation
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
     compile('org.springframework.boot:spring-boot-starter-web') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
     }
