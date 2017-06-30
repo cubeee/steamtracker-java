@@ -1,5 +1,6 @@
 package com.x7ff.steam.controller;
 
+import com.x7ff.steam.domain.repository.statistics.GameStatistics;
 import com.x7ff.steam.shared.domain.Game;
 import com.x7ff.steam.shared.domain.repository.GameRepository;
 import com.x7ff.steam.util.exception.NotFoundException;
@@ -14,10 +15,12 @@ import javax.inject.Inject;
 public final class GameController {
 
 	private final GameRepository gameRepository;
+	private final GameStatistics gameStatistics;
 
 	@Inject
-	public GameController(GameRepository gameRepository) {
+	public GameController(GameRepository gameRepository, GameStatistics gameStatistics) {
 		this.gameRepository = gameRepository;
+		this.gameStatistics = gameStatistics;
 	}
 
 	@RequestMapping("/game/{appId}/")
@@ -28,6 +31,10 @@ public final class GameController {
 		}
 
 		model.addAttribute("game", game);
+		model.addAttribute("tracked_times",
+                gameStatistics.getTrackedTimes(game.getAppId()));
+		model.addAttribute("tracked_players",
+                gameStatistics.getMostTrackedPlayers(game.getAppId(), 10));
 		return "game";
 	}
 
