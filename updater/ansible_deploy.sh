@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This script requires the specified deploy user to have sudo and ssh access
 
@@ -17,7 +17,7 @@ read -p "Deploy fat jar? (y/n)[${DEPLOY_FAT_JAR}]: " DEPLOY_FAT_JAR
 
 if [ ${DEPLOY_FAT_JAR} ] && [ ${DEPLOY_FAT_JAR} == "n" ]; then
     echo "Building and collecting dependencies..."
-    ../gradlew jar copyDependencies
+    ../gradlew :updater:jar :updater:copyDependencies
 
     deps=$(find ${DEPLOY_DIR}/files/steam-tracker-updater/libs -type f -name '*.jar' -printf 'libs\\/%f\040')
 
@@ -26,7 +26,7 @@ if [ ${DEPLOY_FAT_JAR} ] && [ ${DEPLOY_FAT_JAR} == "n" ]; then
     sed -e "s/\%s/${libs}/g" ${template_file} > "${RUN_FILE}"
 else
     echo "Building fat jar..."
-    ../gradlew bootRepackage
+    ../gradlew :updater:bootRepackage
 
     template_file="${DEPLOY_DIR}/ansible/templates/run-updater.fat.tmpl"
     cp ${template_file} ${RUN_FILE}
