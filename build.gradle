@@ -1,22 +1,23 @@
 buildscript {
     ext {
         gradleWrapperVersion = '4.0'
-        springBootVersion = '1.5.2.RELEASE'
+        springBootVersion = '1.5.4.RELEASE'
 
-        gradleVersionsPluginVersion = '0.14.0'
+        gradleVersionsPluginVersion = '0.15.0'
         propDepsVersion = '0.0.7'
         freemarkerInheritanceVersion = '0.4.RELEASE'
-        guavaVersion = '21.0'
+        guavaVersion = '22.0'
         postgresqlVersion = '9.4.1212'
-        javaxVersion = '1'
+        javaxInjectVersion = '1'
         javaxValidationVersion = '1.1.0.Final'
         jspVersion = '2.3.2-b02'
-        jooqVersion = '3.9.1'
-        flywayVersion = '4.1.2'
+        jooqVersion = '3.9.3'
+        flywayVersion = '4.2.0'
     }
 
     repositories {
         jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -28,7 +29,7 @@ ext.deps = [
         freemarkerInheritance: dependencies.create("kr.pe.kwonnam.freemarker:freemarker-template-inheritance:$freemarkerInheritanceVersion"),
         guava                : dependencies.create("com.google.guava:guava:$guavaVersion"),
         postgresql           : dependencies.create("org.postgresql:postgresql:$postgresqlVersion"),
-        javaxInject          : dependencies.create("javax.inject:javax.inject:$javaxVersion"),
+        javaxInject          : dependencies.create("javax.inject:javax.inject:$javaxInjectVersion"),
         javaxValidation      : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),
         jspApi               : dependencies.create("javax.servlet.jsp:javax.servlet.jsp-api:$jspVersion"),
         jooq                 : dependencies.create("org.jooq:jooq:$jooqVersion"),
