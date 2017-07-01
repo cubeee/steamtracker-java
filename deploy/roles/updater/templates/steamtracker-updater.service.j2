@@ -1,0 +1,18 @@
+[Unit]
+Description=Steam Tracker Updater
+After=network.target
+
+[Service]
+Type=simple
+User={{ updater_systemd_unit_user }}
+Group={{ updater_systemd_unit_group }}
+WorkingDirectory={{ updater_directory }}
+ExecStart={{ updater_systemd_start_file_remote }}
+Restart=on-failure
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=true
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,7 +1,3 @@
-/hosts
+hosts
 *.retry
-*.service
-!*.service.dist
-*.jar
-run
-libs/
+shared-vars.yml

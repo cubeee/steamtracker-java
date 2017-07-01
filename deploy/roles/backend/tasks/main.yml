@@ -1,0 +1,65 @@
+---
+- name: Build application
+  local_action: shell cd ../ && ./gradlew :backend:bootRepackage
+  vars:
+    ansible_become: no
+
+- name: Copy systemd unit to remote server
+  template:
+    src: "{{ backend_systemd_service }}.j2"
+    dest: "{{ backend_systemd_unit_destination }}"
+    owner: root
+    group: root
+    mode: "u+rwx,g=rw"
+
+- name: Ensure application directory exists
+  file:
+    path: "{{ backend_directory }}"
+    state: "directory"
+    mode: 0770
+    owner: "{{ backend_systemd_unit_user }}"
+    group: "{{ backend_systemd_unit_group }}"
+
+- name: Give deployer write permissions to application directory
+  acl:
+    path: "{{ backend_directory }}"
+    entity: "{{ deployer_user }}"
+    etype: user
+    permissions: rwx
+    state: present
+    recursive: yes
+
+- name: Copy start file to remote server
+  template:
+    src: "{{ backend_systemd_start_file }}"
+    dest: "{{ backend_systemd_start_file_remote }}"
+    owner: "{{ backend_systemd_unit_user }}"
+    group: "{{ backend_systemd_unit_group }}"
+    mode: 0770
+
+- name: Copy files to remote server
+  synchronize:
+    src: "{{ backend_jar_path }}"
+    dest: "{{ backend_directory }}"
+    checksum: yes
+    rsync_opts:
+      - "--chmod=F770"
+      - "--chown={{ backend_systemd_unit_user }}:{{ backend_systemd_unit_group }}"
+  become: no
+
+- name: Remove deployer write permissions from application directory
+  acl:
+    path: "{{ backend_directory }}"
+    entity: "{{ deployer_user }}"
+    etype: user
+    state: absent
+    recursive: yes
+
+- name: Reload systemd daemons
+  command: systemctl daemon-reload
+
+- name: Enable systemd service
+  command: systemctl enable {{ backend_systemd_service }}
+
+- name: Restart systemd service
+  command: systemctl restart {{ backend_systemd_service }}

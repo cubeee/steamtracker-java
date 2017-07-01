@@ -1,0 +1,18 @@
+[Unit]
+Description=Steam Tracker Web Backend
+After=network.target
+
+[Service]
+Type=simple
+User={{ backend_systemd_unit_user }}
+Group={{ backend_systemd_unit_group }}
+WorkingDirectory={{ backend_directory }}
+ExecStart={{ backend_systemd_start_file_remote }}
+Restart=on-failure
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=true
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

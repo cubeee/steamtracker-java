@@ -1,0 +1,10 @@
+updater_directory: /opt/steamtracker-updater
+updater_jar: steamtracker-updater.jar
+updater_jar_path: ../updater/build/{{ updater_jar }}
+
+updater_systemd_unit_user: steamtracker
+updater_systemd_unit_group: steamtracker
+updater_systemd_service: steamtracker-updater.service
+updater_systemd_unit_destination: /etc/systemd/system/{{ updater_systemd_service }}
+updater_systemd_start_file: run-updater.j2
+updater_systemd_start_file_remote: "{{ updater_directory }}/run-updater"
