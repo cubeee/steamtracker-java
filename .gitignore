@@ -8,4 +8,5 @@ out/
 *.ipr
 *.iws
 
+!.idea/codeStyleSettings.xml
 !.travis.yml
