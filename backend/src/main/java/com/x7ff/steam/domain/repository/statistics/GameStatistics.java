@@ -8,6 +8,7 @@ import com.x7ff.steam.domain.statistics.GameTrackedTimes;
 import com.x7ff.steam.shared.domain.Player;
 import com.x7ff.steam.shared.domain.converter.ZonedDateTimeAttributeConverter;
 import com.x7ff.steam.shared.domain.repository.PlayerRepository;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
@@ -32,10 +33,15 @@ public class GameStatistics extends StatisticsProvider {
 
     private final PlayerRepository playerRepository;
 
+    private final CacheManager cacheManager;
+
     @Inject
-    public GameStatistics(EntityManager entityManager, BackendConfig backendConfig,
+    public GameStatistics(EntityManager entityManager,
+                          CacheManager cacheManager,
+                          BackendConfig backendConfig,
                           PlayerRepository playerRepository) {
         super(entityManager, backendConfig);
+        this.cacheManager = cacheManager;
         this.playerRepository = playerRepository;
     }
 
@@ -101,6 +107,11 @@ public class GameStatistics extends StatisticsProvider {
 
         List<GameMostTrackedPlayer> allTime = getMostTrackedPlayers(gameId, FAR_DATE, dateTo, limit);
         return new GameMostTrackedPlayers(last24Hours, last7Days, allTime);
+    }
+
+    public void evictCaches() {
+        cacheManager.getCache(CACHE_TRACKED_TIMES).clear();
+        cacheManager.getCache(CACHE_MOST_TRACKED_PLAYERS).clear();
     }
 
 }

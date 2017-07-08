@@ -247,19 +247,26 @@ public class MostPlayedGamesStatistics extends StatisticsProvider {
 
         Cache cache = cacheManager.getCache(CACHE_NAME);
         for (String cacheName : refreshedCacheNames) {
-            cache.evict(cacheName);
             switch (cacheName) {
                 case CACHE_NAME_COLLECTIVE:
-                    cache.put(CACHE_NAME_COLLECTIVE, getCollectiveMinutesTracked(context));
+                    long minutesTracked = getCollectiveMinutesTracked(context);
+                    cache.evict(cacheName);
+                    cache.put(cacheName, minutesTracked);
                     break;
                 case CACHE_NAME_TODAY:
-                    cache.put(CACHE_NAME_TODAY, getTodaysMostPlayed(limit, context));
+                    List<MostPlayedGame> todaysPlayed = getTodaysMostPlayed(limit, context);
+                    cache.evict(cacheName);
+                    cache.put(cacheName, todaysPlayed);
                     break;
                 case CACHE_NAME_WEEK:
-                    cache.put(CACHE_NAME_WEEK, getLastWeekMostPlayed(limit, context));
+                    List<MostPlayedGame> weeksPlayed = getLastWeekMostPlayed(limit, context);
+                    cache.evict(cacheName);
+                    cache.put(cacheName, weeksPlayed);
                     break;
                 case CACHE_NAME_ALLTIME:
-                    cache.put(CACHE_NAME_ALLTIME, getAllTimeMostPlayed(limit, context));
+                    List<MostPlayedGame> allTimePlayed = getAllTimeMostPlayed(limit, context);
+                    cache.evict(cacheName);
+                    cache.put(cacheName, allTimePlayed);
                     break;
             }
         }

@@ -129,4 +129,17 @@ public class PlayerGameStatistics extends MostPlayedGamesStatistics {
         }
     }
 
+    public void evictCaches() {
+        String[] refreshedCacheNames = {
+                CACHE_KEY_TODAY,
+                CACHE_KEY_WEEK,
+                CACHE_KEY_ALLTIME,
+        };
+
+        for (String cacheName : refreshedCacheNames) {
+            Cache cache = cacheManager.getCache(cacheName);
+            cache.clear();
+        }
+    }
+
 }

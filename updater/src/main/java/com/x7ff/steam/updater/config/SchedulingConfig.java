@@ -1,7 +1,5 @@
 package com.x7ff.steam.updater.config;
 
-import javax.inject.Inject;
-
 import com.x7ff.steam.updater.task.ScheduledProfileUpdateTask;
 import com.x7ff.steam.updater.task.ScheduledSnapshotUpdateTask;
 import org.springframework.context.annotation.Configuration;
@@ -10,18 +8,24 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 
+import javax.inject.Inject;
+
 @Configuration
 @EnableScheduling
 public class SchedulingConfig implements SchedulingConfigurer {
 
-    @Inject
-    private UpdaterConfig updaterConfig;
+    private final UpdaterConfig updaterConfig;
+
+    private final ScheduledSnapshotUpdateTask snapshotUpdateTask;
+
+    private final ScheduledProfileUpdateTask profileUpdateTask;
 
     @Inject
-    private ScheduledSnapshotUpdateTask snapshotUpdateTask;
-
-    @Inject
-    private ScheduledProfileUpdateTask profileUpdateTask;
+    public SchedulingConfig(UpdaterConfig updaterConfig, ScheduledSnapshotUpdateTask snapshotUpdateTask, ScheduledProfileUpdateTask profileUpdateTask) {
+        this.updaterConfig = updaterConfig;
+        this.snapshotUpdateTask = snapshotUpdateTask;
+        this.profileUpdateTask = profileUpdateTask;
+    }
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
