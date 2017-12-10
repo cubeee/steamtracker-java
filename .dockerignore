@@ -1,0 +1,9 @@
+**/.gradle
+**/.idea
+**/build
+**/lib
+**/out
+**/.git
+**/node_modules
+**/src
+!**/build/docker

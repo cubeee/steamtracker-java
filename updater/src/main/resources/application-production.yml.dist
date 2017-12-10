@@ -8,7 +8,7 @@ spring:
   datasource:
     platform: postgres
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/steamtracker
+    url: jdbc:postgresql://postgres:5432/steamtracker
     username: steamtracker
     password: steamtracker
 

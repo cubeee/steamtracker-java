@@ -18,7 +18,7 @@
 ## Features
 
 * Leverages microservice architecture
-* Easy deploying with Ansible
+* Easy deploying as images with Docker
 * Automatic player updating
 * Pages for tracked games and players for detailed statistics
 
@@ -41,10 +41,6 @@ Copy these files and remove the .dist-extension, then fill with your information
 * updater/src/main/resources/application-development.yml.dist
 * updater/src/main/resources/application-production.yml.dist
 * shared/src/main/resources/application.yml.dist
-* deploy/roles/backend/vars/main.yml.dist
-* deploy/roles/updater/vars/main.yml.dist
-* deploy/hosts.dist
-* deploy/shared-vars.yml.dist
 
 Note: the contents of these template files will always contain the minimum required properties. Keep your private versions up-to-date to avoid any problems caused by configuration mismatches.
 
@@ -73,23 +69,15 @@ The following are some common commands for each module:
 
 ## Deploying
 
-Ansible is used to deploy SteamTracker. Its files are found in the ```deploy/``` directory. Ansible installation instructions can be found [here](https://docs.ansible.com/ansible/intro_installation.html).
+SteamTracker in production is easiest to run as a Docker container. ``backend`` and ``updater`` modules have Dockerfiles and ``buildDockerImage`` tasks that can be used to build their respective images.
 
-Each deployable module has a ```deploy.sh``` script in the module's root directory that are used to perform a deployment.
+You should make sure that there is a database and its user set up for SteamTracker prior to running the containers, Flyway will handle the migrations on start.
 
-These deployment playbooks only cover the application itself so the following have to be configured on the remote server before a successful deployment can happen:
-
-* A user with sudo access and a SSH key (default username is ```deployer```, can be changed in ```deploy/shared-vars.yml```)
-* Java 8
-* Python 2.7 (needed by Ansible)
-* PostgreSQL 9.4 with matching configuration from ```<module>/src/main/resources/application-production.yml```:
-  - Database (default: ```steamtracker```)
-  - User with the specified password (default for both is ```steamtracker```) and privileges for the database
-
-Flyway migrations handle the schema, only the database has to exist.
+Example run command:
+````
+docker run -p 8891:8891 --link postgres:postgres --name steamtracker-backend steamtracker
+````
 
 ## Contributing
-
-_work in progress_
 
 for now: fork, code, submit pull requests, make issues

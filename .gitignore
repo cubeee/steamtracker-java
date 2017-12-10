@@ -10,3 +10,4 @@ out/
 
 !.idea/codeStyleSettings.xml
 !.travis.yml
+!.dockerignore

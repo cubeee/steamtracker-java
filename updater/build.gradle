@@ -15,6 +15,8 @@ buildscript {
 apply plugin: 'propdeps'
 apply plugin: 'org.springframework.boot'
 
+version = '1.0.0'
+
 repositories {
     maven { url 'https://repo.spring.io/milestone' }
 }
@@ -39,7 +41,7 @@ dependencies {
 compileJava.dependsOn processResources
 
 jar {
-    baseName = 'steamtracker-updater'
+    archiveName = 'steamtracker-updater.jar'
     libsDirName = buildDir
 
     exclude('application-development.*')
@@ -56,3 +58,8 @@ bootRun {
 }
 
 bootRepackage.dependsOn check
+
+task dockerBuildImage(type: Exec, dependsOn: "bootRepackage") {
+    group = "docker"
+    commandLine "docker", "build", "-t", "steamtracker-updater:${project.version}", "."
+}

@@ -1,7 +1,0 @@
----
-- hosts: hosts
-  vars_files:
-    - shared-vars.yml
-  remote_user: "{{ deployer_user }}"
-  roles:
-    - "{{ role }}"
